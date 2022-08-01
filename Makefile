@@ -6,7 +6,7 @@
 #    By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/31 19:02:34 by alfux             #+#    #+#              #
-#    Updated: 2022/07/31 20:14:45 by alfux            ###   ########.fr        #
+#    Updated: 2022/08/01 01:30:57 by alfux            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,7 @@ NAME	= minishell
 all					:	$(NAME)
 
 $(NAME)				:	$(OPATH) $(OBJ) $(LPATH)$(LIBFT)
-						@(gcc $(OPTION) $(OBJ) $(LPATH)$(LIBFT) -o $@)
+						@(gcc $(OPTION) $(OBJ) $(LPATH)$(LIBFT) -lreadline -o $@)
 						@(echo "\033[32m$@ linked\033[0m")
 
 $(OPATH)%.o			:	$(SPATH)%.c $(HPATH)$(HEADER)
