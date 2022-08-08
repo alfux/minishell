@@ -6,13 +6,13 @@
 #    By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/31 19:02:34 by alfux             #+#    #+#              #
-#    Updated: 2022/08/01 01:30:57 by alfux            ###   ########.fr        #
+#    Updated: 2022/08/08 18:40:01 by alfux            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SPATH	= src/
 
-SRC		= main.c
+SRC		= main.c ft_prompt.c ft_cd.c
 
 OPATH	= obj/
 
@@ -57,7 +57,7 @@ clean				:
 
 fclean				:	clean
 						@(cd $(LPATH) && $(MAKE) $(SIL) fclean)
-						@(rm $(NAME))
+						@(rm -rf $(NAME))
 						@(echo "\033[31m$(NAME) removed\033[0m")
 
 re					:	fclean all
