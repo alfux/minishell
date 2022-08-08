@@ -6,12 +6,12 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/07 03:55:37 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/08 18:18:12 by alfux            ###   ########.fr       */
+/*   Updated: 2022/08/08 22:52:31 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
 
-static char *ft_color_directory(void)
+static char	*ft_color_directory(void)
 {
 	char	*path;
 	char	*dir;
@@ -40,7 +40,7 @@ static char *ft_color_directory(void)
 	return (dir);
 }
 
-char*	ft_prompt(char **ev)
+char	*ft_prompt(char **ev)
 {
 	char	*dir;
 	char	*ret;

@@ -6,13 +6,13 @@
 #    By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/31 19:02:34 by alfux             #+#    #+#              #
-#    Updated: 2022/08/08 18:40:01 by alfux            ###   ########.fr        #
+#    Updated: 2022/08/08 22:36:15 by alfux            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SPATH	= src/
 
-SRC		= main.c ft_prompt.c ft_cd.c
+SRC		= main.c ft_prompt.c ft_cd.c ft_envdup.c ft_sfree.c
 
 OPATH	= obj/
 

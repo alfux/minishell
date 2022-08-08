@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 18:40:11 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/08 19:20:23 by alfux            ###   ########.fr       */
+/*   Updated: 2022/08/08 22:53:04 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -23,7 +23,7 @@ static int	ft_errmsg(int errn)
 		ft_printf("Error: Too many symbolic links, this may be a looping\n");
 	else if (errn == ENAMETOOLONG)
 		ft_printf("Error: Path/name is too long: NAME_MAX: %i PATH_MAX:%i\n",
-					NAME_MAX, PATH_MAX);
+			NAME_MAX, PATH_MAX);
 	else if (errn == ENOENT)
 		ft_printf("Error: Directory does not exist\n");
 	else if (errn == ENOTDIR)
