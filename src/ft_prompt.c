@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/07 03:55:37 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/08 22:52:31 by alfux            ###   ########.fr       */
+/*   Updated: 2022/08/11 15:51:05 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -18,7 +18,7 @@ static char	*ft_color_directory(void)
 	int		i;
 	int		j;
 
-	path = getcwd((void *)0, 0);
+	path = ft_newpwd();
 	if (!path)
 		return ((void *)0);
 	i = 0;
@@ -29,8 +29,8 @@ static char	*ft_color_directory(void)
 	dir = ft_calloc(i - j + 14, sizeof (char));
 	if (!dir)
 	{
-		free(path);
-		return ((void *)0);
+		ft_errmsg(errno + ft_free(path));
+		return ((char *)0);
 	}
 	ft_strlcpy(dir, "\033[33m", i - j + 14);
 	ft_strlcpy(dir + 5, path + j, i - j + 9);
@@ -51,5 +51,9 @@ char	*ft_prompt(char **ev)
 		return ((void *)0);
 	ret = readline(dir);
 	free(dir);
+	if (ret)
+		return (ret);
+	ret = ft_calloc(1, sizeof (char));
+	*ret = '\0';
 	return (ret);
 }

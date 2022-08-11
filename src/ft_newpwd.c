@@ -1,41 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_envdup.c                                        :+:      :+:    :+:   */
+/*   ft_newpwd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/08 21:26:31 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/11 15:53:08 by alfux            ###   ########.fr       */
+/*   Created: 2022/08/08 18:40:11 by alfux             #+#    #+#             */
+/*   Updated: 2022/08/11 15:04:18 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
 
-char	**ft_envdup(char **ev)
+char	*ft_newpwd(void)
 {
-	char	**env;
-	int		i;
+	char	*pwd;
 
-	i = 0;
-	while (*(ev + i))
-		i++;
-	env = ft_calloc(i + 1, sizeof (char *));
-	if (!env)
-	{
+	pwd = getcwd((void *)0, 0);
+	if (!pwd)
 		ft_errmsg(errno);
-		return ((char **)0);
-	}
-	i = 0;
-	while (*(ev + i))
-	{
-		*(env + i) = ft_strdup(*(ev + i));
-		if (!*(env + i))
-		{
-			ft_errmsg(errno);
-			ft_sfree(env);
-			return ((char **)0);
-		}
-		i++;
-	}
-	return (env);
+	return (pwd);
 }

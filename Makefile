@@ -6,31 +6,32 @@
 #    By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/31 19:02:34 by alfux             #+#    #+#              #
-#    Updated: 2022/08/08 22:36:15 by alfux            ###   ########.fr        #
+#    Updated: 2022/08/11 15:38:12 by alfux            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SPATH	= src/
+SPATH	=	src/
 
-SRC		= main.c ft_prompt.c ft_cd.c ft_envdup.c ft_sfree.c
+SRC		=	main.c ft_prompt.c ft_cd.c ft_envdup.c ft_sfree.c ft_env.c	\
+			ft_newpwd.c ft_errmsg.c ft_free.c							\
 
-OPATH	= obj/
+OPATH	=	obj/
 
-OBJ		= $(SRC:%.c=$(OPATH)%.o)
+OBJ		=	$(SRC:%.c=$(OPATH)%.o)
 
-LPATH	= libft/
+LPATH	=	libft/
 
-LIBFT	= libft.a
+LIBFT	=	libft.a
 
-HPATH	= hdr/
+HPATH	=	hdr/
 
-HEADER	= minishell.h
+HEADER	=	minishell.h
 
-OPTION	= -Wall -Werror -Wextra -I$(LPATH) -I$(HPATH)
+OPTION	=	-Wall -Werror -Wextra -I$(LPATH) -I$(HPATH)
 
-SIL		= --no-print-directory
+SIL		=	--no-print-directory
 
-NAME	= minishell
+NAME	=	minishell
 
 all					:	$(NAME)
 
