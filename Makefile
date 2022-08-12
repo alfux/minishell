@@ -6,14 +6,14 @@
 #    By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/31 19:02:34 by alfux             #+#    #+#              #
-#    Updated: 2022/08/11 15:38:12 by alfux            ###   ########.fr        #
+#    Updated: 2022/08/12 09:54:13 by alfux            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SPATH	=	src/
 
 SRC		=	main.c ft_prompt.c ft_cd.c ft_envdup.c ft_sfree.c ft_env.c	\
-			ft_newpwd.c ft_errmsg.c ft_free.c							\
+			ft_newpwd.c ft_errmsg.c ft_free.c ft_echo.c					\
 
 OPATH	=	obj/
 
@@ -25,9 +25,13 @@ LIBFT	=	libft.a
 
 HPATH	=	hdr/
 
+RIPATH	=	/opt/homebrew/opt/readline/include
+
+RLPATH	=	/opt/homebrew/opt/readline/lib
+
 HEADER	=	minishell.h
 
-OPTION	=	-Wall -Werror -Wextra -I$(LPATH) -I$(HPATH)
+OPTION	=	-Wall -Werror -Wextra -I$(LPATH) -I$(HPATH) -I$(RIPATH)
 
 SIL		=	--no-print-directory
 
@@ -36,7 +40,7 @@ NAME	=	minishell
 all					:	$(NAME)
 
 $(NAME)				:	$(OPATH) $(OBJ) $(LPATH)$(LIBFT)
-						@(gcc $(OPTION) $(OBJ) $(LPATH)$(LIBFT) -lreadline -o $@)
+						@(gcc $(OPTION) $(OBJ) $(LPATH)$(LIBFT) -o $@ -L$(RLPATH) -lreadline)
 						@(echo "\033[32m$@ linked\033[0m")
 
 $(OPATH)%.o			:	$(SPATH)%.c $(HPATH)$(HEADER)

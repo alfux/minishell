@@ -1,23 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_sfree.c                                         :+:      :+:    :+:   */
+/*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/08 22:35:09 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/11 22:07:12 by alfux            ###   ########.fr       */
+/*   Created: 2022/08/11 17:04:04 by alfux             #+#    #+#             */
+/*   Updated: 2022/08/12 10:09:54 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
 
-int	ft_sfree(char **spl)
+static void	ft_shwarg(char **av, char opt)
 {
 	int	i;
 
-	i = 0;
-	while (*(spl + i))
-		free(*(spl + i++));
-	free(spl);
+	i = opt;
+	while (*(av + i))
+	{
+		ft_printf("%s", *(av + i++));
+		if (*(av + i))
+			ft_printf(" ");
+		else if (!opt)
+			ft_printf("\n");
+	}
+}
+
+int	ft_echo(char **av)
+{
+	if (!ft_strncmp(*av, "-n", 3))
+	{
+		ft_shwarg(av, 1);
+		return (1);
+	}
+	ft_shwarg(av, 0);
 	return (0);
 }
