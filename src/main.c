@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 19:48:07 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/12 11:04:44 by alfux            ###   ########.fr       */
+/*   Updated: 2022/08/12 14:04:23 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -15,15 +15,13 @@ int	main(int ac, char **av, char **ev)
 {
 	char	*prompt;
 	char	**spl;
-	int		child_exit_status;
 
 	(void)ac;
 	(void)av;
 	ev = ft_envdup(ev);
 	if (!ev)
 		return (1);
-	child_exit_status = 0;
-	prompt = ft_prompt(ev, 0);
+	prompt = ft_prompt(ev);
 	//TEMP
 	while (prompt && ft_strncmp(prompt, "exit", 5))
 	{
@@ -34,9 +32,9 @@ int	main(int ac, char **av, char **ev)
 		if (*spl && !ft_strncmp(*spl, "env", 4))
 			ft_env(ev);
 		if (*spl && !ft_strncmp(*spl, "echo", 5))
-			child_exit_status = ft_echo(spl + 1);
+			ft_echo(spl + 1);
 		ft_sfree(spl);
-		prompt = ft_prompt(ev, child_exit_status);
+		prompt = ft_prompt(ev);
 	}
 	ft_sfree(ev);
 	free(prompt);

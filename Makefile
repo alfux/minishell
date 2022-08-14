@@ -6,14 +6,14 @@
 #    By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/31 19:02:34 by alfux             #+#    #+#              #
-#    Updated: 2022/08/12 09:54:13 by alfux            ###   ########.fr        #
+#    Updated: 2022/08/14 20:17:49 by alfux            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SPATH	=	src/
 
 SRC		=	main.c ft_prompt.c ft_cd.c ft_envdup.c ft_sfree.c ft_env.c	\
-			ft_newpwd.c ft_errmsg.c ft_free.c ft_echo.c					\
+			ft_newpwd.c ft_errmsg.c ft_free.c ft_echo.c ft_parse.c		\
 
 OPATH	=	obj/
 
@@ -37,7 +37,7 @@ SIL		=	--no-print-directory
 
 NAME	=	minishell
 
-all					:	$(NAME)
+LEAKS	=	check_leaks
 
 $(NAME)				:	$(OPATH) $(OBJ) $(LPATH)$(LIBFT)
 						@(gcc $(OPTION) $(OBJ) $(LPATH)$(LIBFT) -o $@ -L$(RLPATH) -lreadline)
@@ -55,16 +55,27 @@ $(LPATH)$(LIBFT)	:
 						@(cd $(LPATH) && $(MAKE) $(SIL) bonus clean)
 						@(echo "\033[90m$(LIBFT) compiled\033[0m")
 
+all					:	$(NAME) $(LEAKS)
+
 clean				:
 						@(cd $(LPATH) && $(MAKE) $(SIL) clean)
 						@(rm -rf $(OPATH))
-						@(echo "\033[31mcleaned object files\033[0m")
+						@(echo "\033[31mobject files removed\033[0m")
 
-fclean				:	clean
+cclean				:
+						@(rm -rf $(LEAKS))
+						@(echo "\033[31m$(LEAKS) removed\033[0m")
+
+fclean				:	clean cclean
 						@(cd $(LPATH) && $(MAKE) $(SIL) fclean)
 						@(rm -rf $(NAME))
 						@(echo "\033[31m$(NAME) removed\033[0m")
 
 re					:	fclean all
 
-.PHONY				:	all clean fclean re
+$(LEAKS)				:
+						@(echo "leaks -atExit -- ./$(NAME)" > $(LEAKS))
+						@(chmod 755 $(LEAKS))
+						@(echo "\033[32m$(LEAKS) written\033[0m")
+
+.PHONY				:	all clean fclean re cclean
