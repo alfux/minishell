@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 20:05:20 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/12 14:03:23 by alfux            ###   ########.fr       */
+/*   Updated: 2022/08/16 16:11:43 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef MINISHELL_H
@@ -22,7 +22,7 @@ char	*ft_newpwd(void);
 //Returns standard input (allocate memory)
 char	*ft_prompt(char **ev);
 //Buildin cd
-int		ft_cd(char *path, char **ev);
+int		ft_cd(char **path, char **ev);
 //Duplicate environnement (allocate memory)
 char	**ft_envdup(char **ev);
 //Free string tabs and return 0
@@ -35,4 +35,6 @@ int		ft_env(char **ev);
 int		ft_errmsg(int errn);
 //Echo buildin function, prints operands
 int		ft_echo(char **av);
+//Split the prompted command line
+char	**ft_cmdspl(char *cmd);
 #endif

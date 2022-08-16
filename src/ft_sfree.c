@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 22:35:09 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/11 22:07:12 by alfux            ###   ########.fr       */
+/*   Updated: 2022/08/16 14:57:46 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -15,6 +15,8 @@ int	ft_sfree(char **spl)
 {
 	int	i;
 
+	if (!spl)
+		return (0);
 	i = 0;
 	while (*(spl + i))
 		free(*(spl + i++));

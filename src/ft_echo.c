@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 17:04:04 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/12 10:09:54 by alfux            ###   ########.fr       */
+/*   Updated: 2022/08/16 14:29:46 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -28,6 +28,9 @@ static void	ft_shwarg(char **av, char opt)
 
 int	ft_echo(char **av)
 {
+	if (!av || !*av)
+		return (0 * ft_printf("\n"));
+	av++;
 	if (!ft_strncmp(*av, "-n", 3))
 	{
 		ft_shwarg(av, 1);

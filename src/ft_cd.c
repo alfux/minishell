@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 18:40:11 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/11 15:45:28 by alfux            ###   ########.fr       */
+/*   Updated: 2022/08/16 14:33:26 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -39,11 +39,11 @@ static int	ft_replace(char **pwd, char **old)
 	return (ft_free(buf));
 }
 
-int	ft_cd(char *path, char **ev)
+int	ft_cd(char **path, char **ev)
 {
 	int		i;
 
-	if (chdir(path))
+	if (chdir(*(path + 1)))
 		return (ft_errmsg(errno));
 	i = 0;
 	while (*(ev + i))

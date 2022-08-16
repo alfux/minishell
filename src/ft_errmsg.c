@@ -6,23 +6,35 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 18:40:11 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/11 15:03:49 by alfux            ###   ########.fr       */
+/*   Updated: 2022/08/16 18:06:59 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
 
+static int	ft_errmsg_a(int errn)
+{
+	if (errn == -1)
+		ft_putstr_fd("Error: Unclosed (double) quotes\n", 2);
+	else if (errn == -2)
+		ft_putstr_fd("Error: Empty pointer in ft_cmdspl\n", 2);
+	else if (errn == -3)
+		ft_putstr_fd("Error: Couldn't find USER in environnement\n", 2);
+	else
+		ft_putstr_fd("Error: Unknown\n", 2);
+	return (errn);
+}
+
 int	ft_errmsg(int errn)
 {
+	errno = errn;
 	if (errn == EACCES)
 		ft_putstr_fd("Error: Permission denied\n", 2);
 	else if (errn == EFAULT)
 		ft_putstr_fd("Error: Path is outside of allocated address space\n", 2);
 	else if (errn == EIO)
-		ft_putstr_fd(
-			"Error: I/O error occured while read/write file system\n", 2);
+		ft_putstr_fd("Error: I/O error occured while r/w file system\n", 2);
 	else if (errn == ELOOP)
-		ft_putstr_fd(
-			"Error: Too many symbolic links, this may be a looping\n", 2);
+		ft_putstr_fd("Error: Too many symbolic links (looping?)\n", 2);
 	else if (errn == ENAMETOOLONG)
 		ft_putstr_fd("Error: Path/name is too long", 2);
 	else if (errn == ENOENT)
@@ -36,6 +48,6 @@ int	ft_errmsg(int errn)
 	else if (errn == ERANGE)
 		ft_putstr_fd("Error: Argument(s) out of range\n", 2);
 	else
-		ft_putstr_fd("Error: Unknown\n", 2);
+		return (ft_errmsg_a(errn));
 	return (errn);
 }
