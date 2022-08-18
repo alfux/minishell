@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_cmdspl.c                                        :+:      :+:    :+:   */
+/*   ft_root_cmdspl.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 14:10:20 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/16 16:28:17 by alfux            ###   ########.fr       */
+/*   Updated: 2022/08/18 14:18:35 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -28,8 +28,10 @@ static size_t	ft_arglen(char *arg)
 			quote = (quote + 1) % 2;
 		i++;
 	}
-	if (dquote || quote)
-		return (-1);
+	if (quote)
+		errno = -1;
+	if (dquote)
+		errno = -2;
 	return (i);
 }
 
@@ -39,8 +41,6 @@ static int	ft_argcnt(char *cmd)
 	size_t	argl;
 	size_t	i;
 
-	if (!cmd)
-		return (-2);
 	i = 0;
 	argc = 0;
 	while (*(cmd + i))
@@ -50,14 +50,14 @@ static int	ft_argcnt(char *cmd)
 		if (*(cmd + i))
 			argc++;
 		argl = ft_arglen(cmd + i);
-		if (argl < 0)
-			return (-1);
+		if (errno)
+			return (errno);
 		i += argl;
 	}
 	return (argc);
 }
 
-char	**ft_cmdspl(char *cmd)
+char	**ft_root_cmdspl(char *cmd)
 {
 	char	**spl;
 	int		argc;

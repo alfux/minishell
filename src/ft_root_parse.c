@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_parse.c                                         :+:      :+:    :+:   */
+/*   ft_root_parse.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 13:09:04 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/18 12:52:08 by alfux            ###   ########.fr       */
+/*   Updated: 2022/08/18 15:22:20 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -54,7 +54,8 @@ static int	ft_newsze(char *arg, char **ev)
 			quotes = (quotes + 1) % 2;
 		else if (!quotes && *(arg + i) == 34)
 			dquotes = (dquotes + 1) % 2;
-		else if (*(arg + i) == '$' && !quotes)
+		else if (*(arg + i) == '$' && (ft_isalnum(*(arg + i + 1))
+				|| *(arg + i + 1) == '_') && !quotes)
 			size += ft_varsze(arg, &i, ev);
 		else
 			size++;
@@ -105,7 +106,8 @@ static void	ft_replace(char *dst, char *src, char **ev)
 			quotes = (quotes + 1) % 2;
 		else if (*src == 34 && !quotes)
 			dquotes = (dquotes + 1) % 2;
-		else if (*src == '$' && !quotes)
+		else if (*src == '$' && (ft_isalnum(*(src + 1)) || *(src + 1) == '_')
+			&& !quotes)
 			ft_fill_var(&dst, &src, ev);
 		else
 			*(dst++) = *src;
@@ -113,7 +115,7 @@ static void	ft_replace(char *dst, char *src, char **ev)
 	}
 }
 
-char	**ft_parse(char **cmd, char **ev)
+char	**ft_root_parse(char **cmd, char **ev)
 {
 	size_t	new_size;
 	char	*buf;
@@ -123,7 +125,6 @@ char	**ft_parse(char **cmd, char **ev)
 	while (*(cmd + i))
 	{
 		new_size = ft_newsze(*(cmd + i), ev);
-		ft_printf("new_size=%i for |%s|\n", new_size, *(cmd + i));
 		if (new_size >= 0)
 		{
 			buf = ft_calloc(new_size + 1, sizeof (char));

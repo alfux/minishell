@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 18:40:11 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/16 18:06:59 by alfux            ###   ########.fr       */
+/*   Updated: 2022/08/18 14:16:24 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -14,9 +14,9 @@
 static int	ft_errmsg_a(int errn)
 {
 	if (errn == -1)
-		ft_putstr_fd("Error: Unclosed (double) quotes\n", 2);
+		ft_putstr_fd("Error: Unclosed quotes\n", 2);
 	else if (errn == -2)
-		ft_putstr_fd("Error: Empty pointer in ft_cmdspl\n", 2);
+		ft_putstr_fd("Error: Unclosed double quotes\n", 2);
 	else if (errn == -3)
 		ft_putstr_fd("Error: Couldn't find USER in environnement\n", 2);
 	else
@@ -26,7 +26,7 @@ static int	ft_errmsg_a(int errn)
 
 int	ft_errmsg(int errn)
 {
-	errno = errn;
+	errno = 0;
 	if (errn == EACCES)
 		ft_putstr_fd("Error: Permission denied\n", 2);
 	else if (errn == EFAULT)
