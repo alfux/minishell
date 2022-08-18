@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 20:05:20 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/16 16:11:43 by alfux            ###   ########.fr       */
+/*   Updated: 2022/08/17 17:37:36 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef MINISHELL_H
@@ -35,6 +35,8 @@ int		ft_env(char **ev);
 int		ft_errmsg(int errn);
 //Echo buildin function, prints operands
 int		ft_echo(char **av);
-//Split the prompted command line
+//Split the prompted command line according to (d)quotes
 char	**ft_cmdspl(char *cmd);
+//Parse	the split command line to removes (d)quotes and replaces variables ($)
+char	**ft_parse(char **cmd, char **ev);
 #endif

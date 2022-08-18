@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 19:48:07 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/16 18:25:41 by alfux            ###   ########.fr       */
+/*   Updated: 2022/08/18 02:53:06 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -26,6 +26,7 @@ int	main(int ac, char **av, char **ev)
 	{
 		spl = ft_cmdspl(prompt);
 		free(prompt);
+		spl = ft_parse(spl, ev);
 		if (spl && *spl && !ft_strncmp(*spl, "cd", 3))
 			ft_cd(spl, ev);
 		if (spl && *spl && !ft_strncmp(*spl, "env", 4))
