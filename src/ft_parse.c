@@ -6,12 +6,12 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 13:09:04 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/18 03:23:57 by alfux            ###   ########.fr       */
+/*   Updated: 2022/08/18 12:52:08 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
 
-static int	ft_varsze(char *arg, size_t *i, char **ev)
+static size_t	ft_varsze(char *arg, size_t *i, char **ev)
 {
 	size_t	size;
 	int		j;
@@ -26,13 +26,14 @@ static int	ft_varsze(char *arg, size_t *i, char **ev)
 		if (!ft_strncmp(arg + *i, *(ev + j), size) && *(arg + *i + size) != '_'
 			&& !ft_isalnum(*(arg + *i + size)))
 		{
-			*i += size;
+			*i += size - 1;
 			return (ft_strlen(*(ev + j) + size + 1));
 		}
 		j++;
 	}
 	while (ft_isalnum(*(arg + *i)) || *(arg + *i) == '_')
 		(*i)++;
+	(*i)--;
 	return (0);
 }
 
@@ -122,9 +123,10 @@ char	**ft_parse(char **cmd, char **ev)
 	while (*(cmd + i))
 	{
 		new_size = ft_newsze(*(cmd + i), ev);
+		ft_printf("new_size=%i for |%s|\n", new_size, *(cmd + i));
 		if (new_size >= 0)
 		{
-			buf = ft_calloc(new_size, sizeof (char));
+			buf = ft_calloc(new_size + 1, sizeof (char));
 			if (!buf)
 				return ((char **)(size_t)(ft_sfree(cmd) * ft_errmsg(errno)));
 			ft_replace(buf, *(cmd + i), ev);
