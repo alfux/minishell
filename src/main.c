@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 19:48:07 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/18 16:32:22 by alfux            ###   ########.fr       */
+/*   Updated: 2022/08/19 02:30:01 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -19,6 +19,8 @@ static void	ft_choose(char **spl, char **ev)
 		ft_env(ev);
 	if (spl && *spl && !ft_strncmp(*spl, "echo", 5))
 		ft_echo(spl);
+	if (spl && *spl && !ft_strncmp(*spl, "pwd", 4))
+		ft_pwd();
 }
 
 int	main(int ac, char **av, char **ev)

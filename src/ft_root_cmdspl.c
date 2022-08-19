@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 14:10:20 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/18 14:18:35 by alfux            ###   ########.fr       */
+/*   Updated: 2022/08/19 02:21:51 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -29,9 +29,9 @@ static size_t	ft_arglen(char *arg)
 		i++;
 	}
 	if (quote)
-		errno = -1;
+		return (-1);
 	if (dquote)
-		errno = -2;
+		return (-2);
 	return (i);
 }
 
@@ -50,8 +50,10 @@ static int	ft_argcnt(char *cmd)
 		if (*(cmd + i))
 			argc++;
 		argl = ft_arglen(cmd + i);
-		if (errno)
-			return (errno);
+		if (argl == (size_t)(-1))
+			return (-1);
+		else if (argl == (size_t)(-2))
+			return (-2);
 		i += argl;
 	}
 	return (argc);

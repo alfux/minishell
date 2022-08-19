@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 20:05:20 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/18 14:07:33 by alfux            ###   ########.fr       */
+/*   Updated: 2022/08/19 02:27:40 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef MINISHELL_H
@@ -31,6 +31,8 @@ int		ft_sfree(char **spl);
 int		ft_free(void *ptr);
 //Show environnement
 int		ft_env(char **ev);
+//Show current working directory
+int		ft_pwd(void);
 //Print error messages
 int		ft_errmsg(int errn);
 //Echo buildin function, prints operands

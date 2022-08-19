@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 18:40:11 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/18 14:16:24 by alfux            ###   ########.fr       */
+/*   Updated: 2022/08/19 01:39:23 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -26,7 +26,6 @@ static int	ft_errmsg_a(int errn)
 
 int	ft_errmsg(int errn)
 {
-	errno = 0;
 	if (errn == EACCES)
 		ft_putstr_fd("Error: Permission denied\n", 2);
 	else if (errn == EFAULT)
