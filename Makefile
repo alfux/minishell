@@ -6,7 +6,7 @@
 #    By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/31 19:02:34 by alfux             #+#    #+#              #
-#    Updated: 2022/08/19 02:27:07 by alfux            ###   ########.fr        #
+#    Updated: 2022/08/19 15:07:31 by alfux            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ SPATH	=	src/
 
 SRC		=	main.c ft_prompt.c ft_cd.c ft_envdup.c ft_sfree.c ft_env.c	\
 			ft_newpwd.c ft_errmsg.c ft_free.c ft_echo.c ft_root_cmdspl.c\
-			ft_root_parse.c ft_pwd.c									\
+			ft_root_parse.c ft_pwd.c ft_exit.c							\
 
 OPATH	=	obj/
 
@@ -38,7 +38,7 @@ SIL		=	--no-print-directory
 
 NAME	=	minishell
 
-LEAKS	=	check_leaks
+LEAKS	=	chleaks
 
 $(NAME)				:	$(OPATH) $(OBJ) $(LPATH)$(LIBFT)
 						@(gcc $(OPTION) $(OBJ) $(LPATH)$(LIBFT) -o $@ -L$(RLPATH) -lreadline)
@@ -78,5 +78,7 @@ $(LEAKS)				:
 						@(echo "leaks -atExit -- ./$(NAME)" > $(LEAKS))
 						@(chmod 755 $(LEAKS))
 						@(echo "\033[32m$(LEAKS) written\033[0m")
+
+leaks				:	$(LEAKS)
 
 .PHONY				:	all clean fclean re cclean

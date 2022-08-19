@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 19:48:07 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/19 02:30:01 by alfux            ###   ########.fr       */
+/*   Updated: 2022/08/19 14:56:52 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -21,6 +21,8 @@ static void	ft_choose(char **spl, char **ev)
 		ft_echo(spl);
 	if (spl && *spl && !ft_strncmp(*spl, "pwd", 4))
 		ft_pwd();
+	if (spl && *spl && !ft_strncmp(*spl, "exit", 5))
+		ft_exit(spl, ev);
 }
 
 int	main(int ac, char **av, char **ev)
@@ -32,7 +34,7 @@ int	main(int ac, char **av, char **ev)
 	if (!ev || !ac || !av)
 		return (1);
 	prompt = ft_prompt(ev);
-	while (prompt && ft_strncmp(prompt, "exit", 5))
+	while (prompt)
 	{
 		spl = ft_root_cmdspl(prompt);
 		ft_free(prompt);
@@ -44,6 +46,5 @@ int	main(int ac, char **av, char **ev)
 		prompt = ft_prompt(ev);
 	}
 	ft_sfree(ev);
-	ft_free(prompt);
 	return (0);
 }

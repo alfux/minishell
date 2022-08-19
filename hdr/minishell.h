@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 20:05:20 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/19 02:27:40 by alfux            ###   ########.fr       */
+/*   Updated: 2022/08/19 15:13:34 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef MINISHELL_H
@@ -17,28 +17,33 @@
 # include <readline/history.h>
 # include <errno.h>
 
-//Get new pwd (allocate memory)
-char	*ft_newpwd(void);
-//Returns standard input (allocate memory)
-char	*ft_prompt(char **ev);
-//Buildin cd
-int		ft_cd(char **path, char **ev);
-//Duplicate environnement (allocate memory)
-char	**ft_envdup(char **ev);
 //Free string tabs and return 0
 int		ft_sfree(char **spl);
 //Free ptr and return 0
 int		ft_free(void *ptr);
-//Show environnement
-int		ft_env(char **ev);
-//Show current working directory
-int		ft_pwd(void);
 //Print error messages
 int		ft_errmsg(int errn);
-//Echo buildin function, prints operands
-int		ft_echo(char **av);
+//Duplicate environnement (allocate memory)
+char	**ft_envdup(char **ev);
+//Get new pwd (allocate memory)
+char	*ft_newpwd(void);
+//Returns standard input (allocate memory)
+char	*ft_prompt(char **ev);
 //Split the prompted command line according to (d)quotes
 char	**ft_root_cmdspl(char *cmd);
 //Parse	the split command line to removes (d)quotes and replaces variables ($)
 char	**ft_root_parse(char **cmd, char **ev);
+
+//---------------------------------BUILTINS-------------------------------------
+//Builtin echo
+int		ft_echo(char **av);
+//Buildin cd
+int		ft_cd(char **av, char **ev);
+//Builtin pwd
+int		ft_pwd(void);
+//Builtin env
+int		ft_env(char **ev);
+//Builtin exit
+void	ft_exit(char **av, char **ev);
+//------------------------------------------------------------------------------
 #endif
