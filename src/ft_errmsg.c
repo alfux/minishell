@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 18:40:11 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/19 01:39:23 by alfux            ###   ########.fr       */
+/*   Updated: 2022/08/19 18:27:46 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -19,6 +19,8 @@ static int	ft_errmsg_a(int errn)
 		ft_putstr_fd("Error: Unclosed double quotes\n", 2);
 	else if (errn == -3)
 		ft_putstr_fd("Error: Couldn't find USER in environnement\n", 2);
+	else if (errn == -4)
+		ft_putstr_fd("Error: Command not found\n", 2);
 	else
 		ft_putstr_fd("Error: Unknown\n", 2);
 	return (errn);
