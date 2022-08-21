@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 13:09:04 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/21 01:14:07 by alfux            ###   ########.fr       */
+/*   Updated: 2022/08/21 06:47:24 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -16,8 +16,7 @@ static size_t	ft_varsze(char *arg, size_t *i, char **ev, char	**var)
 	size_t	size;
 	int		j;
 
-	j = 0;
-	(*i)++;
+	j = 0 * (*i)++;
 	while (*(ev + j))
 	{
 		size = 0;
@@ -36,9 +35,8 @@ static size_t	ft_varsze(char *arg, size_t *i, char **ev, char	**var)
 		(*i)--;
 		return (ft_varsze(arg, i, var, (char **)0));
 	}
-	while (ft_isalnum(*(arg + *i)) || *(arg + *i) == '_')
+	while (ft_isalnum(*(arg + *i + 1)) || *(arg + *i + 1) == '_')
 		(*i)++;
-	(*i)--;
 	return (0);
 }
 
@@ -76,7 +74,6 @@ static void	ft_fill_var(char **dst, char **src, char **ev, char **var)
 	size_t	j;
 
 	i = 0;
-	(*src)++;
 	while (*(ev + i))
 	{
 		size = 0;
@@ -94,13 +91,9 @@ static void	ft_fill_var(char **dst, char **src, char **ev, char **var)
 		i++;
 	}
 	if (var)
-	{
-		(*src)--;
 		return (ft_fill_var(dst, src, var, (char **)0));
-	}
-	while (ft_isalnum(**src) || **src == '_')
+	while (ft_isalnum(*(*src + 1)) || *(*src + 1) == '_')
 		(*src)++;
-	(*src)--;
 }
 
 static void	ft_replace(char *dst, char *src, char **ev, char **var)
@@ -116,9 +109,12 @@ static void	ft_replace(char *dst, char *src, char **ev, char **var)
 			quotes = (quotes + 1) % 2;
 		else if (*src == 34 && !quotes)
 			dquotes = (dquotes + 1) % 2;
-		else if (*src == '$' && (ft_isalnum(*(src + 1)) || *(src + 1) == '_')
-			&& !quotes)
+		else if (!quotes && *src == '$' && (ft_isalnum(*(src + 1))
+				|| *(src + 1) == '_'))
+		{
+			src++;
 			ft_fill_var(&dst, &src, ev, var);
+		}
 		else
 			*(dst++) = *src;
 		src++;

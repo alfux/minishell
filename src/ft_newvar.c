@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/20 17:04:55 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/21 01:27:11 by alfux            ###   ########.fr       */
+/*   Updated: 2022/08/21 06:31:45 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -34,7 +34,7 @@ static char	**ft_isinvar(char *candidate, char **var)
 static int	ft_newsze(char **cmd, char **var)
 {
 	int	i;
-	int	size;;
+	int	size;
 
 	i = 0;
 	if (var)
