@@ -6,12 +6,12 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 13:09:04 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/18 15:22:20 by alfux            ###   ########.fr       */
+/*   Updated: 2022/08/21 01:14:07 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
 
-static size_t	ft_varsze(char *arg, size_t *i, char **ev)
+static size_t	ft_varsze(char *arg, size_t *i, char **ev, char	**var)
 {
 	size_t	size;
 	int		j;
@@ -31,13 +31,18 @@ static size_t	ft_varsze(char *arg, size_t *i, char **ev)
 		}
 		j++;
 	}
+	if (var)
+	{
+		(*i)--;
+		return (ft_varsze(arg, i, var, (char **)0));
+	}
 	while (ft_isalnum(*(arg + *i)) || *(arg + *i) == '_')
 		(*i)++;
 	(*i)--;
 	return (0);
 }
 
-static int	ft_newsze(char *arg, char **ev)
+static int	ft_newsze(char *arg, char **ev, char **var)
 {
 	size_t	size;
 	size_t	i;
@@ -56,7 +61,7 @@ static int	ft_newsze(char *arg, char **ev)
 			dquotes = (dquotes + 1) % 2;
 		else if (*(arg + i) == '$' && (ft_isalnum(*(arg + i + 1))
 				|| *(arg + i + 1) == '_') && !quotes)
-			size += ft_varsze(arg, &i, ev);
+			size += ft_varsze(arg, &i, ev, var);
 		else
 			size++;
 		i++;
@@ -64,7 +69,7 @@ static int	ft_newsze(char *arg, char **ev)
 	return (size);
 }
 
-static void	ft_fill_var(char **dst, char **src, char **ev)
+static void	ft_fill_var(char **dst, char **src, char **ev, char **var)
 {
 	size_t	size;
 	size_t	i;
@@ -88,12 +93,17 @@ static void	ft_fill_var(char **dst, char **src, char **ev)
 		}
 		i++;
 	}
+	if (var)
+	{
+		(*src)--;
+		return (ft_fill_var(dst, src, var, (char **)0));
+	}
 	while (ft_isalnum(**src) || **src == '_')
 		(*src)++;
 	(*src)--;
 }
 
-static void	ft_replace(char *dst, char *src, char **ev)
+static void	ft_replace(char *dst, char *src, char **ev, char **var)
 {
 	char	quotes;
 	char	dquotes;
@@ -108,14 +118,14 @@ static void	ft_replace(char *dst, char *src, char **ev)
 			dquotes = (dquotes + 1) % 2;
 		else if (*src == '$' && (ft_isalnum(*(src + 1)) || *(src + 1) == '_')
 			&& !quotes)
-			ft_fill_var(&dst, &src, ev);
+			ft_fill_var(&dst, &src, ev, var);
 		else
 			*(dst++) = *src;
 		src++;
 	}
 }
 
-char	**ft_root_parse(char **cmd, char **ev)
+char	**ft_root_parse(char **cmd, char **ev, char	**var)
 {
 	size_t	new_size;
 	char	*buf;
@@ -124,13 +134,13 @@ char	**ft_root_parse(char **cmd, char **ev)
 	i = 0;
 	while (*(cmd + i))
 	{
-		new_size = ft_newsze(*(cmd + i), ev);
+		new_size = ft_newsze(*(cmd + i), ev, var);
 		if (new_size >= 0)
 		{
 			buf = ft_calloc(new_size + 1, sizeof (char));
 			if (!buf)
 				return ((char **)(size_t)(ft_sfree(cmd) * ft_errmsg(errno)));
-			ft_replace(buf, *(cmd + i), ev);
+			ft_replace(buf, *(cmd + i), ev, var);
 			free(*(cmd + i));
 			*(cmd + i) = buf;
 		}

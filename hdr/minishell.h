@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 20:05:20 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/20 02:29:35 by alfux            ###   ########.fr       */
+/*   Updated: 2022/08/21 00:54:20 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef MINISHELL_H
@@ -32,7 +32,7 @@ char	*ft_prompt(char **ev);
 //Split the prompted command line according to (d)quotes
 char	**ft_root_cmdspl(char *cmd);
 //Parse	the split command line to removes (d)quotes and replaces variables ($)
-char	**ft_root_parse(char **cmd, char **ev);
+char	**ft_root_parse(char **cmd, char **ev, char **var);
 //Execute the parsed command line
 void	ft_execute(char **cmd, char ***ev, char ***var);
 //Search the builtins to match command line
@@ -50,6 +50,6 @@ int		ft_env(char **ev);
 //Builtin exit
 void	ft_exit(char **av, char **ev);
 //Builtin variable affectation
-char	**ft_newvar(char **cmd, char **var);//TODO
+char	**ft_newvar(char **cmd, char **var);
 //------------------------------------------------------------------------------
 #endif

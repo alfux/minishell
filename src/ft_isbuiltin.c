@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 19:48:07 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/20 02:30:53 by alfux            ###   ########.fr       */
+/*   Updated: 2022/08/21 01:27:57 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -55,10 +55,12 @@ int	ft_isbuiltin(char **cmd, char ***ev, char ***var)
 	{
 		ret = ft_isntvar(cmd);
 		if (ret > 1)
-			return (ft_isbuiltin(cmd + ret - 1, ev, var);
+			return (ft_isbuiltin(cmd + ret - 1, ev, var));
 		else if (ret)
 			return (0);
 		*var = ft_newvar(cmd, *var);
+		if (!*var)
+			ft_putstr_fd("Lack of memory: non-env variables deleted\n", 2);
 	}
 	return (1);
 }
