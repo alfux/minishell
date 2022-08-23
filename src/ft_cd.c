@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 18:40:11 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/19 15:05:15 by alfux            ###   ########.fr       */
+/*   Updated: 2022/08/23 14:59:12 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -17,25 +17,20 @@ static int	ft_replace(char **pwd, char **old)
 	char	*new;
 	char	*buf;
 
-	size = ft_strlen(*pwd);
-	new = ft_calloc(size + 4, sizeof (char));
-	if (!new)
-		return (ft_errmsg(errno));
-	free(*old);
-	*old = new;
-	ft_strlcpy(new, "OLD", size + 4);
-	ft_strlcat(new, *pwd, size + 4);
 	buf = ft_newpwd();
 	if (!buf)
-		return (errno);
+		return (1);
 	size = ft_strlen(buf);
 	new = ft_calloc(size + 5, sizeof (char));
 	if (!new)
-		return (ft_errmsg(errno) + ft_free(buf));
-	free(*pwd);
+		return (1 + ft_free(buf));
+	free(*old);
+	*old = *pwd;
+	**old = 'O';
+	*(*old + 1) = 'L';
 	*pwd = new;
 	ft_strlcpy(*pwd, "PWD=", size + 5);
-	ft_strlcat(*pwd, buf, size + 5);
+	ft_strlcpy(*pwd + 4, buf, size + 1);
 	return (ft_free(buf));
 }
 
@@ -50,7 +45,7 @@ int	ft_cd(char **av, char **ev)
 	{
 		if (!ft_strncmp(*(ev + i), "PWD=", 4))
 			if (ft_replace(ev + i, ev + i + 1))
-				return (errno);
+				return (ft_errmsg(errno));
 		i++;
 	}
 	return (0);

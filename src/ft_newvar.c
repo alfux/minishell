@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/20 17:04:55 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/21 06:31:45 by alfux            ###   ########.fr       */
+/*   Updated: 2022/08/23 15:12:28 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -31,96 +31,47 @@ static char	**ft_isinvar(char *candidate, char **var)
 	return ((char **)0);
 }
 
-static int	ft_newsze(char **cmd, char **var)
-{
-	int	i;
-	int	size;
-
-	i = 0;
-	if (var)
-		while (*(var + i))
-			i++;
-	size = i;
-	i = 0;
-	while (*(cmd + i))
-	{
-		if (!ft_isinvar(*(cmd + i), var))
-			size++;
-		i++;
-	}
-	return (size);
-}
-
-static char	**ft_replace(char **cmd, char **var, int tip)
+static int	ft_replace(char **var, char **cmd, char **cpy)
 {
 	char	**buf;
 	char	*str;
+	size_t	i;
+	size_t	j;
 
-	while (*cmd)
+	i = 0;
+	j = 0;
+	while (*(cmd + i))
 	{
-		buf = ft_isinvar(*cmd, var);
+		str = ft_strdup(*(cmd + i));
+		if (!str)
+			return (1);
+		buf = ft_isinvar(str, var);
 		if (buf)
 		{
-			str = ft_strdup(*cmd);
-			if (!str)
-				return ((char **)0);
 			free(*buf);
 			*buf = str;
 		}
-		else if (tip > -1)
-		{
-			str = ft_strdup(*cmd);
-			if (!str)
-				return ((char **)0);
-			*(var + tip++) = str;
-		}
-		cmd++;
-	}
-	return (var);
-}
-
-static char	**ft_fillvar(char **cmd, char **var, int nsize, int vsize)
-{
-	char	**new;
-	char	**buf;
-	int		i;
-
-	i = 0;
-	if (nsize == vsize)
-	{
-		buf = ft_replace(cmd, var, -1);
-		if (!buf)
-			return ((char **)(size_t)ft_sfree(var));
-		return (buf);
-	}
-	new = ft_calloc(nsize + 1, sizeof (char *));
-	if (!new)
-		return ((char **)(size_t)ft_sfree(var));
-	while (var && *(var + i))
-	{
-		*(new + i) = *(var + i);
+		else
+			*(cpy + j++) = str;
 		i++;
 	}
-	buf = ft_replace(cmd, new, i);
-	if (!buf)
-		return ((char **)(size_t)(ft_sfree(new) * ft_free(var)));
-	free(var);
-	return (new);
+	return (0);
 }
 
 char	**ft_newvar(char **cmd, char **var)
 {
+	char	**cpy;
 	char	**new;
-	int		nsize;
-	int		vsize;
 
-	vsize = 0;
-	if (var)
-		while (*(var + vsize))
-			vsize++;
-	nsize = ft_newsze(cmd, var);
-	new = ft_fillvar(cmd, var, nsize, vsize);
+	if (!var)
+		return (ft_strtdup(cmd));
+	cpy = ft_calloc(ft_strtlen(cmd) + 1, sizeof (char *));
+	if (!cpy)
+		return (var + (0 * ft_errmsg(errno)));
+	if (ft_replace(var, cmd, cpy))
+		return (var + (ft_sfree(cpy) * ft_errmsg(errno)));
+	new = ft_strtcat(var, cpy);
 	if (!new)
-		return ((char **)(size_t)(0 * ft_errmsg(errno)));
+		return (var + (ft_sfree(cpy) * ft_errmsg(errno)));
 	return (new);
 }

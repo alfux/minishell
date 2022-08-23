@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/07 03:55:37 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/16 18:31:51 by alfux            ###   ########.fr       */
+/*   Updated: 2022/08/23 16:05:43 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -54,7 +54,7 @@ static char	*ft_color_prompt(char **ev)
 			j = i;
 	dir = ft_calloc(i - j + 14, sizeof (char));
 	if (!dir)
-		return ((char *)(0 * (size_t)ft_errmsg(errno + ft_free(path))));
+		return ((char *)(size_t)(ft_errmsg(errno) * ft_free(path)));
 	ft_strlcat(dir, "\033[33m", i - j + 14);
 	ft_strlcat(dir, path + j, i - j + 14);
 	free(path);
