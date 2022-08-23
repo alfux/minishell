@@ -1,20 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_exit.c                                          :+:      :+:    :+:   */
+/*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/19 14:57:01 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/23 15:22:19 by alfux            ###   ########.fr       */
+/*   Created: 2022/08/22 14:56:46 by alfux             #+#    #+#             */
+/*   Updated: 2022/08/23 04:51:21 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
 
-void	ft_exit(char **av, char **ev, char **var)
+int	ft_export(char **cmd, char **ev, char **var)
 {
-	ft_sfree(av);
-	ft_sfree(ev);
-	ft_sfree(var);
-	exit(0);
+	//To be continued
 }

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_root_cmdspl.c                                   :+:      :+:    :+:   */
+/*   ft_root_pmtspl.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 14:10:20 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/19 02:21:51 by alfux            ###   ########.fr       */
+/*   Updated: 2022/08/23 15:46:35 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -35,7 +35,7 @@ static size_t	ft_arglen(char *arg)
 	return (i);
 }
 
-static int	ft_argcnt(char *cmd)
+static int	ft_argcnt(char *pmt)
 {
 	int		argc;
 	size_t	argl;
@@ -43,13 +43,13 @@ static int	ft_argcnt(char *cmd)
 
 	i = 0;
 	argc = 0;
-	while (*(cmd + i))
+	while (*(pmt + i))
 	{
-		while (*(cmd + i) == ' ')
+		while (*(pmt + i) == ' ')
 			i++;
-		if (*(cmd + i))
+		if (*(pmt + i))
 			argc++;
-		argl = ft_arglen(cmd + i);
+		argl = ft_arglen(pmt + i);
 		if (argl == (size_t)(-1))
 			return (-1);
 		else if (argl == (size_t)(-2))
@@ -59,31 +59,31 @@ static int	ft_argcnt(char *cmd)
 	return (argc);
 }
 
-char	**ft_root_cmdspl(char *cmd)
+char	**ft_root_pmtspl(char *pmt)
 {
-	char	**spl;
+	char	**cmd;
 	int		argc;
 	int		argl;
 	int		i;
 	size_t	j;
 
-	argc = ft_argcnt(cmd);
+	argc = ft_argcnt(pmt);
 	if (argc < 0)
 		return ((char **)(0 * (size_t)ft_errmsg(argc)));
-	spl = ft_calloc(argc + 1, sizeof (char *));
-	if (!spl)
+	cmd = ft_calloc(argc + 1, sizeof (char *));
+	if (!cmd)
 		return ((char **)(0 * (size_t)ft_errmsg(errno)));
 	i = 0;
 	j = 0;
 	while (i < argc)
 	{
-		while (*(cmd + j) == ' ')
+		while (*(pmt + j) == ' ')
 			j++;
-		argl = ft_arglen(cmd + j);
-		*(spl + i) = ft_substr(cmd, j, argl);
-		if (!*(spl + i++))
-			return ((char **)(0 * (size_t)(ft_sfree(spl) * ft_errmsg(errno))));
+		argl = ft_arglen(pmt + j);
+		*(cmd + i) = ft_substr(pmt, j, argl);
+		if (!*(cmd + i++))
+			return ((char **)(size_t)(ft_sfree(cmd) * ft_errmsg(errno)));
 		j += argl;
 	}
-	return (spl);
+	return (cmd);
 }

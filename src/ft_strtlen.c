@@ -1,34 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_envdup.c                                        :+:      :+:    :+:   */
+/*   ft_strtlen.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/08 21:26:31 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/16 18:23:34 by alfux            ###   ########.fr       */
+/*   Created: 2022/08/23 12:30:42 by alfux             #+#    #+#             */
+/*   Updated: 2022/08/23 12:33:02 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
 
-char	**ft_envdup(char **ev)
+size_t	ft_strtlen(char **tab)
 {
-	char	**env;
-	int		i;
+	size_t	i;
 
+	if (!tab)
+		return (0 * ft_errmsg(EINVAL));
 	i = 0;
-	while (*(ev + i))
+	while (*(tab + i))
 		i++;
-	env = ft_calloc(i + 1, sizeof (char *));
-	if (!env)
-		return ((char **)(0 * (size_t)ft_errmsg(errno)));
-	i = 0;
-	while (*(ev + i))
-	{
-		*(env + i) = ft_strdup(*(ev + i));
-		if (!*(env + i))
-			return ((char **)(size_t)(ft_sfree(env) * ft_errmsg(errno)));
-		i++;
-	}
-	return (env);
+	return (i);
 }

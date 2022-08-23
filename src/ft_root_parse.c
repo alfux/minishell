@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 13:09:04 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/21 06:47:24 by alfux            ###   ########.fr       */
+/*   Updated: 2022/08/23 15:57:41 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -131,15 +131,12 @@ char	**ft_root_parse(char **cmd, char **ev, char	**var)
 	while (*(cmd + i))
 	{
 		new_size = ft_newsze(*(cmd + i), ev, var);
-		if (new_size >= 0)
-		{
-			buf = ft_calloc(new_size + 1, sizeof (char));
-			if (!buf)
-				return ((char **)(size_t)(ft_sfree(cmd) * ft_errmsg(errno)));
-			ft_replace(buf, *(cmd + i), ev, var);
-			free(*(cmd + i));
-			*(cmd + i) = buf;
-		}
+		buf = ft_calloc(new_size + 1, sizeof (char));
+		if (!buf)
+			return ((char **)(size_t)(ft_sfree(cmd) * ft_errmsg(errno)));
+		ft_replace(buf, *(cmd + i), ev, var);
+		free(*(cmd + i));
+		*(cmd + i) = buf;
 		i++;
 	}
 	return (cmd);
