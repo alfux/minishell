@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 20:05:20 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/23 15:43:50 by alfux            ###   ########.fr       */
+/*   Updated: 2022/08/24 14:15:34 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef MINISHELL_H
@@ -49,7 +49,7 @@ int		ft_isbuiltin(char **cmd, char ***ev, char ***var);
 //Builtin echo
 int		ft_echo(char **av);
 //Buildin cd
-int		ft_cd(char **av, char **ev);
+char	**ft_cd(char **av, char **ev);
 //Builtin pwd
 int		ft_pwd(void);
 //Builtin env
@@ -57,6 +57,6 @@ int		ft_env(char **ev);
 //Builtin exit
 void	ft_exit(char **av, char **ev, char **var);
 //Builtin variable affectation
-char	**ft_newvar(char **cmd, char **var);
+char	**ft_setvar(char **av, char **ev, char **var);//AJOUTER ENV
 //------------------------------------------------------------------------------
 #endif

@@ -6,7 +6,7 @@
 #    By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/31 19:02:34 by alfux             #+#    #+#              #
-#    Updated: 2022/08/23 15:45:28 by alfux            ###   ########.fr        #
+#    Updated: 2022/08/23 19:23:58 by alfux            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ SPATH	=	src/
 SRC		=	main.c ft_prompt.c ft_cd.c ft_strtdup.c ft_sfree.c ft_env.c	\
 			ft_newpwd.c ft_errmsg.c ft_free.c ft_echo.c ft_root_pmtspl.c\
 			ft_root_parse.c ft_pwd.c ft_exit.c ft_isbuiltin.c			\
-			ft_execute.c ft_newvar.c ft_strtcat.c ft_strtlen.c			\
+			ft_execute.c ft_setvar.c ft_strtcat.c ft_strtlen.c			\
 
 OPATH	=	obj/
 
