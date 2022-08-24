@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 19:48:07 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/24 14:24:51 by alfux            ###   ########.fr       */
+/*   Updated: 2022/08/24 17:34:12 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -63,6 +63,8 @@ int	ft_isbuiltin(char **cmd, char ***ev, char ***var)
 		ft_pwd();
 	else if (cmd && *cmd && !ft_strncmp(*cmd, "exit", 5))
 		ft_exit(cmd, *ev, *var);
+	else if (cmd && *cmd && !ft_strncmp(*cmd, "export", 7))
+		*ev = ft_export(cmd, *ev, *var);
 	else
 		return (ft_check_for_var(cmd, ev, var));
 	return (1);

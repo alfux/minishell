@@ -6,37 +6,10 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/20 17:04:55 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/24 14:22:58 by alfux            ###   ########.fr       */
+/*   Updated: 2022/08/24 15:41:38 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
-
-static char	**ft_isinvar(char *candidate, char **ev, char **var)
-{
-	size_t	size;
-	int		i;
-
-	if (!var || !*var)
-		return ((char **)0);
-	size = 0;
-	while (*(candidate + size) && *(candidate + size) != '=')
-		size++;
-	i = 0;
-	while (ev && *(ev + i))
-	{
-		if (!ft_strncmp(candidate, *(ev + i), size + 1))
-			return (ev + i);
-		i++;
-	}
-	i = 0;
-	while (*(var + i))
-	{
-		if (!ft_strncmp(candidate, *(var + i), size + 1))
-			return (var + i);
-		i++;
-	}
-	return ((char **)0);
-}
 
 static int	ft_replace(char **av, char **ev, char **var, char **add)
 {
@@ -49,18 +22,20 @@ static int	ft_replace(char **av, char **ev, char **var, char **add)
 	j = 0;
 	while (*(av + i))
 	{
-		str = ft_strdup(*(av + i));
+		str = ft_strdup(*(av + i++));
 		if (!str)
 			return (1);
-		buf = ft_isinvar(str, ev, var);
+		buf = ft_isstrin(str, ev);
 		if (buf)
-		{
-			free(*buf);
-			*buf = str;
-		}
+			*buf = str + ft_free(*buf);
 		else
-			*(add + j++) = str;
-		i++;
+		{
+			buf = ft_isstrin(str, var);
+			if (buf)
+				*buf = str + ft_free(*buf);
+			else
+				*(add + j++) = str;
+		}
 	}
 	return (0);
 }
@@ -79,7 +54,7 @@ static char	**ft_rm_dup(char **av)
 	j = 0;
 	while (*(av + i))
 	{
-		buf = ft_isinvar(*(av + i), (char **)0, new);
+		buf = ft_isstrin(*(av + i), new);
 		if (buf)
 			*buf = *(av + i);
 		else

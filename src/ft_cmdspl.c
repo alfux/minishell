@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_root_pmtspl.c                                   :+:      :+:    :+:   */
+/*   ft_cmdspl.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 14:10:20 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/23 15:46:35 by alfux            ###   ########.fr       */
+/*   Updated: 2022/08/24 16:53:49 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -59,7 +59,7 @@ static int	ft_argcnt(char *pmt)
 	return (argc);
 }
 
-char	**ft_root_pmtspl(char *pmt)
+char	**ft_cmdspl(char *pmt)
 {
 	char	**cmd;
 	int		argc;

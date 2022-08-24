@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 20:05:20 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/24 14:15:34 by alfux            ###   ########.fr       */
+/*   Updated: 2022/08/24 17:30:01 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef MINISHELL_H
@@ -30,6 +30,8 @@ size_t	ft_strtlen(char **tab);
 char	**ft_strtcat(char **t1, char **t2);
 //Returns a new allocated duplicate of tab
 char	**ft_strtdup(char **tab);
+//Returns adress of pointer on str in tab, returns 0 if not found
+char	**ft_isstrin(char *str, char **tab);
 //------------------------------------------------------------------------------
 
 //Get new pwd (allocate memory)
@@ -37,7 +39,7 @@ char	*ft_newpwd(void);
 //Returns standard input (allocate memory)
 char	*ft_prompt(char **ev);
 //Split the prompted command line according to (d)quotes
-char	**ft_root_pmtspl(char *pmt);
+char	**ft_cmdspl(char *pmt);
 //Parse	the split command line to removes (d)quotes and replaces variables ($)
 char	**ft_root_parse(char **cmd, char **ev, char **var);
 //Execute the parsed command line
@@ -46,17 +48,19 @@ void	ft_execute(char **cmd, char ***ev, char ***var);
 int		ft_isbuiltin(char **cmd, char ***ev, char ***var);
 
 //---------------------------------BUILTINS-------------------------------------
-//Builtin echo
+//Builtin echo with -n option
 int		ft_echo(char **av);
 //Buildin cd
 char	**ft_cd(char **av, char **ev);
-//Builtin pwd
+//Builtin pwd without option
 int		ft_pwd(void);
-//Builtin env
+//Builtin env without option or argument
 int		ft_env(char **ev);
-//Builtin exit
+//Builtin exit without option
 void	ft_exit(char **av, char **ev, char **var);
 //Builtin variable affectation
 char	**ft_setvar(char **av, char **ev, char **var);//AJOUTER ENV
+//Builtin export without option
+char	**ft_export(char **av, char **ev, char **var);
 //------------------------------------------------------------------------------
 #endif

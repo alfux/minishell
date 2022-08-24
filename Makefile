@@ -6,16 +6,17 @@
 #    By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/31 19:02:34 by alfux             #+#    #+#              #
-#    Updated: 2022/08/23 19:23:58 by alfux            ###   ########.fr        #
+#    Updated: 2022/08/24 17:32:07 by alfux            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SPATH	=	src/
 
 SRC		=	main.c ft_prompt.c ft_cd.c ft_strtdup.c ft_sfree.c ft_env.c	\
-			ft_newpwd.c ft_errmsg.c ft_free.c ft_echo.c ft_root_pmtspl.c\
+			ft_newpwd.c ft_errmsg.c ft_free.c ft_echo.c ft_cmdspl.c		\
 			ft_root_parse.c ft_pwd.c ft_exit.c ft_isbuiltin.c			\
 			ft_execute.c ft_setvar.c ft_strtcat.c ft_strtlen.c			\
+			ft_isstrin.c ft_export.c									\
 
 OPATH	=	obj/
 
@@ -33,7 +34,7 @@ RLPATH	=	/opt/homebrew/opt/readline/lib
 
 HEADER	=	minishell.h
 
-OPTION	=	-Wall -Werror -Wextra -I$(LPATH) -I$(HPATH) -I$(RIPATH)
+OPTION	=	-Wall -Werror -Wextra -I$(LPATH) -I$(HPATH) -I$(RIPATH) -g
 
 SIL		=	--no-print-directory
 
@@ -42,7 +43,8 @@ NAME	=	minishell
 LEAKS	=	chleaks
 
 $(NAME)				:	$(OPATH) $(OBJ) $(LPATH)$(LIBFT)
-						@(gcc $(OPTION) $(OBJ) $(LPATH)$(LIBFT) -o $@ -L$(RLPATH) -lreadline)
+						@(gcc $(OPTION) $(OBJ) $(LPATH)$(LIBFT) -o			\
+						$@ -L$(RLPATH) -lreadline)
 						@(echo "\033[32m$@ linked\033[0m")
 
 $(OPATH)%.o			:	$(SPATH)%.c $(HPATH)$(HEADER)
@@ -76,7 +78,8 @@ fclean				:	clean cclean
 re					:	fclean all
 
 $(LEAKS)				:
-						@(echo "leaks -atExit -- ./$(NAME)" > $(LEAKS))
+						@(echo "export MallocStackLogging=1\nleaks --atExit"\
+						"-- ./$(NAME)\nunset MallocStackLogging" > $(LEAKS))
 						@(chmod 755 $(LEAKS))
 						@(echo "\033[32m$(LEAKS) written\033[0m")
 
