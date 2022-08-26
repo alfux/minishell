@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/22 14:56:46 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/24 18:09:50 by alfux            ###   ########.fr       */
+/*   Updated: 2022/08/26 10:37:48 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -32,16 +32,24 @@ static int	ft_alphaprint(char **ev, char const *prv)
 	ft_printf("declare -x %c", *print);
 	while (*(++print) && *(print - 1) != '=')
 		ft_putchar_fd(*print, 1);
-	ft_putchar_fd(34, 1);
+	ft_putchar_fd('\"', 1);
 	ft_printf("%s\"\n", print);
 	return (0);
 }
 
-char	**ft_export(char **av, char **ev, char **var)
+static int	ft_iseq(char *str)
+{
+	while (*str)
+		if (*(str++) == '=')
+			return (1);
+	return (0);
+}
+
+int	ft_export(char **av, char ***ev, char ***var)
 {
 	(void)var;
+	ft_iseq(**ev);
 	if (!*(av + 1))
-		return (ev + ft_alphaprint(ev, "\0"));
-	ft_printf("HI LADIES\n");
-	return (ev);
+		return (ft_alphaprint(*ev, "\0"));
+	return (0);
 }

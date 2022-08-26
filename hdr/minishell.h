@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 20:05:20 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/24 17:30:01 by alfux            ###   ########.fr       */
+/*   Updated: 2022/08/26 10:44:39 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef MINISHELL_H
@@ -30,8 +30,10 @@ size_t	ft_strtlen(char **tab);
 char	**ft_strtcat(char **t1, char **t2);
 //Returns a new allocated duplicate of tab
 char	**ft_strtdup(char **tab);
-//Returns adress of pointer on str in tab, returns 0 if not found
-char	**ft_isstrin(char *str, char **tab);
+//Returns adress of pointer on variable str in tab, returns 0 if not found
+char	**ft_isvarin(char *str, char **tab);
+//Delete addr from tab
+int		ft_strtdelone(char **addr, char ***tab);
 //------------------------------------------------------------------------------
 
 //Get new pwd (allocate memory)
@@ -59,8 +61,10 @@ int		ft_env(char **ev);
 //Builtin exit without option
 void	ft_exit(char **av, char **ev, char **var);
 //Builtin variable affectation
-char	**ft_setvar(char **av, char **ev, char **var);//AJOUTER ENV
+char	**ft_setvar(char **av, char **ev, char **var);
 //Builtin export without option
-char	**ft_export(char **av, char **ev, char **var);
+int		ft_export(char **av, char ***ev, char ***var);
+//Builtin unset without option
+int		ft_unset(char **av, char ***ev, char ***var);
 //------------------------------------------------------------------------------
 #endif

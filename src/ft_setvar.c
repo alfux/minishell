@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/20 17:04:55 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/24 15:41:38 by alfux            ###   ########.fr       */
+/*   Updated: 2022/08/25 17:17:09 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -25,12 +25,12 @@ static int	ft_replace(char **av, char **ev, char **var, char **add)
 		str = ft_strdup(*(av + i++));
 		if (!str)
 			return (1);
-		buf = ft_isstrin(str, ev);
+		buf = ft_isvarin(str, ev);
 		if (buf)
 			*buf = str + ft_free(*buf);
 		else
 		{
-			buf = ft_isstrin(str, var);
+			buf = ft_isvarin(str, var);
 			if (buf)
 				*buf = str + ft_free(*buf);
 			else
@@ -54,7 +54,7 @@ static char	**ft_rm_dup(char **av)
 	j = 0;
 	while (*(av + i))
 	{
-		buf = ft_isstrin(*(av + i), new);
+		buf = ft_isvarin(*(av + i), new);
 		if (buf)
 			*buf = *(av + i);
 		else
@@ -85,5 +85,7 @@ char	**ft_setvar(char **av, char **ev, char **var)
 	new = ft_strtcat(var, add);
 	if (!new)
 		return (var + (ft_sfree(add) * ft_errmsg(errno)));
+	ft_free(var);
+	ft_free(add);
 	return (new);
 }

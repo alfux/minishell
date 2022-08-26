@@ -1,31 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strtdup.c                                       :+:      :+:    :+:   */
+/*   ft_isvarin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/08 21:26:31 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/25 17:52:19 by alfux            ###   ########.fr       */
+/*   Created: 2022/08/20 17:04:55 by alfux             #+#    #+#             */
+/*   Updated: 2022/08/25 17:26:38 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
 
-char	**ft_strtdup(char **tab)
+char	**ft_isvarin(char *str, char **tab)
 {
-	char	**new_tab;
+	size_t	size;
 	int		i;
 
-	new_tab = ft_calloc(ft_strtlen(tab) + 1, sizeof (char *));
-	if (!new_tab)
+	if (!tab || !*tab)
 		return ((char **)0);
+	size = 0;
+	while (*(str + size) && *(str + size) != '=')
+		size++;
 	i = 0;
 	while (*(tab + i))
 	{
-		*(new_tab + i) = ft_strdup(*(tab + i));
-		if (!*(new_tab + i))
-			return ((char **)(size_t)ft_sfree(new_tab));
+		if (!ft_strncmp(str, *(tab + i), size) && *(*(tab + i) + size) == '=')
+			return (tab + i);
 		i++;
 	}
-	return (new_tab);
+	return ((char **)0);
 }
