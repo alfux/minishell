@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 20:05:20 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/29 00:47:01 by alfux            ###   ########.fr       */
+/*   Updated: 2022/08/29 23:31:54 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef MINISHELL_H
@@ -39,15 +39,17 @@ int		ft_strtdelone(char **addr, char ***tab);
 //Get new pwd (allocate memory)
 char	*ft_newpwd(void);
 //Returns standard input (allocate memory)
-char	*ft_prompt(char **ev);
+char	*ft_prompt(char **ev, char ***his);
 //Split the prompted command line according to (d)quotes
 char	**ft_cmdspl(char *pmt);
 //Parse	the split command line to remove (d)quotes and replaces variables ($)
 char	**ft_root_parse(char **cmd, char **ev, char **var);
 //Execute the parsed command line
-void	ft_execute(char **cmd, char ***ev, char ***var);
-//Search the builtins to match command line
-int		ft_isbuiltin(char **cmd, char ***ev, char ***var);
+void	ft_execute(char **cmd, char ***ev, char ***var, char **his);
+//Search the builtins to match command line (récup ft_isntvar)
+int		ft_isbuiltin(char **cmd, char ***ev, char ***var, char **his);
+//Add the last typed command line to history and his tab
+int		ft_addhis(char *pmt, char ***his);
 
 //---------------------------------BUILTINS-------------------------------------
 //Builtin echo with -n option
@@ -59,11 +61,11 @@ int		ft_pwd(void);
 //Builtin env without option or argument
 int		ft_env(char **ev);
 //Builtin exit without option
-void	ft_exit(char **av, char **ev, char **var);
+void	ft_exit(char **av, char **ev, char **var, char **his);
 //Builtin variable affectation
 char	**ft_setvar(char **av, char **ev, char **var);
 //Builtin export without option
-int		ft_export(char **av, char ***ev, char ***var);
+int		ft_export(char **av, char ***ev, char ***var);//Rework for lists
 //Builtin unset without option
 int		ft_unset(char **av, char ***ev, char ***var);
 //------------------------------------------------------------------------------
