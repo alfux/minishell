@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 20:05:20 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/26 10:44:39 by alfux            ###   ########.fr       */
+/*   Updated: 2022/08/29 00:47:01 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef MINISHELL_H
@@ -42,7 +42,7 @@ char	*ft_newpwd(void);
 char	*ft_prompt(char **ev);
 //Split the prompted command line according to (d)quotes
 char	**ft_cmdspl(char *pmt);
-//Parse	the split command line to removes (d)quotes and replaces variables ($)
+//Parse	the split command line to remove (d)quotes and replaces variables ($)
 char	**ft_root_parse(char **cmd, char **ev, char **var);
 //Execute the parsed command line
 void	ft_execute(char **cmd, char ***ev, char ***var);

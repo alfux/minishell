@@ -6,12 +6,12 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 19:48:07 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/25 17:17:47 by alfux            ###   ########.fr       */
+/*   Updated: 2022/08/29 03:03:22 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
 
-static char **ft_setenv(char **ev, char ***var)
+static char	**ft_setenv(char **ev, char ***var)
 {
 	size_t	size;
 	char	**addr;
@@ -50,7 +50,8 @@ int	main(int ac, char **av, char **ev)
 		ft_free(prompt);
 		if (cmd)
 			cmd = ft_root_parse(cmd, ev, var);
-		ft_execute(cmd, &ev, &var);
+		if (cmd)
+			ft_execute(cmd, &ev, &var);
 		ft_sfree(cmd);
 		prompt = ft_prompt(ev);
 	}
