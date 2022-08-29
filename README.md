@@ -11,3 +11,4 @@
 ######  ✓ Added 'exit' builtin command (without options) ✅
 ######  ✓ Added possibility to create personal variables ✅
 ######  ✓ Added 'unset' builtin command (without options) ✅
+######  ✓ Added 'export' builtin command (without options) ✅
