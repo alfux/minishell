@@ -6,22 +6,26 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 20:05:20 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/29 23:31:54 by alfux            ###   ########.fr       */
+/*   Updated: 2022/08/30 21:19:40 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef MINISHELL_H
 # define MINISHELL_H
+# define HISTORY ".mini_history"
 # include "libft.h"
 # include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <errno.h>
+# include <fcntl.h>
 
 //-----------------------------------TOOLS--------------------------------------
 //Free string tabs and return 0
 int		ft_sfree(char **spl);
 //Free ptr and return 0
 int		ft_free(void *ptr);
+//Sets errno to value and returns errno
+int		ft_errno(int value);
 //Print error messages
 int		ft_errmsg(int errn);
 //Returns size of tab;
@@ -50,6 +54,10 @@ void	ft_execute(char **cmd, char ***ev, char ***var, char **his);
 int		ft_isbuiltin(char **cmd, char ***ev, char ***var, char **his);
 //Add the last typed command line to history and his tab
 int		ft_addhis(char *pmt, char ***his);
+//Saves history in a file
+int		ft_savhis(char *fname, char **his);
+//Adds history stored in fname file
+int		ft_gethis(char *fname);
 
 //---------------------------------BUILTINS-------------------------------------
 //Builtin echo with -n option

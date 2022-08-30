@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 19:48:07 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/29 23:13:24 by alfux            ###   ########.fr       */
+/*   Updated: 2022/08/30 21:26:51 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -18,14 +18,19 @@ static char	**ft_setenv(char **ev, char ***var, char ***his)
 	char	*buf;
 
 	*var = (char **)0;
-	*his = (char **)0;
+	*his = ft_calloc(1, sizeof (char *));
+	if (!*his)
+		return ((char **)(size_t)(0 * ft_errmsg(errno)));
+	if (ft_gethis(HISTORY))
+		ft_putstr_fd("Couldn't get full history\n", 2 + 0 * ft_errmsg(errno));
 	ev = ft_strtdup(ev);
 	if (!ev)
-		return ((char **)(size_t)(0 * ft_errmsg(errno)));
+		return ((char **)(size_t)(ft_sfree(*his) * ft_errmsg(errno)));
 	addr = ft_isvarin("SHLVL=", ev);
 	buf = ft_itoa(ft_atoi(*addr + 6) + 1);
 	if (!buf)
-		return ((char **)(size_t)(ft_sfree(ev) * ft_errmsg(errno)));
+		return ((char **)(size_t)(ft_sfree(*his) * ft_sfree(ev) *
+			ft_errmsg(errno)));
 	ft_free(*addr);
 	size = ft_strlen(buf);
 	*addr = ft_calloc(size + 7, sizeof (char));
@@ -59,7 +64,7 @@ int	main(int ac, char **av, char **ev)
 	}
 	ft_sfree(ev);
 	ft_sfree(var);
+	ft_savhis(HISTORY, his);
 	ft_sfree(his);
-	//ft_savhis(".minishell_history", his);
 	return (1);
 }
