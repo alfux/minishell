@@ -12,3 +12,4 @@
 ######  ✓ Added possibility to create personal variables ✅
 ######  ✓ Added 'unset' builtin command (without options) ✅
 ######  ✓ Added 'export' builtin command (without options) ✅
+######  ✓ Added a fonctionnal history, with file storage. (Tho we could still address display issue and add a maximum amount of stored commands) ✅
