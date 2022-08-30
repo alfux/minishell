@@ -1,22 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_exit.c                                          :+:      :+:    :+:   */
+/*   ft_addhis.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/19 14:57:01 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/30 19:38:42 by alfux            ###   ########.fr       */
+/*   Created: 2022/08/29 21:20:05 by alfux             #+#    #+#             */
+/*   Updated: 2022/08/30 19:27:03 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
 
-void	ft_exit(char **av, char **ev, char **var, char **his)
+int	ft_addhis(char *pmt, char ***his)
 {
-	ft_sfree(av);
-	ft_sfree(ev);
-	ft_sfree(var);
-	ft_savhis(HISTORY, his);
-	ft_sfree(his);
-	exit(0);
+	char	*new_his[2];
+	char	**buf;
+
+	if (!his || !pmt || !*his)
+		return (ft_errno(EINVAL));
+	new_his[0] = ft_strdup(pmt);
+	if (!new_his[0])
+		return (errno);
+	new_his[1] = (char *)0;
+	buf = ft_strtcat(*his, new_his);
+	ft_free(*his);
+	*his = buf;
+	add_history(pmt);
+	return (0);
 }

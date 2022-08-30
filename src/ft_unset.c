@@ -6,32 +6,47 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 16:20:04 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/26 10:38:16 by alfux            ###   ########.fr       */
+/*   Updated: 2022/08/29 03:11:35 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
+
+static int	ft_check_param(char *av)
+{
+	while (*av)
+	{
+		if (!ft_isalnum(*av) && *av != '_')
+			return (0);
+		av++;
+	}
+	return (1);
+}
 
 int	ft_unset(char **av, char ***ev, char ***var)
 {
 	char	**buf;
 	int		i;
 
-	i = 0;
-	while (*(av + i))
+	i = -1;
+	while (*(av + ++i))
 	{
-		buf = ft_isvarin(*(av + i), *var);
-		if (buf)
+		if (ft_check_param(*(av + i)))
 		{
-			if (ft_strtdelone(buf, var))
-				return (ft_errmsg(errno));
+			buf = ft_isvarin(*(av + i), *var);
+			if (buf)
+			{
+				if (ft_strtdelone(buf, var))
+					return (ft_errmsg(errno));
+			}
+			else
+			{
+				buf = ft_isvarin(*(av + i), *ev);
+				if (buf && ft_strtdelone(buf, ev))
+					return (ft_errmsg(errno));
+			}
 		}
 		else
-		{
-			buf = ft_isvarin(*(av + i), *ev);
-			if (buf && ft_strtdelone(buf, ev))
-				return (ft_errmsg(errno));
-		}
-		i++;
+			ft_errmsg(EINVAL);
 	}
 	return (0);
 }

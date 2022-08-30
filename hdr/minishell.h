@@ -6,22 +6,26 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 20:05:20 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/26 10:44:39 by alfux            ###   ########.fr       */
+/*   Updated: 2022/08/30 21:19:40 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef MINISHELL_H
 # define MINISHELL_H
+# define HISTORY ".mini_history"
 # include "libft.h"
 # include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <errno.h>
+# include <fcntl.h>
 
 //-----------------------------------TOOLS--------------------------------------
 //Free string tabs and return 0
 int		ft_sfree(char **spl);
 //Free ptr and return 0
 int		ft_free(void *ptr);
+//Sets errno to value and returns errno
+int		ft_errno(int value);
 //Print error messages
 int		ft_errmsg(int errn);
 //Returns size of tab;
@@ -39,15 +43,21 @@ int		ft_strtdelone(char **addr, char ***tab);
 //Get new pwd (allocate memory)
 char	*ft_newpwd(void);
 //Returns standard input (allocate memory)
-char	*ft_prompt(char **ev);
+char	*ft_prompt(char **ev, char ***his);
 //Split the prompted command line according to (d)quotes
 char	**ft_cmdspl(char *pmt);
-//Parse	the split command line to removes (d)quotes and replaces variables ($)
+//Parse	the split command line to remove (d)quotes and replaces variables ($)
 char	**ft_root_parse(char **cmd, char **ev, char **var);
 //Execute the parsed command line
-void	ft_execute(char **cmd, char ***ev, char ***var);
-//Search the builtins to match command line
-int		ft_isbuiltin(char **cmd, char ***ev, char ***var);
+void	ft_execute(char **cmd, char ***ev, char ***var, char **his);
+//Search the builtins to match command line (récup ft_isntvar)
+int		ft_isbuiltin(char **cmd, char ***ev, char ***var, char **his);
+//Add the last typed command line to history and his tab
+int		ft_addhis(char *pmt, char ***his);
+//Saves history in a file
+int		ft_savhis(char *fname, char **his);
+//Adds history stored in fname file
+int		ft_gethis(char *fname);
 
 //---------------------------------BUILTINS-------------------------------------
 //Builtin echo with -n option
@@ -59,11 +69,11 @@ int		ft_pwd(void);
 //Builtin env without option or argument
 int		ft_env(char **ev);
 //Builtin exit without option
-void	ft_exit(char **av, char **ev, char **var);
+void	ft_exit(char **av, char **ev, char **var, char **his);
 //Builtin variable affectation
 char	**ft_setvar(char **av, char **ev, char **var);
 //Builtin export without option
-int		ft_export(char **av, char ***ev, char ***var);
+int		ft_export(char **av, char ***ev, char ***var);//Rework for lists
 //Builtin unset without option
 int		ft_unset(char **av, char ***ev, char ***var);
 //------------------------------------------------------------------------------
