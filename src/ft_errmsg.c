@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 18:40:11 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/30 18:25:00 by alfux            ###   ########.fr       */
+/*   Updated: 2022/08/31 18:54:03 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -20,7 +20,7 @@ static int	ft_errmsg_a(int errn)
 	else if (errn == -3)
 		ft_putstr_fd("Error: Couldn't find USER in environnement\n", 2);
 	else if (errn == -4)
-		ft_putstr_fd("Error: Command not found\n", 2);
+		ft_putstr_fd("Error: Couldn't find PATH in envireonnement\n", 2);
 	else if (errn == -5)
 		ft_putstr_fd("Error: Some personal variables may have been lost\n", 2);
 	else if (errn == -6)
