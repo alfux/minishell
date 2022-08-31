@@ -6,37 +6,10 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 19:48:07 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/29 23:15:21 by alfux            ###   ########.fr       */
+/*   Updated: 2022/08/31 01:31:14 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
-
-static int	ft_isntvar(char **cmd)
-{
-	size_t	j;
-	int		i;
-
-	if (!cmd)
-		return (1);
-	i = 0;
-	while (*(cmd + i))
-	{
-		j = 0;
-		while (*(*(cmd + i) + j))
-		{
-			if ((!ft_isalnum(*(*(cmd + i) + j)) && *(*(cmd + i) + j) != '_')
-				|| !*(*(cmd + i) + j + 1))
-			{
-				if (j > 0 && *(*(cmd + i) + j) == '=')
-					break ;
-				return (i + 1);
-			}
-			j++;
-		}
-		i++;
-	}
-	return (0);
-}
 
 static int	ft_check_for_var(char **cmd, char ***ev, char ***var, char **his)
 {

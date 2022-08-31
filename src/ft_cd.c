@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 18:40:11 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/24 14:53:33 by alfux            ###   ########.fr       */
+/*   Updated: 2022/08/31 01:57:28 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -97,6 +97,8 @@ char	**ft_cd(char **av, char **ev)
 	char	**new_ev;
 	int		i;
 
+	if (ft_strtlen(av) > 2)
+		return (ev + (0 * ft_errmsg(E2BIG)));
 	new_ev = ft_find_oldpwd(ev);
 	if (!new_ev)
 		return (ev + (0 * ft_errmsg(errno)));

@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/07 03:55:37 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/29 23:09:25 by alfux            ###   ########.fr       */
+/*   Updated: 2022/08/31 01:35:19 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -34,7 +34,7 @@ static char	*ft_addusr(char **ev, char *dir, int size)
 		}
 		i++;
 	}
-	return ((char *)(size_t)(ft_free(dir) * ft_errmsg(-3)));
+	return (dir + (0 * ft_errmsg(-3)));
 }
 
 static char	*ft_color_prompt(char **ev)

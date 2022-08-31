@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 20:05:20 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/30 21:19:40 by alfux            ###   ########.fr       */
+/*   Updated: 2022/08/31 01:31:08 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef MINISHELL_H
@@ -52,6 +52,8 @@ char	**ft_root_parse(char **cmd, char **ev, char **var);
 void	ft_execute(char **cmd, char ***ev, char ***var, char **his);
 //Search the builtins to match command line (récup ft_isntvar)
 int		ft_isbuiltin(char **cmd, char ***ev, char ***var, char **his);
+//Returns non zero if cmd has another command than variable affectation
+int		ft_isntvar(char **cmd);
 //Add the last typed command line to history and his tab
 int		ft_addhis(char *pmt, char ***his);
 //Saves history in a file
