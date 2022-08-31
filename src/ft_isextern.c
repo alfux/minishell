@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 02:14:04 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/31 19:30:54 by alfux            ###   ########.fr       */
+/*   Updated: 2022/08/31 22:30:31 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -26,7 +26,7 @@ static char	*ft_cat_path_and_exe(char *path, char *exe, size_t esize)
 	return (buf);
 }
 
-static int	ft_fndexe(char *exe, char **av, char **ev)
+static int	ft_pthfnd(char *exe, char **av, char **ev)
 {
 	size_t	esize;
 	char	**whr;
@@ -58,7 +58,7 @@ static int	ft_fndexe(char *exe, char **av, char **ev)
 int	ft_isextern(char **av, char **ev)
 {
 	if (ft_isalnum(**av))
-		return (ft_fndexe(*av, av, ev));
+		return (ft_pthfnd(*av, av, ev));
 	else
 		return (ft_newpro(*av, av, ev));
 }

@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/07 03:55:37 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/31 01:35:19 by alfux            ###   ########.fr       */
+/*   Updated: 2022/08/31 22:43:59 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -47,6 +47,9 @@ static char	*ft_color_prompt(char **ev)
 	path = ft_newpwd();
 	if (!path)
 		return ((void *)0);
+	//path = ft_ishome(path, ev);
+	//if (!path)
+	//	return ((void *)0);
 	i = 0;
 	j = 0;
 	while (*(path + i))
