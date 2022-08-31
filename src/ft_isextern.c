@@ -1,19 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_execute.c                                       :+:      :+:    :+:   */
+/*   ft_isextern.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/31 19:48:07 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/31 02:19:51 by alfux            ###   ########.fr       */
+/*   Created: 2022/08/31 02:14:04 by alfux             #+#    #+#             */
+/*   Updated: 2022/08/31 02:21:51 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
 
-void	ft_execute(char **av, char ***ev, char ***var, char **his)
+int	ft_isextern(char **av, char **ev)
 {
-	if (ft_isbuiltin(av, ev, var, his))
-		if (ft_isextern(av, *ev))
-			ft_errmsg(errno);
+	if (ft_isalpha(**av))
+		return (ft_errno(-4));
+	else
+		execve(*av, av, ev);
+	return (0);
 }

@@ -6,12 +6,12 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 20:05:20 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/31 01:31:08 by marvin           ###   ########.fr       */
+/*   Updated: 2022/08/31 02:24:15 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef MINISHELL_H
 # define MINISHELL_H
-# define HISTORY ".mini_history"
+# define HISTORY ".minishell_history"
 # include "libft.h"
 # include <stdio.h>
 # include <readline/readline.h>
@@ -49,7 +49,7 @@ char	**ft_cmdspl(char *pmt);
 //Parse	the split command line to remove (d)quotes and replaces variables ($)
 char	**ft_root_parse(char **cmd, char **ev, char **var);
 //Execute the parsed command line
-void	ft_execute(char **cmd, char ***ev, char ***var, char **his);
+void	ft_execute(char **av, char ***ev, char ***var, char **his);
 //Search the builtins to match command line (récup ft_isntvar)
 int		ft_isbuiltin(char **cmd, char ***ev, char ***var, char **his);
 //Returns non zero if cmd has another command than variable affectation
@@ -60,6 +60,8 @@ int		ft_addhis(char *pmt, char ***his);
 int		ft_savhis(char *fname, char **his);
 //Adds history stored in fname file
 int		ft_gethis(char *fname);
+//Tries to start external binaries, returns non-zero if an error occurs
+int		ft_isextern(char **av, char **ev);
 
 //---------------------------------BUILTINS-------------------------------------
 //Builtin echo with -n option

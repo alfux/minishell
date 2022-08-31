@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 19:48:07 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/31 01:31:14 by alfux            ###   ########.fr       */
+/*   Updated: 2022/08/31 02:13:11 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -19,9 +19,9 @@ static int	ft_check_for_var(char **cmd, char ***ev, char ***var, char **his)
 	if (check > 1)
 		return (ft_isbuiltin(cmd + check - 1, ev, var, his));
 	else if (check)
-		return (0);
+		return (1);
 	*var = ft_setvar(cmd, *ev, *var);
-	return (1);
+	return (0);
 }
 
 int	ft_isbuiltin(char **cmd, char ***ev, char ***var, char **his)
@@ -42,5 +42,5 @@ int	ft_isbuiltin(char **cmd, char ***ev, char ***var, char **his)
 		ft_unset(cmd, ev, var);
 	else
 		return (ft_check_for_var(cmd, ev, var, his));
-	return (1);
+	return (0);
 }
