@@ -1,20 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isextern.c                                      :+:      :+:    :+:   */
+/*   ft_newpro.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/31 02:14:04 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/31 16:08:21 by alfux            ###   ########.fr       */
+/*   Created: 2022/08/31 12:53:59 by alfux             #+#    #+#             */
+/*   Updated: 2022/08/31 14:00:44 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
 
-int	ft_isextern(char **av, char **ev)
+int	ft_newpro(char *path, char **av, char **ev)
 {
-	if (ft_isalnum(**av))
-		return (0 * ft_errmsg(-4));
-	else
-		return (ft_newpro(*av, av, ev));
+	pid_t	pid;
+	int		status;
+
+	pid = fork();
+	if (!pid)
+		return (execve(path, av, ev));
+	(void)waitpid(pid, &status, 0);
+	return (status);
 }

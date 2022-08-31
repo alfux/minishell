@@ -6,7 +6,7 @@
 #    By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/31 19:02:34 by alfux             #+#    #+#              #
-#    Updated: 2022/08/31 02:16:17 by alfux            ###   ########.fr        #
+#    Updated: 2022/08/31 15:43:24 by alfux            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ SRC		=	main.c ft_prompt.c ft_cd.c ft_strtdup.c ft_sfree.c ft_env.c	\
 			ft_execute.c ft_setvar.c ft_strtcat.c ft_strtlen.c			\
 			ft_isvarin.c ft_export.c ft_unset.c	ft_strtdelone.c			\
 			ft_addhis.c ft_savhis.c ft_errno.c ft_gethis.c ft_isntvar.c	\
-			ft_isextern.c												\
+			ft_isextern.c ft_newpro.c									\
 
 OPATH	=	obj/
 
@@ -36,7 +36,8 @@ RLPATH	=	/opt/homebrew/opt/readline/lib
 
 HEADER	=	minishell.h
 
-OPTION	=	-Wall -Werror -Wextra -I$(LPATH) -I$(HPATH) -I$(RIPATH) -g
+OPTION	=	-Wall -Werror -Wextra -I$(LPATH) -I$(HPATH) -I$(RIPATH) -g	\
+			-fsanitize=address
 
 SIL		=	--no-print-directory
 
