@@ -6,7 +6,7 @@
 #    By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/31 19:02:34 by alfux             #+#    #+#              #
-#    Updated: 2022/08/31 18:17:32 by alfux            ###   ########.fr        #
+#    Updated: 2022/09/01 02:35:35 by alfux            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -78,7 +78,7 @@ cclean				:
 
 fclean				:	clean cclean
 						@(cd $(LPATH) && $(MAKE) $(SIL) fclean)
-						@(rm -rf $(NAME) $(HISTORY))
+						@(rm -rf $(NAME) && cd && rm -rf $(HISTORY))
 						@(echo "\033[31m$(NAME) removed\033[0m")
 
 re					:	fclean all

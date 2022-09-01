@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 20:05:20 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/31 14:07:58 by alfux            ###   ########.fr       */
+/*   Updated: 2022/09/01 04:18:28 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef MINISHELL_H
@@ -57,9 +57,9 @@ int		ft_isntvar(char **cmd);
 //Add the last typed command line to history and his tab
 int		ft_addhis(char *pmt, char ***his);
 //Saves history in a file
-int		ft_savhis(char *fname, char **his);
+int		ft_savhis(char *path, char *fname, char **his);
 //Adds history stored in fname file
-int		ft_gethis(char *fname);
+int		ft_gethis(char *path, char *fname);
 //Tries to start external binaries, returns non-zero if an error occurs
 int		ft_isextern(char **av, char **ev);
 //Forks a child to hold the call to execve, parent process waits and get status

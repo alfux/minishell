@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 02:14:04 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/31 22:30:31 by alfux            ###   ########.fr       */
+/*   Updated: 2022/09/01 03:36:14 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -48,8 +48,8 @@ static int	ft_pthfnd(char *exe, char **av, char **ev)
 			return (ft_errmsg(errno) + ft_sfree(whr));
 		if (!access(buf, F_OK) || ft_free(buf))
 		{
-			*av = buf + ft_free(*av);
-			return (ft_newpro(*av, av, ev) + ft_sfree(whr));
+			*av = buf + ft_free(*av) + ft_sfree(whr);
+			return (ft_newpro(*av, av, ev));
 		}
 	}
 	return (ft_sfree(whr) + ft_errmsg(errno));

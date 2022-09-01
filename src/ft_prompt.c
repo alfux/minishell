@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/07 03:55:37 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/31 22:43:59 by alfux            ###   ########.fr       */
+/*   Updated: 2022/09/01 03:31:47 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -37,6 +37,20 @@ static char	*ft_addusr(char **ev, char *dir, int size)
 	return (dir + (0 * ft_errmsg(-3)));
 }
 
+static char	*ft_ishome(char *path, char **ev)
+{
+	size_t	psize;
+	char	**home;
+
+	psize = ft_strlen(path);
+	home = ft_isvarin("HOME", ev);
+	if (!home)
+		return (path);
+	if (!ft_strncmp(path, *home + 5, psize + 1))
+		return (ft_strdup("~") + ft_free(path));
+	return (path);
+}
+
 static char	*ft_color_prompt(char **ev)
 {
 	char	*path;
@@ -47,9 +61,9 @@ static char	*ft_color_prompt(char **ev)
 	path = ft_newpwd();
 	if (!path)
 		return ((void *)0);
-	//path = ft_ishome(path, ev);
-	//if (!path)
-	//	return ((void *)0);
+	path = ft_ishome(path, ev);
+	if (!path)
+		return ((void *)0);
 	i = 0;
 	j = 0;
 	while (*(path + i))
@@ -73,7 +87,7 @@ char	*ft_prompt(char **ev, char ***his)
 
 	pmt = ft_color_prompt(ev);
 	if (!pmt)
-		return ((void *)0);
+		return ((void *)(size_t)(0 * ft_errmsg(errno)));
 	ret = readline(pmt);
 	free(pmt);
 	if ((ret && *ret && !ft_addhis(ret, his)) || (ret && !*ret))
@@ -82,7 +96,7 @@ char	*ft_prompt(char **ev, char ***his)
 		return (ret + (0 * ft_errmsg(-6)));
 	ret = ft_calloc(1, sizeof (char));
 	if (!ret)
-		return ((void *)(0 * (size_t)ft_errmsg(errno)));
+		return ((void *)(size_t)(0 * ft_errmsg(errno)));
 	*ret = '\0';
 	return (ret);
 }
