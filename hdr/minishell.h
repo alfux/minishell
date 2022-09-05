@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 20:05:20 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/01 04:18:28 by alfux            ###   ########.fr       */
+/*   Updated: 2022/09/05 20:29:36 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef MINISHELL_H
@@ -38,6 +38,10 @@ char	**ft_strtdup(char **tab);
 char	**ft_isvarin(char *str, char **tab);
 //Delete addr from tab
 int		ft_strtdelone(char **addr, char ***tab);
+//Copies src into dst, but with strings tabs (uses strdups)
+int		ft_strtlcpy(char **dst, char **src, int dstsize);
+//Return a copy of a sub-stringtab
+char	**ft_substrt(char **strt, int start, int len);
 //------------------------------------------------------------------------------
 
 //Get new pwd (allocate memory)
@@ -64,6 +68,8 @@ int		ft_gethis(char *path, char *fname);
 int		ft_isextern(char **av, char **ev);
 //Forks a child to hold the call to execve, parent process waits and get status
 int		ft_newpro(char *path, char **av, char **ev);
+//Make forks linked by pipes, returns null in parent and each cmd in childs
+char	**ft_pipmkr(char **av, pid_t **pid);
 
 //---------------------------------BUILTINS-------------------------------------
 //Builtin echo with -n option
