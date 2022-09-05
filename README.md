@@ -16,3 +16,4 @@
 <br />✓ Added a fonctionnal history, with file storage. ✅
 <br />(Tho we could still address display issue and add a maximum amount of stored commands)
 <br />✓ Added execution of external binaries with full/relative path or with PATHfinder ✅
+<br />✓ Added pipes ✅
