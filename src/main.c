@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 19:48:07 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/05 22:45:21 by alfux            ###   ########.fr       */
+/*   Updated: 2022/09/06 00:47:25 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -46,6 +46,7 @@ int	main(int ac, char **av, char **ev)
 	char	**cmd;
 	char	**var;
 	char	**his;
+	int		i = 0;
 	pid_t	*pid;
 
 	ev = ft_setenv(ev, &var, &his);
@@ -71,7 +72,9 @@ int	main(int ac, char **av, char **ev)
 		else if (cmd == (char **)-1)
 			ft_errmsg(errno);
 		else
-			waitpid(*pid, (int *)0, 0);
+			while (*(pid + i) != (pid_t)-1)
+				waitpid(*(pid + i++), (int *)0, 0);
+		i = 0;
 		ft_sfree(cmd + ft_free(pid));
 		prompt = ft_prompt(ev, &his);
 	}

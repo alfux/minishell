@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/03 17:02:01 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/05 23:36:40 by alfux            ###   ########.fr       */
+/*   Updated: 2022/09/06 00:40:23 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -33,27 +33,26 @@ static char	**ft_pipmkr_rec(char **av, pid_t *pid, int *prev_fd)
 	i = 0;
 	while (*(av + i) && ft_strncmp(*(av + i), "|", 2))
 		i++;
-	if (!prev_fd && !*(av + i))
-		return (av);
 	cmd = ft_substrt(av, 0, i);
 	if (!cmd)
-		return ((char **)-1 + 0 * ft_errmsg(errno));
+		return ((char **)-1);
 	if (*(av + i))
 	{
 		pipe(fd);
 		nxt = ft_pipmkr_rec(av + i + 1, pid + 1, fd);
 		if (nxt)
-			return (nxt);
-		return (ft_pipfrk(cmd, pid, fd, prev_fd));
+			return (nxt + (ft_sfree(cmd) * close(fd[0]) * close(fd[1])));
+		nxt = ft_pipfrk(cmd, pid, fd, prev_fd);
+		return (nxt + (0 * close(fd[0]) * close(fd[1])));
 	}
-//	ft_sfree(av);
 	return (ft_pipfrk(cmd, pid, (int *)0, prev_fd));
 }
 
 char	**ft_pipmkr(char **av, pid_t **pid)
 {
-	int	i;
-	int	j;
+	int		i;
+	int		j;
+	char	**buf;
 
 	i = 0;
 	j = 0;
@@ -64,6 +63,16 @@ char	**ft_pipmkr(char **av, pid_t **pid)
 		i++;
 	}
 	if (j > 0)
-		*pid = ft_calloc(j + 1, sizeof (pid_t));
-	return (ft_pipmkr_rec(av, *pid, (int *)0));
+	{
+		*pid = ft_calloc(j + 2, sizeof (pid_t));
+		*(*pid + j + 1) = -1;
+	}
+	else
+		return (av);
+	buf = ft_pipmkr_rec(av, *pid, (int *)0);
+	if (buf == (char **)-1)
+		return ((char **)-1 + (0 * ft_errmsg(errno)));
+	if (buf)
+		ft_sfree(av);
+	return (buf);
 }
