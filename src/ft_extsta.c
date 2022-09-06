@@ -1,24 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_newpro.c                                        :+:      :+:    :+:   */
+/*   ft_extsta.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/31 12:53:59 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/06 18:57:39 by alfux            ###   ########.fr       */
+/*   Created: 2022/07/31 19:48:07 by alfux             #+#    #+#             */
+/*   Updated: 2022/09/06 18:58:00 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
 
-int	ft_newpro(char *path, char **av, char **ev)
+char	*ft_extsta(int exit_status, char *prev_status)
 {
-	pid_t	pid;
-	int		status;
+	size_t	size;
+	char	*new;
+	char	*buf;
 
-	pid = fork();
-	if (!pid)
-		return (execve(path, av, ev));
-	(void)waitpid(pid, &status, 0);
-	return (status);
+	buf = ft_itoa(exit_status);
+	if (!buf)
+		return (prev_status);
+	size = ft_strlen(buf);
+	new = ft_calloc(size + 3, sizeof (char));
+	if (!new)
+		return (prev_status + ft_free(buf));
+	ft_strlcpy(new, "?=", size + 3);
+	ft_strlcpy(new + 2, buf, size + 1);
+	return (new + ft_free(prev_status) + ft_free(buf));
 }

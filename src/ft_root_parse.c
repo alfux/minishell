@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 13:09:04 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/23 15:57:41 by alfux            ###   ########.fr       */
+/*   Updated: 2022/09/06 18:22:42 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -58,7 +58,7 @@ static int	ft_newsze(char *arg, char **ev, char **var)
 		else if (!quotes && *(arg + i) == 34)
 			dquotes = (dquotes + 1) % 2;
 		else if (*(arg + i) == '$' && (ft_isalnum(*(arg + i + 1))
-				|| *(arg + i + 1) == '_') && !quotes)
+				|| *(arg + i + 1) == '_' || *(arg + i + 1) == '?') && !quotes)
 			size += ft_varsze(arg, &i, ev, var);
 		else
 			size++;
@@ -110,7 +110,7 @@ static void	ft_replace(char *dst, char *src, char **ev, char **var)
 		else if (*src == 34 && !quotes)
 			dquotes = (dquotes + 1) % 2;
 		else if (!quotes && *src == '$' && (ft_isalnum(*(src + 1))
-				|| *(src + 1) == '_'))
+				|| *(src + 1) == '_' || *(src + 1) == '?'))
 		{
 			src++;
 			ft_fill_var(&dst, &src, ev, var);

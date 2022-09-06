@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 20:05:20 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/06 11:33:44 by alfux            ###   ########.fr       */
+/*   Updated: 2022/09/06 18:48:53 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef MINISHELL_H
@@ -56,6 +56,8 @@ char	**ft_root_parse(char **cmd, char **ev, char **var);
 int		ft_execute(char **av, char ***ev, char ***var, char **his);
 //Search the builtins to match command line (récup ft_isntvar)
 int		ft_isbuiltin(char **cmd, char ***ev, char ***var, char **his);
+//Initialize var to contain at least "$?" for last process exit status
+char	**ft_init_var(void);
 //Returns non zero if cmd has another command than variable affectation
 int		ft_isntvar(char **cmd);
 //Add the last typed command line to history and his tab
@@ -69,7 +71,9 @@ int		ft_isextern(char **av, char **ev);
 //Forks a child to hold the call to execve, parent process waits and get status
 int		ft_newpro(char *path, char **av, char **ev);
 //Make forks linked by pipes, returns null in parent and each cmd in childs
-char	**ft_pipmkr(char **av, pid_t **pid);
+char	**ft_pipmkr(char **av, pid_t **pid);//RETHINK ARCHITECTURE OF THIS
+//Returns a string for new exit status $="" and frees previous one
+char	*ft_extsta(int exit_status, char *prev_status);
 
 //---------------------------------BUILTINS-------------------------------------
 //Builtin echo with -n option

@@ -1,24 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_newpro.c                                        :+:      :+:    :+:   */
+/*   ft_init_var.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/31 12:53:59 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/06 18:57:39 by alfux            ###   ########.fr       */
+/*   Created: 2022/09/06 17:52:08 by alfux             #+#    #+#             */
+/*   Updated: 2022/09/06 18:00:29 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
 
-int	ft_newpro(char *path, char **av, char **ev)
+char	**ft_init_var(void)
 {
-	pid_t	pid;
-	int		status;
+	char	**var;
 
-	pid = fork();
-	if (!pid)
-		return (execve(path, av, ev));
-	(void)waitpid(pid, &status, 0);
-	return (status);
+	var = ft_calloc(2, sizeof (char *));
+	if (!var)
+		return ((char **)0);
+	*var = ft_strdup("?=0");
+	if (!*var)
+		return ((char **)(size_t)ft_free(var));
+	return (var);
 }
