@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 20:05:20 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/05 20:29:36 by alfux            ###   ########.fr       */
+/*   Updated: 2022/09/06 11:33:44 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef MINISHELL_H
@@ -53,7 +53,7 @@ char	**ft_cmdspl(char *pmt);
 //Parse	the split command line to remove (d)quotes and replaces variables ($)
 char	**ft_root_parse(char **cmd, char **ev, char **var);
 //Execute the parsed command line
-void	ft_execute(char **av, char ***ev, char ***var, char **his);
+int		ft_execute(char **av, char ***ev, char ***var, char **his);
 //Search the builtins to match command line (récup ft_isntvar)
 int		ft_isbuiltin(char **cmd, char ***ev, char ***var, char **his);
 //Returns non zero if cmd has another command than variable affectation

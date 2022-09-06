@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 19:48:07 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/06 00:47:25 by alfux            ###   ########.fr       */
+/*   Updated: 2022/09/06 11:31:19 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -46,8 +46,6 @@ int	main(int ac, char **av, char **ev)
 	char	**cmd;
 	char	**var;
 	char	**his;
-	int		i = 0;
-	pid_t	*pid;
 
 	ev = ft_setenv(ev, &var, &his);
 	if (!ev || !ac || !av)
@@ -56,26 +54,10 @@ int	main(int ac, char **av, char **ev)
 	while (prompt)
 	{
 		cmd = ft_cmdspl(prompt);
-		ft_bzero(&pid, sizeof (pid_t *));
 		ft_free(prompt);
-		if (cmd)
-			cmd = ft_pipmkr(cmd, &pid);
-		if (cmd)
-		{
-			cmd = ft_root_parse(cmd, ev, var);
-			if (cmd)
-				ft_execute(cmd, &ev, &var, his);
-			if (pid)
-				ft_exit(cmd, ev, var, (char **)(size_t)ft_sfree(his) + ft_free(pid));
-
-		}
-		else if (cmd == (char **)-1)
+		if (ft_execute(cmd, &ev, &var, his))
 			ft_errmsg(errno);
-		else
-			while (*(pid + i) != (pid_t)-1)
-				waitpid(*(pid + i++), (int *)0, 0);
-		i = 0;
-		ft_sfree(cmd + ft_free(pid));
+		ft_sfree(cmd);
 		prompt = ft_prompt(ev, &his);
 	}
 	ft_sfree(ev);
