@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/20 17:04:55 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/25 17:17:09 by alfux            ###   ########.fr       */
+/*   Updated: 2022/09/07 03:55:00 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -64,28 +64,29 @@ static char	**ft_rm_dup(char **av)
 	return (new);
 }
 
-char	**ft_setvar(char **av, char **ev, char **var)
+int	ft_setvar(char **av, char **ev, char ***var)
 {
 	char	**add;
 	char	**new;
 
-	if (!var)
-		var = ft_calloc(1, sizeof (char *));
-	if (!var)
-		return (var + (0 * ft_errmsg(errno)));
+	if (!*var)
+		*var = ft_calloc(1, sizeof (char *));
+	if (!*var)
+		return (ft_errmsg(errno));
 	av = ft_rm_dup(av);
 	if (!av)
-		return (var + (0 * ft_errmsg(errno)));
+		return (ft_errmsg(errno));
 	add = ft_calloc(ft_strtlen(av) + 1, sizeof (char *));
 	if (!add)
-		return (var + (ft_free(av) * ft_errmsg(errno)));
-	if (ft_replace(av, ev, var, add))
-		return (var + (ft_free(av) * ft_sfree(add) * ft_errmsg(errno)));
+		return (ft_errmsg(errno) + ft_free(av));
+	if (ft_replace(av, ev, *var, add))
+		return (ft_errmsg(errno) + ft_free(av) + ft_sfree(add));
 	ft_free(av);
-	new = ft_strtcat(var, add);
+	new = ft_strtcat(*var, add);
 	if (!new)
-		return (var + (ft_sfree(add) * ft_errmsg(errno)));
-	ft_free(var);
+		return (ft_errmsg(errno) + ft_sfree(add));
+	ft_free(*var);
 	ft_free(add);
-	return (new);
+	*var = new;
+	return (0);
 }

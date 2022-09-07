@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 02:14:04 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/01 03:36:14 by alfux            ###   ########.fr       */
+/*   Updated: 2022/09/07 02:23:38 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -26,7 +26,8 @@ static char	*ft_cat_path_and_exe(char *path, char *exe, size_t esize)
 	return (buf);
 }
 
-static int	ft_pthfnd(char *exe, char **av, char **ev)
+static pid_t	ft_pthfnd(char *exe, char **av, char **ev, pid_t (*ex)(char *,
+		char **, char **))
 {
 	size_t	esize;
 	char	**whr;
@@ -35,30 +36,30 @@ static int	ft_pthfnd(char *exe, char **av, char **ev)
 
 	whr = ft_isvarin("PATH", ev);
 	if (!whr)
-		return (0 * ft_errmsg(-4));
+		return (-2 + (0 * ft_errno(-4)));
 	whr = ft_split(*whr + 5, ':');
 	if (!whr)
-		return (ft_errmsg(errno));
+		return (-2);
 	i = 0;
 	esize = ft_strlen(exe);
 	while (*(whr + i))
 	{
 		buf = ft_cat_path_and_exe(*(whr + i++), exe, esize);
 		if (!buf)
-			return (ft_errmsg(errno) + ft_sfree(whr));
+			return (-2 + ft_sfree(whr));
 		if (!access(buf, F_OK) || ft_free(buf))
 		{
 			*av = buf + ft_free(*av) + ft_sfree(whr);
-			return (ft_newpro(*av, av, ev));
+			return ((*ex)(*av, av, ev));
 		}
 	}
-	return (ft_sfree(whr) + ft_errmsg(errno));
+	return (-2 + ft_sfree(whr));
 }
 
-int	ft_isextern(char **av, char **ev)
+pid_t	ft_isextern(char **av, char **ev, pid_t (*ex)(char *, char **, char **))
 {
 	if (ft_isalnum(**av))
-		return (ft_pthfnd(*av, av, ev));
+		return (ft_pthfnd(*av, av, ev, ex));
 	else
-		return (ft_newpro(*av, av, ev));
+		return ((*ex)(*av, av, ev));
 }

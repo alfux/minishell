@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/22 14:56:46 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/29 02:54:22 by alfux            ###   ########.fr       */
+/*   Updated: 2022/09/07 04:11:53 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -29,7 +29,7 @@ static int	ft_alphaprint(char **ev, char const *prv)
 	}
 	if (!print)
 		return (0);
-	ft_alphaprint(ev, print);
+	(void)ft_alphaprint(ev, print);
 	ft_printf("declare -x %c", *print);
 	while (*(++print) && *(print - 1) != '=')
 		ft_putchar_fd(*print, 1);
@@ -114,16 +114,16 @@ int	ft_export(char **av, char ***ev, char ***var)
 	if (!buf)
 		return (ft_errmsg(errno));
 	if (*buf)
-		*var = ft_setvar(buf, *ev, *var);
+		(void)ft_setvar(buf, *ev, var);
 	free(buf);
 	add = ft_toadd(av, *ev, var);
 	if (!add)
-		return (ft_errmsg(errno) + ft_errmsg(-5));
+		return (ft_errmsg(-5 + (0 * ft_errmsg(errno))));
 	buf = ft_strtcat(*ev, add);
 	if (!buf)
-		return (ft_errmsg(errno) + ft_errmsg(-5) + ft_sfree(add));
+		return (ft_errmsg(-5 + (0 * ft_errmsg(errno))) + ft_sfree(add));
 	ft_free(*ev);
 	ft_free(add);
 	*ev = buf;
-	return (0);
+	return (errno);
 }
