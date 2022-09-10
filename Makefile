@@ -6,7 +6,7 @@
 #    By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/31 19:02:34 by alfux             #+#    #+#              #
-#    Updated: 2022/09/06 19:13:41 by alfux            ###   ########.fr        #
+#    Updated: 2022/09/10 13:56:34 by alfux            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,7 @@ SRC		=	main.c ft_prompt.c ft_cd.c ft_strtdup.c ft_sfree.c ft_env.c	\
 			ft_addhis.c ft_savhis.c ft_errno.c ft_gethis.c ft_isntvar.c	\
 			ft_isextern.c ft_newpro.c ft_pipmkr.c ft_substrt.c			\
 			ft_strtlcpy.c ft_init_var.c ft_extsta.c ft_setenv.c			\
+			ft_killall.c											\
 
 OPATH	=	obj/
 

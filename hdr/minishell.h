@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 20:05:20 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/07 02:57:30 by alfux            ###   ########.fr       */
+/*   Updated: 2022/09/10 14:29:30 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef MINISHELL_H
@@ -18,6 +18,7 @@
 # include <readline/history.h>
 # include <errno.h>
 # include <fcntl.h>
+# include <signal.h>
 
 //-----------------------------------TOOLS--------------------------------------
 //Free string tabs and return 0
@@ -51,7 +52,7 @@ char	*ft_prompt(char **ev, char ***his);
 //Split the prompted command line according to (d)quotes
 char	**ft_cmdspl(char *pmt);
 //Parse	the split command line to remove (d)quotes and replaces variables ($)
-char	**ft_root_parse(char **cmd, char **ev, char **var);
+int		ft_root_parse(char **cmd, char **ev, char **var);
 //Execute the parsed command line
 int		ft_execute(char **av, char ***ev, char ***var, char **his);
 //Search the builtins to match command line (récup ft_isntvar)
@@ -76,6 +77,8 @@ pid_t	ft_newpro(char *path, char **av, char **ev);
 char	**ft_pipmkr(char **av, pid_t **pid);//RETHINK ARCHITECTURE OF THIS
 //Returns a string for new exit status $="" and frees previous one
 char	*ft_extsta(int exit_status, char *prev_status);
+//Sends sig to all pids
+int		ft_killall(pid_t *pid, int sig);
 
 //---------------------------------BUILTINS-------------------------------------
 //Builtin echo with -n option

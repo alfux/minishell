@@ -6,11 +6,11 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 14:10:20 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/24 16:53:49 by alfux            ###   ########.fr       */
+/*   Updated: 2022/09/09 06:16:34 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
-
+//Modify to isolate correctly | < > << >> || &&
 static size_t	ft_arglen(char *arg)
 {
 	size_t	i;

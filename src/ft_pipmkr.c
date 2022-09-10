@@ -6,75 +6,94 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/03 17:02:01 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/06 11:07:31 by alfux            ###   ########.fr       */
+/*   Updated: 2022/09/09 23:29:06 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
 
-static char	**ft_pipfrk(char **cmd, pid_t *pid, int *fd, int *prev_fd)
+static int	ft_ispipe(char **av)
 {
-	*pid = fork();
-	if (*pid)
-		return ((char **)(size_t)ft_sfree(cmd));
-	if (prev_fd)
-		(void)dup2(prev_fd[0], 0);
-	if (fd)
-		(void)dup2(fd[1], 1);
-	return (cmd);
+	int	count;
+	int	i;
+
+	count = 0;
+	i = 0;
+	while (*(av + i))
+	{
+		if (!ft_strncmp(*(av + i), "|", 2))
+			count++;
+		i++;
+	}
+	return (count);
 }
 
-static char	**ft_pipmkr_rec(char **av, pid_t *pid, int *prev_fd)
+static char	**ft_sub_and_connect(char **av, int *fd, int *pfd)
 {
 	char	**cmd;
-	char	**nxt;
-	int		fd[2];
 	int		i;
 
+	if (*(fd + 1))
+	{
+		if (dup2(*(fd + 1), 1) == -1)
+			return ((char **)-1);
+		if (close(*(fd + 1)) || close(*fd))
+			return ((char **)-1);
+	}
+	if (*pfd)
+	{
+		if (dup2(*pfd, 0) == -1)
+			return ((char **)-1);
+		if (close(*pfd) || close(*(pfd + 1)))
+			return ((char **)-1);
+	}
 	i = 0;
 	while (*(av + i) && ft_strncmp(*(av + i), "|", 2))
 		i++;
 	cmd = ft_substrt(av, 0, i);
 	if (!cmd)
 		return ((char **)-1);
-	if (*(av + i))
+	return (cmd);
+}
+
+static char	**ft_fork_and_pipe(char **av, pid_t *pid, int count)
+{
+	int		fd[2];
+	int		pfd[2];
+	int		i;
+
+	ft_bzero(pfd, sizeof (int) * 2);
+	i = 0;
+	while (i < count)
 	{
-		pipe(fd);
-		nxt = ft_pipmkr_rec(av + i + 1, pid + 1, fd);
-		if (nxt == (char **)-1)
-			return ((char **)-1 + ft_sfree(cmd));
-		else if (nxt)
-			return (nxt + (ft_sfree(cmd) * close(fd[0]) * close(fd[1])));
-		nxt = ft_pipfrk(cmd, pid, fd, prev_fd);
-		return (nxt + (0 * close(fd[0]) * close(fd[1])));
+		ft_bzero(fd, sizeof (int) * 2);
+		if (i < count - 1)
+			if (pipe(fd))
+				return ((char **)-1);
+		*(pid + i) = fork();
+		if (!*(pid + i++))
+			return (ft_sub_and_connect(av, fd, pfd));
+		if (pfd[0] && pfd[1])
+			if (close(pfd[0]) || close(pfd[1]))
+				return ((char **)-1);
+		pfd[0] = fd[0];
+		pfd[1] = fd[1];
+		while (*av && ft_strncmp(*(av++), "|", 2))
+			;
 	}
-	return (ft_pipfrk(cmd, pid, (int *)0, prev_fd));
+	return ((char **)0);
 }
 
 char	**ft_pipmkr(char **av, pid_t **pid)
 {
-	int		i;
-	int		j;
-	char	**buf;
+	char	**cmd;
+	int		count;
 
-	i = 0;
-	j = 0;
-	while (*(av + i))
-	{
-		if (!ft_strncmp(*(av + i), "|", 2))
-			j++;
-		i++;
-	}
-	if (j > 0)
-	{
-		*pid = ft_calloc(j + 2, sizeof (pid_t));
-		*(*pid + j + 1) = -1;
-	}
-	else
+	count = ft_ispipe(av);
+	if (!count)
 		return (av);
-	buf = ft_pipmkr_rec(av, *pid, (int *)0);
-	if (buf == (char **)-1)
-		return ((char **)-1 + ft_free(*pid));
-	if (buf)
-		ft_sfree(av);
-	return (buf);
+	*pid = ft_calloc(count + 2, sizeof (pid_t));
+	if (!*pid)
+		return ((char **)-1);
+	cmd = ft_fork_and_pipe(av, *pid, count + 1);
+	return (cmd);
 }

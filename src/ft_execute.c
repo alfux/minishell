@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 19:48:07 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/07 04:34:11 by alfux            ###   ########.fr       */
+/*   Updated: 2022/09/10 14:28:31 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -24,10 +24,7 @@ static int	ft_inorex(char **av, char ***ev, char ***var, char **his)
 		{
 			ft_errmsg(errno);
 			if (pid == -1)
-			{
-				(void)ft_sfree(his);
-				ft_exit(av, *ev, *var, (char **)0);
-			}
+				ft_exit(av, *ev, *var, (char **)(size_t)ft_sfree(his));
 			else
 				exit_status = errno << 8;
 		}
@@ -51,36 +48,45 @@ static int	ft_inorex_pipe(char **av, char ***ev, char ***var, char **his)
 		{
 			exit_status = ft_errmsg(errno);
 			if (pid == -1)
-			{
-				(void)ft_sfree(his);
-				ft_exit(av, *ev, *var, (char **)0);
-			}
+				ft_exit(av, *ev, *var, (char **)(size_t)ft_sfree(his));
 		}
 	}
 	(void)ft_errno(exit_status);
-	(void)ft_sfree(his);
-	ft_exit(av, *ev, *var, (char **)0);
+	ft_exit(av, *ev, *var, (char **)(size_t)ft_sfree(his));
 	return (0);
 }
 
-int	ft_execute(char **cmd, char ***ev, char ***var, char **his)
+static int	ft_one_cmd(char	**av, char ***ev, char ***var, char **his)
+{
+	if (ft_root_parse(av, *ev, *var))
+		return (errno);
+	return (ft_inorex(av, ev, var, his));
+}
+
+static int	ft_frk_cmd(char	**av, char ***ev, char ***var, char **his)
+{
+	if (ft_root_parse(av, *ev, *var))
+		ft_exit(av, *ev, *var, (char **)(size_t)ft_sfree(his));
+	return (ft_inorex_pipe(av, ev, var, his));
+}
+
+int	ft_execute(char **av, char ***ev, char ***var, char **his)
 {
 	pid_t	*pid;
+	char	**cmd;
 	int		i;
 	int		exit_status;
 
 	pid = (pid_t *)0;
-	cmd = ft_pipmkr(cmd, &pid);
+	cmd = ft_pipmkr(av, &pid);
 	if (cmd == (char **)-1)
-		return (1);
-	if (cmd)
-		cmd = ft_root_parse(cmd, *ev, *var);
+		return (errno);
 	if (!pid)
-		return (ft_inorex(cmd, ev, var, his));
+		return (ft_one_cmd(cmd, ev, var, his));
 	if (cmd)
-		return (ft_inorex_pipe(cmd, ev, var, his + ft_free(pid)));
+		return (ft_frk_cmd(cmd, ev, var, his + ft_free(pid) + ft_sfree(av)));
 	i = 0;
-	while (*(pid + i) != -1)
+	while (*(pid + i))
 		(void)waitpid(*(pid + i++), &exit_status, 0);
 	return (exit_status + ft_free(pid));
 }
