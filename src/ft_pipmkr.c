@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/03 17:02:01 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/09 23:29:06 by alfux            ###   ########.fr       */
+/*   Updated: 2022/09/10 16:16:08 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -27,11 +27,12 @@ static int	ft_ispipe(char **av)
 	return (count);
 }
 
-static char	**ft_sub_and_connect(char **av, int *fd, int *pfd)
+static char	**ft_sub_and_connect(char **av, int *fd, int *pfd, pid_t *pid)
 {
 	char	**cmd;
 	int		i;
 
+	*pid = 0;
 	if (*(fd + 1))
 	{
 		if (dup2(*(fd + 1), 1) == -1)
@@ -68,10 +69,10 @@ static char	**ft_fork_and_pipe(char **av, pid_t *pid, int count)
 		ft_bzero(fd, sizeof (int) * 2);
 		if (i < count - 1)
 			if (pipe(fd))
-				return ((char **)-1);
+				return ((char **)-1 + (0 * close(pfd[0]) * close(pfd[1])));
 		*(pid + i) = fork();
 		if (!*(pid + i++))
-			return (ft_sub_and_connect(av, fd, pfd));
+			return (ft_sub_and_connect(av, fd, pfd, pid));
 		if (pfd[0] && pfd[1])
 			if (close(pfd[0]) || close(pfd[1]))
 				return ((char **)-1);
@@ -94,6 +95,7 @@ char	**ft_pipmkr(char **av, pid_t **pid)
 	*pid = ft_calloc(count + 2, sizeof (pid_t));
 	if (!*pid)
 		return ((char **)-1);
+	**pid = -1;
 	cmd = ft_fork_and_pipe(av, *pid, count + 1);
 	return (cmd);
 }

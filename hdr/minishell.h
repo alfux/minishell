@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 20:05:20 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/10 14:29:30 by alfux            ###   ########.fr       */
+/*   Updated: 2022/09/10 16:15:02 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef MINISHELL_H
@@ -43,6 +43,10 @@ int		ft_strtdelone(char **addr, char ***tab);
 int		ft_strtlcpy(char **dst, char **src, int dstsize);
 //Return a copy of a sub-stringtab
 char	**ft_substrt(char **strt, int start, int len);
+//Sends sig to all pids
+int		ft_killall(pid_t *pid, int sig);
+//Waits all processes in pids and stores the last exit status in exit_status
+pid_t	ft_waitall(pid_t *pid, int *exit_status, int opt);
 //------------------------------------------------------------------------------
 
 //Get new pwd (allocate memory)
@@ -77,8 +81,6 @@ pid_t	ft_newpro(char *path, char **av, char **ev);
 char	**ft_pipmkr(char **av, pid_t **pid);//RETHINK ARCHITECTURE OF THIS
 //Returns a string for new exit status $="" and frees previous one
 char	*ft_extsta(int exit_status, char *prev_status);
-//Sends sig to all pids
-int		ft_killall(pid_t *pid, int sig);
 
 //---------------------------------BUILTINS-------------------------------------
 //Builtin echo with -n option
