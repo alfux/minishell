@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 19:48:07 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/07 04:35:56 by alfux            ###   ########.fr       */
+/*   Updated: 2022/09/11 14:45:48 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -21,7 +21,7 @@ int	main(int ac, char **av, char **ev)
 
 	ev = ft_setenv(ev, &var, &his);
 	if (!ev || !ac || !av)
-		return (1);
+		return (ft_errmsg(errno));
 	prompt = ft_prompt(ev, &his);
 	while (prompt)
 	{
@@ -37,5 +37,5 @@ int	main(int ac, char **av, char **ev)
 	ft_sfree(var);
 	(void)ft_savhis(getenv("HOME"), HISTORY, his);
 	ft_sfree(his);
-	return (1);
+	return (ft_errmsg(errno));
 }
