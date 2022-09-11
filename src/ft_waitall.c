@@ -1,23 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_exit.c                                          :+:      :+:    :+:   */
+/*   ft_waitall.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/19 14:57:01 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/06 18:10:54 by alfux            ###   ########.fr       */
+/*   Created: 2022/09/10 15:38:57 by alfux             #+#    #+#             */
+/*   Updated: 2022/09/10 16:18:00 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
 
-void	ft_exit(char **av, char **ev, char **var, char **his)
+pid_t	ft_waitall(pid_t *pid, int *exit_status, int opt)
 {
-	ft_sfree(av);
-	ft_sfree(ev);
-	ft_sfree(var);
-	if (his)
-		(void)ft_savhis(getenv("HOME"), HISTORY, his);
-	ft_sfree(his);
-	exit(errno);
+	pid_t	ret;
+	int		i;
+
+	ret = 0;
+	i = 0;
+	while (*(pid + i))
+		ret = waitpid(*(pid + i++), exit_status, opt);
+	return (ret);
 }

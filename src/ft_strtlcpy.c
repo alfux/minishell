@@ -1,23 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_exit.c                                          :+:      :+:    :+:   */
+/*   ft_strtlcpy.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/19 14:57:01 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/06 18:10:54 by alfux            ###   ########.fr       */
+/*   Created: 2022/09/05 20:21:35 by alfux             #+#    #+#             */
+/*   Updated: 2022/09/05 20:27:13 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
 
-void	ft_exit(char **av, char **ev, char **var, char **his)
+int	ft_strtlcpy(char **dst, char **src, int dstsize)
 {
-	ft_sfree(av);
-	ft_sfree(ev);
-	ft_sfree(var);
-	if (his)
-		(void)ft_savhis(getenv("HOME"), HISTORY, his);
-	ft_sfree(his);
-	exit(errno);
+	int	i;
+
+	i = 0;
+	while (*(src + i) && i < dstsize - 1)
+	{
+		*(dst + i) = ft_strdup(*(src + i));
+		if (!*(dst + i))
+			return (ft_sfree(dst));
+		i++;
+	}
+	if (dstsize)
+		*(dst + i) = (char *)0;
+	while (*(src + i))
+		i++;
+	return (i);
 }

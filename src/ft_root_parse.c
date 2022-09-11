@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 13:09:04 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/23 15:57:41 by alfux            ###   ########.fr       */
+/*   Updated: 2022/09/10 14:12:11 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -58,7 +58,7 @@ static int	ft_newsze(char *arg, char **ev, char **var)
 		else if (!quotes && *(arg + i) == 34)
 			dquotes = (dquotes + 1) % 2;
 		else if (*(arg + i) == '$' && (ft_isalnum(*(arg + i + 1))
-				|| *(arg + i + 1) == '_') && !quotes)
+				|| *(arg + i + 1) == '_' || *(arg + i + 1) == '?') && !quotes)
 			size += ft_varsze(arg, &i, ev, var);
 		else
 			size++;
@@ -110,7 +110,7 @@ static void	ft_replace(char *dst, char *src, char **ev, char **var)
 		else if (*src == 34 && !quotes)
 			dquotes = (dquotes + 1) % 2;
 		else if (!quotes && *src == '$' && (ft_isalnum(*(src + 1))
-				|| *(src + 1) == '_'))
+				|| *(src + 1) == '_' || *(src + 1) == '?'))
 		{
 			src++;
 			ft_fill_var(&dst, &src, ev, var);
@@ -121,23 +121,25 @@ static void	ft_replace(char *dst, char *src, char **ev, char **var)
 	}
 }
 
-char	**ft_root_parse(char **cmd, char **ev, char	**var)
+int	ft_root_parse(char **cmd, char **ev, char **var)
 {
 	size_t	new_size;
 	char	*buf;
 	int		i;
 
 	i = 0;
+	if (!cmd)
+		return (ft_errno(EINVAL));
 	while (*(cmd + i))
 	{
 		new_size = ft_newsze(*(cmd + i), ev, var);
 		buf = ft_calloc(new_size + 1, sizeof (char));
 		if (!buf)
-			return ((char **)(size_t)(ft_sfree(cmd) * ft_errmsg(errno)));
+			return (errno);
 		ft_replace(buf, *(cmd + i), ev, var);
-		free(*(cmd + i));
+		(void)ft_free(*(cmd + i));
 		*(cmd + i) = buf;
 		i++;
 	}
-	return (cmd);
+	return (0);
 }

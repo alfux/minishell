@@ -1,23 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_exit.c                                          :+:      :+:    :+:   */
+/*   ft_killchildren.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/19 14:57:01 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/06 18:10:54 by alfux            ###   ########.fr       */
+/*   Created: 2022/09/10 13:47:26 by alfux             #+#    #+#             */
+/*   Updated: 2022/09/10 13:56:12 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
 
-void	ft_exit(char **av, char **ev, char **var, char **his)
+int	ft_killall(pid_t *pid, int sig)
 {
-	ft_sfree(av);
-	ft_sfree(ev);
-	ft_sfree(var);
-	if (his)
-		(void)ft_savhis(getenv("HOME"), HISTORY, his);
-	ft_sfree(his);
-	exit(errno);
+	int	i;
+
+	if (!pid)
+		return (0);
+	i = 0;
+	while (*(pid + i))
+		(void)kill(*(pid + i++), sig);
+	return (0);
 }

@@ -1,23 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_exit.c                                          :+:      :+:    :+:   */
+/*   ft_newpro.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/19 14:57:01 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/06 18:10:54 by alfux            ###   ########.fr       */
+/*   Created: 2022/08/31 12:53:59 by alfux             #+#    #+#             */
+/*   Updated: 2022/09/06 19:47:54 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
 
-void	ft_exit(char **av, char **ev, char **var, char **his)
+pid_t	ft_newpro(char *path, char **av, char **ev)
 {
-	ft_sfree(av);
-	ft_sfree(ev);
-	ft_sfree(var);
-	if (his)
-		(void)ft_savhis(getenv("HOME"), HISTORY, his);
-	ft_sfree(his);
-	exit(errno);
+	pid_t	pid;
+
+	pid = fork();
+	if (!pid)
+		return (execve(path, av, ev));
+	return (pid);
 }

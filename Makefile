@@ -6,7 +6,7 @@
 #    By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/31 19:02:34 by alfux             #+#    #+#              #
-#    Updated: 2022/08/30 21:44:48 by alfux            ###   ########.fr        #
+#    Updated: 2022/09/10 15:53:55 by alfux            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,10 @@ SRC		=	main.c ft_prompt.c ft_cd.c ft_strtdup.c ft_sfree.c ft_env.c	\
 			ft_root_parse.c ft_pwd.c ft_exit.c ft_isbuiltin.c			\
 			ft_execute.c ft_setvar.c ft_strtcat.c ft_strtlen.c			\
 			ft_isvarin.c ft_export.c ft_unset.c	ft_strtdelone.c			\
-			ft_addhis.c ft_savhis.c ft_errno.c ft_gethis.c				\
+			ft_addhis.c ft_savhis.c ft_errno.c ft_gethis.c ft_isntvar.c	\
+			ft_isextern.c ft_newpro.c ft_pipmkr.c ft_substrt.c			\
+			ft_strtlcpy.c ft_init_var.c ft_extsta.c ft_setenv.c			\
+			ft_killall.c ft_waitall.c									\
 
 OPATH	=	obj/
 
@@ -35,23 +38,25 @@ RLPATH	=	/opt/homebrew/opt/readline/lib
 
 HEADER	=	minishell.h
 
-OPTION	=	-Wall -Werror -Wextra -I$(LPATH) -I$(HPATH) -I$(RIPATH) -g
+OPTION	=	-Wall -Werror -Wextra -I$(LPATH) -I$(HPATH) -I$(RIPATH) -g	\
 
 SIL		=	--no-print-directory
 
 NAME	=	minishell
 
-HISTORY	=	.mini_history
+HISTORY	=	.$(NAME)_history
 
 LEAKS	=	chleaks
 
+CC		=	gcc
+
 $(NAME)				:	$(OPATH) $(OBJ) $(LPATH)$(LIBFT)
-						@(gcc $(OPTION) $(OBJ) $(LPATH)$(LIBFT) -o			\
+						@($(CC) $(OPTION) $(OBJ) $(LPATH)$(LIBFT) -o	\
 						$@ -L$(RLPATH) -lreadline)
 						@(echo "\033[32m$@ linked\033[0m")
 
 $(OPATH)%.o			:	$(SPATH)%.c $(HPATH)$(HEADER)
-						@(gcc $(OPTION) -c $< -o $@)
+						@($(CC) $(OPTION) -c $< -o $@)
 						@(echo "\033[90m$@ compiled\033[0m")
 
 $(OPATH)			:
@@ -75,7 +80,7 @@ cclean				:
 
 fclean				:	clean cclean
 						@(cd $(LPATH) && $(MAKE) $(SIL) fclean)
-						@(rm -rf $(NAME) $(HISTORY))
+						@(rm -rf $(NAME) && cd && rm -rf $(HISTORY))
 						@(echo "\033[31m$(NAME) removed\033[0m")
 
 re					:	fclean all

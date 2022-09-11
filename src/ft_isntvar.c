@@ -1,41 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_isntvar.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 19:48:07 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/11 14:45:48 by alfux            ###   ########.fr       */
+/*   Updated: 2022/08/31 01:29:19 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
 
-int	main(int ac, char **av, char **ev)
+int	ft_isntvar(char **cmd)
 {
-	char	*prompt;
-	char	**cmd;
-	char	**var;
-	char	**his;
-	int		exit_status;
+	size_t	j;
+	int		i;
 
-	ev = ft_setenv(ev, &var, &his);
-	if (!ev || !ac || !av)
-		return (ft_errmsg(errno));
-	prompt = ft_prompt(ev, &his);
-	while (prompt)
+	if (!cmd)
+		return (1);
+	i = 0;
+	while (*(cmd + i))
 	{
-		cmd = ft_cmdspl(prompt);
-		ft_free(prompt);
-		if (cmd)
-			exit_status = ft_execute(cmd, &ev, &var, his) >> 8;
-		*var = ft_extsta(exit_status, *var);
-		ft_sfree(cmd);
-		prompt = ft_prompt(ev, &his);
+		j = 0;
+		while (*(*(cmd + i) + j))
+		{
+			if ((!ft_isalnum(*(*(cmd + i) + j)) && *(*(cmd + i) + j) != '_')
+				|| !*(*(cmd + i) + j + 1))
+			{
+				if (j > 0 && *(*(cmd + i) + j) == '=')
+					break ;
+				return (i + 1);
+			}
+			j++;
+		}
+		i++;
 	}
-	ft_sfree(ev);
-	ft_sfree(var);
-	(void)ft_savhis(getenv("HOME"), HISTORY, his);
-	ft_sfree(his);
-	return (ft_errmsg(errno));
+	return (0);
 }

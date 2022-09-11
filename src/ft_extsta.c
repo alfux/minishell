@@ -1,41 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_extsta.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 19:48:07 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/11 14:45:48 by alfux            ###   ########.fr       */
+/*   Updated: 2022/09/07 03:24:24 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
 
-int	main(int ac, char **av, char **ev)
+char	*ft_extsta(int exit_status, char *prev_status)
 {
-	char	*prompt;
-	char	**cmd;
-	char	**var;
-	char	**his;
-	int		exit_status;
+	size_t	size;
+	char	*new;
+	char	*buf;
 
-	ev = ft_setenv(ev, &var, &his);
-	if (!ev || !ac || !av)
-		return (ft_errmsg(errno));
-	prompt = ft_prompt(ev, &his);
-	while (prompt)
-	{
-		cmd = ft_cmdspl(prompt);
-		ft_free(prompt);
-		if (cmd)
-			exit_status = ft_execute(cmd, &ev, &var, his) >> 8;
-		*var = ft_extsta(exit_status, *var);
-		ft_sfree(cmd);
-		prompt = ft_prompt(ev, &his);
-	}
-	ft_sfree(ev);
-	ft_sfree(var);
-	(void)ft_savhis(getenv("HOME"), HISTORY, his);
-	ft_sfree(his);
-	return (ft_errmsg(errno));
+	buf = ft_itoa(exit_status);
+	if (!buf)
+		return (prev_status + (0 * ft_errmsg(errno)));
+	size = ft_strlen(buf);
+	new = ft_calloc(size + 3, sizeof (char));
+	if (!new)
+		return (prev_status + (ft_free(buf) * ft_errmsg(errno)));
+	ft_strlcpy(new, "?=", size + 3);
+	ft_strlcpy(new + 2, buf, size + 1);
+	return (new + ft_free(prev_status) + ft_free(buf));
 }

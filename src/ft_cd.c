@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 18:40:11 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/24 14:53:33 by alfux            ###   ########.fr       */
+/*   Updated: 2022/09/07 03:04:57 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -92,28 +92,31 @@ static char	*ft_find_home(char **ev)
 	return ((char *)0);
 }
 
-char	**ft_cd(char **av, char **ev)
+int	ft_cd(char **av, char ***ev)
 {
 	char	**new_ev;
 	int		i;
 
-	new_ev = ft_find_oldpwd(ev);
+	if (ft_strtlen(av) > 2)
+		return (ft_errmsg(E2BIG));
+	new_ev = ft_find_oldpwd(*ev);
 	if (!new_ev)
-		return (ev + (0 * ft_errmsg(errno)));
+		return (ft_errmsg(errno));
+	*ev = new_ev;
 	if (!*(av + 1))
 	{
 		if (chdir(ft_find_home(new_ev)))
-			return (new_ev + (0 * ft_errmsg(errno)));
+			return (ft_errmsg(errno));
 	}
 	else if (chdir(*(av + 1)))
-		return (new_ev + (0 * ft_errmsg(errno)));
+		return (ft_errmsg(errno));
 	i = 0;
 	while (*(new_ev + i))
 	{
 		if (!ft_strncmp(*(new_ev + i), "PWD=", 4))
 			if (ft_replace(new_ev + i, new_ev + i + 1))
-				return (new_ev + (0 * ft_errmsg(errno)));
+				return (ft_errmsg(errno));
 		i++;
 	}
-	return (new_ev);
+	return (0);
 }

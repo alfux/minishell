@@ -1,23 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_exit.c                                          :+:      :+:    :+:   */
+/*   ft_init_var.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/19 14:57:01 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/06 18:10:54 by alfux            ###   ########.fr       */
+/*   Created: 2022/09/06 17:52:08 by alfux             #+#    #+#             */
+/*   Updated: 2022/09/06 18:00:29 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
 
-void	ft_exit(char **av, char **ev, char **var, char **his)
+char	**ft_init_var(void)
 {
-	ft_sfree(av);
-	ft_sfree(ev);
-	ft_sfree(var);
-	if (his)
-		(void)ft_savhis(getenv("HOME"), HISTORY, his);
-	ft_sfree(his);
-	exit(errno);
+	char	**var;
+
+	var = ft_calloc(2, sizeof (char *));
+	if (!var)
+		return ((char **)0);
+	*var = ft_strdup("?=0");
+	if (!*var)
+		return ((char **)(size_t)ft_free(var));
+	return (var);
 }

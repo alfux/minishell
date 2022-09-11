@@ -1,23 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_exit.c                                          :+:      :+:    :+:   */
+/*   ft_substrt.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/19 14:57:01 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/06 18:10:54 by alfux            ###   ########.fr       */
+/*   Created: 2022/09/05 20:02:04 by alfux             #+#    #+#             */
+/*   Updated: 2022/09/05 20:31:02 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
 
-void	ft_exit(char **av, char **ev, char **var, char **his)
+char	**ft_substrt(char **strt, int start, int len)
 {
-	ft_sfree(av);
-	ft_sfree(ev);
-	ft_sfree(var);
-	if (his)
-		(void)ft_savhis(getenv("HOME"), HISTORY, his);
-	ft_sfree(his);
-	exit(errno);
+	char	**sub;
+	int		size;
+
+	if (!strt)
+		return ((char **)0);
+	size = ft_strtlen(strt);
+	if (start > size)
+		return ((char **)0);
+	if (size - start < len)
+		len = size - start;
+	sub = ft_calloc(len + 1, sizeof (char *));
+	if (sub)
+		ft_strtlcpy(sub, strt + start, len + 1);
+	return (sub);
 }
