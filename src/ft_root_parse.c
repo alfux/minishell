@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 13:09:04 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/10 14:12:11 by alfux            ###   ########.fr       */
+/*   Updated: 2022/09/13 16:16:13 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -57,7 +57,7 @@ static int	ft_newsze(char *arg, char **ev, char **var)
 			quotes = (quotes + 1) % 2;
 		else if (!quotes && *(arg + i) == 34)
 			dquotes = (dquotes + 1) % 2;
-		else if (*(arg + i) == '$' && (ft_isalnum(*(arg + i + 1))
+		else if (ev && var && *(arg + i) == '$' && (ft_isalnum(*(arg + i + 1))
 				|| *(arg + i + 1) == '_' || *(arg + i + 1) == '?') && !quotes)
 			size += ft_varsze(arg, &i, ev, var);
 		else
@@ -109,7 +109,7 @@ static void	ft_replace(char *dst, char *src, char **ev, char **var)
 			quotes = (quotes + 1) % 2;
 		else if (*src == 34 && !quotes)
 			dquotes = (dquotes + 1) % 2;
-		else if (!quotes && *src == '$' && (ft_isalnum(*(src + 1))
+		else if (ev && var && !quotes && *src == '$' && (ft_isalnum(*(src + 1))
 				|| *(src + 1) == '_' || *(src + 1) == '?'))
 		{
 			src++;

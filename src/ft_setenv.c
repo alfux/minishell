@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 19:48:07 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/13 05:31:26 by alfux            ###   ########.fr       */
+/*   Updated: 2022/09/13 20:06:06 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -18,7 +18,7 @@ char	**ft_setenv(char **ev, char ***var, char ***his)
 	char	*buf;
 
 	*var = ft_init_var();
-	if (!*var || ft_setio(0))
+	if (!*var || ft_setio(RESET_IO))
 		return ((char **)0);
 	*his = ft_calloc(1, sizeof (char *));
 	if (!*his)

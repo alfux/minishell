@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 19:48:07 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/13 05:38:02 by alfux            ###   ########.fr       */
+/*   Updated: 2022/09/13 20:07:40 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -30,12 +30,12 @@ int	main(int ac, char **av, char **ev)
 		if (cmd)
 			exit_status = ft_execute(cmd, &ev, &var, his) >> 8;
 		*var = ft_extsta(exit_status, *var);
-		ft_setio(ft_sfree(cmd));
+		ft_setio(RESET_IO + ft_sfree(cmd));
 		prompt = ft_prompt(ev, &his);
 	}
 	ft_sfree(ev);
 	ft_sfree(var);
 	(void)ft_savhis(getenv("HOME"), HISTORY, his);
-	ft_setio(1 + ft_sfree(his));
+	ft_setio(CLOSE_IO + ft_sfree(his));
 	return (ft_errmsg(errno));
 }
