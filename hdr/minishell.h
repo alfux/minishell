@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 20:05:20 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/10 16:15:02 by alfux            ###   ########.fr       */
+/*   Updated: 2022/09/13 05:40:33 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef MINISHELL_H
@@ -81,6 +81,10 @@ pid_t	ft_newpro(char *path, char **av, char **ev);
 char	**ft_pipmkr(char **av, pid_t **pid);//RETHINK ARCHITECTURE OF THIS
 //Returns a string for new exit status $="" and frees previous one
 char	*ft_extsta(int exit_status, char *prev_status);
+//Redirects output or input according to > >> and < <<
+int		ft_redio(char **av, char **ev, char **var);
+//With cl=0 saves stdio, second call with cl=0 restores stdio, cl=1 closes stdio
+int		ft_setio(int cl);
 
 //---------------------------------BUILTINS-------------------------------------
 //Builtin echo with -n option
