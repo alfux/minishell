@@ -1,26 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_newpro.c                                        :+:      :+:    :+:   */
+/*   ft_sigmsg.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/31 12:53:59 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/15 18:48:04 by alfux            ###   ########.fr       */
+/*   Created: 2022/09/15 20:23:46 by alfux             #+#    #+#             */
+/*   Updated: 2022/09/15 20:31:44 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
 
-pid_t	ft_newpro(char *path, char **av, char **ev)
+void	ft_sigmsg(int exit_status)
 {
-	pid_t	pid;
-
-	pid = fork();
-	if (!pid)
-	{
-		if (ft_sighdl(HDL_REINIT_SIGQUIT | HDL_REINIT_SIGINT))
-			return (-1);
-		return (execve(path, av, ev));
-	}
-	return (pid);
+	if (WIFSIGNALED(exit_status) && WTERMSIG(exit_status) == SIGINT)
+		return ((void)write(1, "\n", 1));
+	else if (WIFSIGNALED(exit_status))
+		return ((void)ft_printf("Quit: %i\n", WTERMSIG(exit_status)));
 }

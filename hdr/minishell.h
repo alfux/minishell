@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 20:05:20 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/13 20:04:24 by alfux            ###   ########.fr       */
+/*   Updated: 2022/09/15 20:28:56 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef MINISHELL_H
@@ -90,6 +90,22 @@ int		ft_setio(int cl);
 # define CLOSE_IO 1
 # define RESET_IN 2
 //------------------------------------------------------------------------------
+//Change behavior of SIGINT/SIGQUIT according to flag for the calling process
+int		ft_sighdl(int flag);
+//---------------------------------ft_sighdl_flags------------------------------
+enum
+{
+	HDL_PROMPT_SIGINT = 1,
+	HDL_IGNORE_SIGINT = 2,
+	HDL_IGNORE_SIGQUIT = 4,
+	HDL_REINIT_SIGINT = 8,
+	HDL_REINIT_SIGQUIT = 16
+};
+//------------------------------------------------------------------------------
+//SIGINT handler for minishell in interactive mode, show new prompt
+void	ft_newpmt(int sig);
+//Show signal termination message. If signal is SIGINT, only shows \n
+void	ft_sigmsg(int exit_status);
 
 //---------------------------------BUILTINS-------------------------------------
 //Builtin echo with -n option

@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/03 17:02:01 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/10 16:16:08 by alfux            ###   ########.fr       */
+/*   Updated: 2022/09/15 18:35:36 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -33,20 +33,12 @@ static char	**ft_sub_and_connect(char **av, int *fd, int *pfd, pid_t *pid)
 	int		i;
 
 	*pid = 0;
-	if (*(fd + 1))
-	{
-		if (dup2(*(fd + 1), 1) == -1)
-			return ((char **)-1);
-		if (close(*(fd + 1)) || close(*fd))
-			return ((char **)-1);
-	}
-	if (*pfd)
-	{
-		if (dup2(*pfd, 0) == -1)
-			return ((char **)-1);
-		if (close(*pfd) || close(*(pfd + 1)))
-			return ((char **)-1);
-	}
+	if (ft_sighdl(HDL_REINIT_SIGINT | HDL_REINIT_SIGQUIT) == -1)
+		return ((char **)-1);
+	if (*(fd + 1) && (dup2(*(fd + 1), 1) < 0 || close(*(fd + 1)) || close(*fd)))
+		return ((char **)-1);
+	if (*pfd && (dup2(*pfd, 0) < 0 || close(*pfd) || close(*(pfd + 1))))
+		return ((char **)-1);
 	i = 0;
 	while (*(av + i) && ft_strncmp(*(av + i), "|", 2))
 		i++;

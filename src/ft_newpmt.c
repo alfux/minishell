@@ -1,26 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_newpro.c                                        :+:      :+:    :+:   */
+/*   ft_newpmt.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/31 12:53:59 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/15 18:48:04 by alfux            ###   ########.fr       */
+/*   Created: 2022/09/15 15:54:47 by alfux             #+#    #+#             */
+/*   Updated: 2022/09/15 20:35:54 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
 
-pid_t	ft_newpro(char *path, char **av, char **ev)
+void	ft_newpmt(int sig)
 {
-	pid_t	pid;
-
-	pid = fork();
-	if (!pid)
-	{
-		if (ft_sighdl(HDL_REINIT_SIGQUIT | HDL_REINIT_SIGINT))
-			return (-1);
-		return (execve(path, av, ev));
-	}
-	return (pid);
+	(void)sig;
+	write(1, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
 }
