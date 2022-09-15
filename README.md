@@ -1,7 +1,7 @@
 # minishell
 
 ### My advancements:
-<br />✓ Show prompt waiting for command line ✅
+✓ Show prompt waiting for command line ✅
 <br />✓ Error message when quotes or double quotes are unclosed ✅
 <br />✓ Basic parsing for quotes and double quotes ✅
 <br />(Need to add interpret and exclusion of other meta characters than '$')
