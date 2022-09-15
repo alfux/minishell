@@ -19,5 +19,5 @@
 <br />✓ Added pipes ✅
 <br />✓ Added redirections with >, >>, < and << ✅
 <br />✓ Added Ctrl-C, and Ctrl-\ signal handling and Ctrl-D EOF termination ✅
-<br /> At this point, mandatory part is basically finished, except for tests and tweaks
+<br /><br /> At this point, mandatory part is basically finished, except for tests and tweaks
 ### Bonus:
