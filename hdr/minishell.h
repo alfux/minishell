@@ -6,13 +6,13 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 20:05:20 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/15 20:28:56 by alfux            ###   ########.fr       */
+/*   Updated: 2022/09/16 18:21:21 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef MINISHELL_H
 # define MINISHELL_H
-# define HISTORY ".minishell_history"
 # include "libft.h"
+# include "flags_macros.h"
 # include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
@@ -45,7 +45,7 @@ int		ft_strtlcpy(char **dst, char **src, int dstsize);
 char	**ft_substrt(char **strt, int start, int len);
 //Sends sig to all pids
 int		ft_killall(pid_t *pid, int sig);
-//Waits all processes in pids and stores the last exit status in exit_status
+//Waits all processes, only one if pid=NULL, and stores the first exit_status
 pid_t	ft_waitall(pid_t *pid, int *exit_status, int opt);
 //------------------------------------------------------------------------------
 
@@ -84,28 +84,13 @@ char	*ft_extsta(int exit_status, char *prev_status);
 //Redirects output or input according to > >> and < <<
 int		ft_redio(char **av, char **ev, char **var);
 //First call saves stdin and stdout, next call initialise according to flag
-int		ft_setio(int cl);
-//---------------------------------ft_setio_flags-------------------------------
-# define RESET_IO 0
-# define CLOSE_IO 1
-# define RESET_IN 2
-//------------------------------------------------------------------------------
+int		ft_setio(int flag);
 //Change behavior of SIGINT/SIGQUIT according to flag for the calling process
 int		ft_sighdl(int flag);
-//---------------------------------ft_sighdl_flags------------------------------
-enum
-{
-	HDL_PROMPT_SIGINT = 1,
-	HDL_IGNORE_SIGINT = 2,
-	HDL_IGNORE_SIGQUIT = 4,
-	HDL_REINIT_SIGINT = 8,
-	HDL_REINIT_SIGQUIT = 16
-};
-//------------------------------------------------------------------------------
 //SIGINT handler for minishell in interactive mode, show new prompt
 void	ft_newpmt(int sig);
 //Show signal termination message. If signal is SIGINT, only shows \n
-void	ft_sigmsg(int exit_status);
+void	ft_sigmsg(int first_status, int exit_status);
 
 //---------------------------------BUILTINS-------------------------------------
 //Builtin echo with -n option

@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 19:48:07 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/15 20:29:22 by alfux            ###   ########.fr       */
+/*   Updated: 2022/09/16 18:03:31 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -26,13 +26,10 @@ static int	ft_inorex(char **av, char ***ev, char ***var, char **his)
 			if (pid == -1)
 				ft_exit(av, *ev, *var, (char **)(size_t)ft_sfree(his));
 			else
-				exit_status = errno << 8;
+				exit_status = errno;
 		}
 		else
-		{
-			(void)waitpid(pid, &exit_status, 0);
-			ft_sigmsg(exit_status);
-		}
+			(void)ft_waitall(0, &exit_status, 0);
 	}
 	return (exit_status);
 }
@@ -96,6 +93,5 @@ int	ft_execute(char **av, char ***ev, char ***var, char **his)
 	if (cmd)
 		return (ft_frk_cmd(cmd, ev, var, his + ft_free(pid) + ft_sfree(av)));
 	(void)ft_waitall(pid, &exit_stat, 0);
-	ft_sigmsg(exit_stat);
 	return (exit_stat + ft_free(pid));
 }

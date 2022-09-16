@@ -6,7 +6,7 @@
 #    By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/31 19:02:34 by alfux             #+#    #+#              #
-#    Updated: 2022/09/15 20:27:54 by alfux            ###   ########.fr        #
+#    Updated: 2022/09/16 19:07:05 by alfux            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,6 +39,8 @@ RLPATH	=	/opt/homebrew/opt/readline/lib
 
 HEADER	=	minishell.h
 
+MACROS	=	flags_macros.h
+
 OPTION	=	-Wall -Werror -Wextra -I$(LPATH) -I$(HPATH) -I$(RIPATH) -g	\
 
 SIL		=	--no-print-directory
@@ -56,7 +58,7 @@ $(NAME)				:	$(OPATH) $(OBJ) $(LPATH)$(LIBFT)
 						$@ -L$(RLPATH) -lreadline)
 						@(echo "\033[32m$@ linked\033[0m")
 
-$(OPATH)%.o			:	$(SPATH)%.c $(HPATH)$(HEADER)
+$(OPATH)%.o			:	$(SPATH)%.c $(HPATH)$(HEADER) $(HPATH)$(MACROS)
 						@($(CC) $(OPTION) -c $< -o $@)
 						@(echo "\033[90m$@ compiled\033[0m")
 
