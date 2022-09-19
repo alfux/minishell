@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 20:05:20 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/16 18:21:21 by alfux            ###   ########.fr       */
+/*   Updated: 2022/09/19 17:32:35 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef MINISHELL_H
@@ -19,6 +19,7 @@
 # include <errno.h>
 # include <fcntl.h>
 # include <signal.h>
+# include <sys/ioctl.h>
 
 //-----------------------------------TOOLS--------------------------------------
 //Free string tabs and return 0
