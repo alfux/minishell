@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/13 04:59:20 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/15 19:09:56 by alfux            ###   ########.fr       */
+/*   Updated: 2022/09/16 18:10:06 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -25,7 +25,7 @@ static int	ft_reseti(void)
 	return (0);
 }
 
-int	ft_setio(int cl)
+int	ft_setio(int flag)
 {
 	static int	fd_stdout;
 	static int	fd_stdin;
@@ -37,16 +37,16 @@ int	ft_setio(int cl)
 		if (fd_stdout == -1 || fd_stdin == -1)
 			return (-1);
 	}
-	else if (cl == CLOSE_IO)
+	else if (flag == CLOSE_IO)
 	{
 		if (close(fd_stdout) == -1 || close(fd_stdin) == -1)
 			return (-1);
 		fd_stdout = 0;
 		fd_stdin = 0;
 	}
-	else if (cl == RESET_IN)
+	else if (flag == RESET_IN)
 		return (ft_reseti());
-	else if (cl == RESET_IO)
+	else if (flag == RESET_IO)
 	{
 		if (dup2(fd_stdout, 1) == -1 || dup2(fd_stdin, 0) == -1)
 			return (-1);
