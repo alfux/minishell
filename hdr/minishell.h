@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 20:05:20 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/19 17:32:35 by alfux            ###   ########.fr       */
+/*   Updated: 2022/09/22 15:15:23 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef MINISHELL_H
@@ -48,6 +48,14 @@ char	**ft_substrt(char **strt, int start, int len);
 int		ft_killall(pid_t *pid, int sig);
 //Waits all processes, only one if pid=NULL, and stores the first exit_status
 pid_t	ft_waitall(pid_t *pid, int *exit_status, int opt);
+//Returns 2 if parenthesis, 1 if token, 0 otherwise
+int		ft_istokn(char c);
+//Returns the first index after a ')' token in a string tab
+int		ft_skppar(char **strt, int start);
+//Returns the first index after a group of characters between quotes
+size_t	ft_skpqts(char *str, size_t start);
+//Returns the first index after a group of spaces
+size_t	ft_skpspc(char *str, size_t start);
 //------------------------------------------------------------------------------
 
 //Get new pwd (allocate memory)
@@ -56,6 +64,8 @@ char	*ft_newpwd(void);
 char	*ft_prompt(char **ev, char ***his);
 //Split the prompted command line according to (d)quotes
 char	**ft_cmdspl(char *pmt);
+//Tokenize the prompted command line (BONUS PART)
+char	**ft_tknize(char *pmt);
 //Parse	the split command line to remove (d)quotes and replaces variables ($)
 int		ft_root_parse(char **cmd, char **ev, char **var);
 //Execute the parsed command line
