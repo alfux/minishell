@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/03 17:02:01 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/15 18:35:36 by alfux            ###   ########.fr       */
+/*   Updated: 2022/09/22 20:10:17 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -20,17 +20,36 @@ static int	ft_ispipe(char **av)
 	i = 0;
 	while (*(av + i))
 	{
-		if (!ft_strncmp(*(av + i), "|", 2))
+		if (!ft_strncmp(*(av + i), "(", 2))
+			i = ft_skppar(av, i);
+		else if (!ft_strncmp(*(av + i), "|", 2))
+		{
 			count++;
-		i++;
+			i++;
+		}
+		else
+			i++;
 	}
 	return (count);
+}
+
+static int	ft_to_next_pipe(char **av, int start)
+{
+	if (ft_strncmp(*(av + start), "|", 2))
+		start++;
+	while (*(av + start) && ft_strncmp(*(av + start), "|", 2))
+	{
+		if (!ft_strncmp(*(av + start), "(", 2))
+			start = ft_skppar(av, start);
+		else
+			start++;
+	}
+	return (start);
 }
 
 static char	**ft_sub_and_connect(char **av, int *fd, int *pfd, pid_t *pid)
 {
 	char	**cmd;
-	int		i;
 
 	*pid = 0;
 	if (ft_sighdl(HDL_REINIT_SIGINT | HDL_REINIT_SIGQUIT) == -1)
@@ -39,10 +58,7 @@ static char	**ft_sub_and_connect(char **av, int *fd, int *pfd, pid_t *pid)
 		return ((char **)-1);
 	if (*pfd && (dup2(*pfd, 0) < 0 || close(*pfd) || close(*(pfd + 1))))
 		return ((char **)-1);
-	i = 0;
-	while (*(av + i) && ft_strncmp(*(av + i), "|", 2))
-		i++;
-	cmd = ft_substrt(av, 0, i);
+	cmd = ft_substrt(av, 0, ft_to_next_pipe(av, 0));
 	if (!cmd)
 		return ((char **)-1);
 	return (cmd);
@@ -70,8 +86,9 @@ static char	**ft_fork_and_pipe(char **av, pid_t *pid, int count)
 				return ((char **)-1);
 		pfd[0] = fd[0];
 		pfd[1] = fd[1];
-		while (*av && ft_strncmp(*(av++), "|", 2))
-			;
+		av += ft_to_next_pipe(av, 0);
+		if (*av)
+			av++;
 	}
 	return ((char **)0);
 }
