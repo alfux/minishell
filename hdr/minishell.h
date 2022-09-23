@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 20:05:20 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/23 16:09:24 by alfux            ###   ########.fr       */
+/*   Updated: 2022/09/24 00:17:18 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef MINISHELL_H
@@ -48,6 +48,8 @@ char	**ft_substrt(char **strt, int start, int len);
 int		ft_killall(pid_t *pid, int sig);
 //Waits all processes, only one if pid=NULL, and stores the first exit_status
 pid_t	ft_waitall(pid_t *pid, int *exit_status, int opt);
+//------------------------------------------------------------------------------
+//-------------------------------BONUS------------------------------------------
 //Returns 2 if parenthesis, 1 if token, 0 otherwise
 int		ft_istokn(char c);
 //Returns the first index after a ')' token in a string tab
@@ -58,6 +60,7 @@ size_t	ft_skpqts(char *str, size_t start);
 size_t	ft_skpspc(char *str, size_t start);
 //------------------------------------------------------------------------------
 
+//-------------------------------MINISHELL--------------------------------------
 //Get new pwd (allocate memory)
 char	*ft_newpwd(void);
 //Returns standard input (allocate memory)
@@ -92,8 +95,8 @@ char	**ft_pipmkr(char **av, pid_t **pid);//RETHINK ARCHITECTURE OF THIS
 char	*ft_extsta(int exit_status, char *prev_status);
 //Redirects output or input according to > >> and < <<
 int		ft_redio(char **av, char **ev, char **var);
-//First call saves stdin and stdout, next call initialise according to flag
-int		ft_setio(int flag);
+//SAVE_IO saves tty's stdin stdout, RESET_IO, RESET_IN to reset, CLOSE_IO closes
+int		ft_stdio(int flag);
 //Change behavior of SIGINT/SIGQUIT according to flag for the calling process
 int		ft_sighdl(int flag);
 //SIGINT handler for minishell in interactive mode, show new prompt
@@ -107,6 +110,10 @@ char	**ft_tknize(char *pmt);
 int		ft_macro_exec(char **av, char ***ev, char ***var, char **his);
 //Exit toggle
 int		ft_exit_toggle(int toggle);
+//Frees and removes outer border elements from av, shifts all and returns it
+char	**ft_remout(char **av);
+//SAVE_IO saves current stdin and stdout, RESET_IO resets, CLOSE_IO closes
+int		ft_setio(int flag);
 //------------------------------------------------------------------------------
 
 //---------------------------------BUILTINS-------------------------------------
@@ -126,5 +133,9 @@ int		ft_setvar(char **av, char **ev, char ***var);
 int		ft_export(char **av, char ***ev, char ***var);//Rework for lists
 //Builtin unset without option
 int		ft_unset(char **av, char ***ev, char ***var);
+//------------------------------------------------------------------------------
+
+//----------------------------------DEBUG---------------------------------------
+void	ft_trace(char *file, char **av);
 //------------------------------------------------------------------------------
 #endif

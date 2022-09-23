@@ -1,24 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_exit.c                                          :+:      :+:    :+:   */
+/*   ft_remout.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/19 14:57:01 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/24 00:19:32 by alfux            ###   ########.fr       */
+/*   Created: 2022/09/23 16:28:00 by alfux             #+#    #+#             */
+/*   Updated: 2022/09/23 17:32:18 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
 
-void	ft_exit(char **ev, char **var, char **his)
+char	**ft_remout(char **av)
 {
-	ft_sfree(ev);
-	ft_sfree(var);
-	if (ft_exit_toggle(STATE) != NO_SAVE_HISTORY)
-		(void)ft_savhis(getenv("HOME"), HISTORY, his);
-	ft_sfree(his);
-	ft_stdio(CLOSE_IO);
-	ft_setio(CLOSE_IO);
-	exit(errno);
+	int	i;
+
+	(void)ft_free(*av);
+	i = 0;
+	while (*(av + i) && *(av + i + 1))
+	{
+		if (!*(av + i + 2))
+			*(av + i + 1) = (char *)(size_t)ft_free(*(av + i + 1));
+		*(av + i) = *(av + i + 1);
+		i++;
+	}
+	return (av);
 }

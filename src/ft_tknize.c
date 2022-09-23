@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 20:44:28 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/22 18:02:50 by alfux            ###   ########.fr       */
+/*   Updated: 2022/09/23 18:46:36 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -123,7 +123,7 @@ char	**ft_tknize(char *pmt)
 			if (ft_septkn(&tmp, pmt, &i))
 				return (null);
 		}
-		else
+		else if (*(pmt + i))
 			if (ft_wrdtkn(&tmp, pmt, &i, &null))
 				return (null);
 	}

@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/03 17:02:01 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/22 20:10:17 by alfux            ###   ########.fr       */
+/*   Updated: 2022/09/23 18:31:42 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -35,7 +35,7 @@ static int	ft_ispipe(char **av)
 
 static int	ft_to_next_pipe(char **av, int start)
 {
-	if (ft_strncmp(*(av + start), "|", 2))
+	if (!ft_strncmp(*(av + start), "|", 2))
 		start++;
 	while (*(av + start) && ft_strncmp(*(av + start), "|", 2))
 	{

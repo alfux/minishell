@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 19:48:07 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/23 16:03:05 by alfux            ###   ########.fr       */
+/*   Updated: 2022/09/24 00:34:42 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -53,8 +53,12 @@ static int	ft_inorex_pipe(char **av, char ***ev, char ***var, char **his)
 
 static int	ft_one_cmd(char	**av, char ***ev, char ***var, char **his)
 {
+	if (ft_setio(SAVE_IO) == -1)
+		return (errno);
 	if (ft_redio(av, *ev, *var) && 1 + ft_errmsg(errno))
 		return (errno);
+	if (*av && !ft_strncmp(*av, "(", 2))
+		return (ft_macro_exec(ft_remout(av), ev, var, his));
 	if (ft_root_parse(av, *ev, *var) && 1 + ft_errmsg(errno))
 		return (errno);
 	return (ft_inorex(av, ev, var, his));
@@ -62,10 +66,19 @@ static int	ft_one_cmd(char	**av, char ***ev, char ***var, char **his)
 
 static int	ft_frk_cmd(char	**av, char ***ev, char ***var, char **his)
 {
+	int	exit_status;
+
+	if (ft_setio(SAVE_IO) == -1)
+		return (errno + (0 * ft_exit_toggle(NO_SAVE_HISTORY)));
 	if (ft_redio(av, *ev, *var) && 1 + ft_errmsg(errno))
-		return (ft_exit_toggle(NO_SAVE_HISTORY));
+		return (errno + (0 * ft_exit_toggle(NO_SAVE_HISTORY)));
+	if (*av && !ft_strncmp(*av, "(", 2))
+	{
+		exit_status = ft_macro_exec(ft_remout(av), ev, var, his);
+		return (exit_status + (0 * ft_exit_toggle(NO_SAVE_HISTORY)));
+	}
 	if (ft_root_parse(av, *ev, *var) && 1 + ft_errmsg(errno))
-		return (ft_exit_toggle(NO_SAVE_HISTORY));
+		return (errno + (0 * ft_exit_toggle(NO_SAVE_HISTORY)));
 	return (ft_inorex_pipe(av, ev, var, his));
 }
 
