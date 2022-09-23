@@ -1,23 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_exit.c                                          :+:      :+:    :+:   */
+/*   ft_exit_toggle.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/19 14:57:01 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/23 16:08:19 by alfux            ###   ########.fr       */
+/*   Created: 2022/09/22 21:42:55 by alfux             #+#    #+#             */
+/*   Updated: 2022/09/22 21:44:28 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
 
-void	ft_exit(char **ev, char **var, char **his)
+int	ft_exit_toggle(int toggle)
 {
-	ft_sfree(ev);
-	ft_sfree(var);
-	if (ft_exit_toggle(STATE) != NO_SAVE_HISTORY)
-		(void)ft_savhis(getenv("HOME"), HISTORY, his);
-	ft_sfree(his);
-	ft_setio(CLOSE_IO);
-	exit(errno);
+	static int	status;
+
+	if (toggle)
+		status = toggle;
+	return (status);
 }

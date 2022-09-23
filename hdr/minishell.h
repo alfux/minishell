@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 20:05:20 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/22 15:15:23 by alfux            ###   ########.fr       */
+/*   Updated: 2022/09/23 16:09:24 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef MINISHELL_H
@@ -64,8 +64,6 @@ char	*ft_newpwd(void);
 char	*ft_prompt(char **ev, char ***his);
 //Split the prompted command line according to (d)quotes
 char	**ft_cmdspl(char *pmt);
-//Tokenize the prompted command line (BONUS PART)
-char	**ft_tknize(char *pmt);
 //Parse	the split command line to remove (d)quotes and replaces variables ($)
 int		ft_root_parse(char **cmd, char **ev, char **var);
 //Execute the parsed command line
@@ -102,6 +100,14 @@ int		ft_sighdl(int flag);
 void	ft_newpmt(int sig);
 //Show signal termination message. If signal is SIGINT, only shows \n
 void	ft_sigmsg(int first_status, int exit_status);
+//---------------------------------BONUS----------------------------------------
+//Tokenize the prompted command line
+char	**ft_tknize(char *pmt);
+//Macro execution for &&, || and parenthesis
+int		ft_macro_exec(char **av, char ***ev, char ***var, char **his);
+//Exit toggle
+int		ft_exit_toggle(int toggle);
+//------------------------------------------------------------------------------
 
 //---------------------------------BUILTINS-------------------------------------
 //Builtin echo with -n option
@@ -113,7 +119,7 @@ int		ft_pwd(void);
 //Builtin env without option or argument
 int		ft_env(char **ev);
 //Builtin exit without option
-void	ft_exit(char **av, char **ev, char **var, char **his);
+void	ft_exit(char **ev, char **var, char **his);
 //Builtin variable affectation
 int		ft_setvar(char **av, char **ev, char ***var);
 //Builtin export without option
