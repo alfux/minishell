@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/07 03:55:37 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/16 16:46:08 by alfux            ###   ########.fr       */
+/*   Updated: 2022/09/24 13:08:53 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -23,13 +23,13 @@ static char	*ft_addusr(char **ev, char *dir, int size)
 		if (!ft_strncmp(*(ev + i), "USER=", 5))
 		{
 			usize = ft_strlen(*(ev + i) + 5);
-			usr = ft_calloc(usize + size + 20, sizeof (char));
+			usr = ft_calloc(usize + size + 24, sizeof (char));
 			if (!usr)
 				return ((char *)(size_t)(ft_free(dir) * ft_errmsg(errno)));
-			ft_strlcat(usr, "\033[32m", usize + size + 20);
-			ft_strlcat(usr, *(ev + i) + 5, usize + size + 20);
-			ft_strlcat(usr, "@minishell \033[0m", usize + size + 20);
-			ft_strlcat(usr, dir, usize + size + 20);
+			ft_strlcat(usr, "\001\033[32m\002", usize + size + 24);
+			ft_strlcat(usr, *(ev + i) + 5, usize + size + 24);
+			ft_strlcat(usr, "@minishell \001\033[0m\002", usize + size + 24);
+			ft_strlcat(usr, dir, usize + size + 24);
 			return (usr + ft_free(dir));
 		}
 		i++;
@@ -69,15 +69,15 @@ static char	*ft_color_prompt(char **ev)
 	while (*(path + i))
 		if (*(path + i++) == '/')
 			j = i;
-	dir = ft_calloc(i - j + 14, sizeof (char));
+	dir = ft_calloc(i - j + 18, sizeof (char));
 	if (!dir)
 		return ((char *)(size_t)(ft_errmsg(errno) * ft_free(path)));
-	ft_strlcat(dir, "\033[33m", i - j + 14);
-	ft_strlcat(dir, path + j, i - j + 14);
+	ft_strlcat(dir, "\001\033[33m\002", i - j + 18);
+	ft_strlcat(dir, path + j, i - j + 18);
 	free(path);
-	ft_strlcat(dir, " -> ", i - j + 14);
-	ft_strlcat(dir, "\033[0m", i - j + 14);
-	return (ft_addusr(ev, dir, i - j + 14));
+	ft_strlcat(dir, " -> ", i - j + 18);
+	ft_strlcat(dir, "\001\033[0m\002", i - j + 18);
+	return (ft_addusr(ev, dir, i - j + 18));
 }
 
 char	*ft_prompt(char **ev, char ***his)
