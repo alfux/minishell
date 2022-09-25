@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/07 03:55:37 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/24 13:08:53 by alfux            ###   ########.fr       */
+/*   Updated: 2022/09/25 23:49:33 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -74,7 +74,7 @@ static char	*ft_color_prompt(char **ev)
 		return ((char *)(size_t)(ft_errmsg(errno) * ft_free(path)));
 	ft_strlcat(dir, "\001\033[33m\002", i - j + 18);
 	ft_strlcat(dir, path + j, i - j + 18);
-	free(path);
+	(void)ft_free(path);
 	ft_strlcat(dir, " -> ", i - j + 18);
 	ft_strlcat(dir, "\001\033[0m\002", i - j + 18);
 	return (ft_addusr(ev, dir, i - j + 18));
@@ -91,7 +91,7 @@ char	*ft_prompt(char **ev, char ***his)
 	ft_sighdl(HDL_PROMPT_SIGINT);
 	ret = readline(pmt);
 	ft_sighdl(HDL_IGNORE_SIGINT);
-	free(pmt);
+	(void)ft_free(pmt);
 	if ((ret && *ret && !ft_addhis(ret, his)) || (ret && !*ret))
 		return (ret);
 	else if (ret)

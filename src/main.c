@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 19:48:07 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/24 00:11:38 by alfux            ###   ########.fr       */
+/*   Updated: 2022/09/25 23:55:53 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -34,7 +34,7 @@ int	main(int ac, char **av, char **ev)
 		*var = ft_extsta(exit_status, *var);
 		prompt = ft_prompt(ev, &his + ft_errno(0));
 	}
-	if (errno && exit_status)
+	if (errno && exit_status && ft_exit_toggle(STATE) != NO_SAVE_HISTORY)
 		(void)ft_errmsg(errno);
 	ft_exit(ev, var, his);
 	return (ft_errmsg(errno));
