@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 20:36:36 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/25 17:45:33 by alfux            ###   ########.fr       */
+/*   Updated: 2022/09/26 17:32:16 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -24,17 +24,18 @@ static int	ft_to_next_logical_operator(char **av, int start)
 	return (start);
 }
 
-static int	ft_skip_or_operators(char **av, int start)
+static int	ft_skip_ors_if_or_and_success(char **av, int i, int size, int e_sta)
 {
-	while (*(av + start) && ft_strncmp(*(av + start), "&&", 3)
-			&& ft_strncmp(*(av +start), ")", 2))
+	if (ft_strncmp(*(av + size), "||", 3) || e_sta)
+		return (size);
+	while (*(av + i) && ft_strncmp(*(av + i), "&&", 3))
 	{
-		if (!ft_strncmp(*(av + start), "(", 2))
-			start = ft_skppar(av, start);
+		if (!ft_strncmp(*(av + i), "(", 2))
+			i = ft_skppar(av, i);
 		else
-			start++;
+			i++;
 	}
-	return (start);
+	return (i);
 }
 
 int	ft_macro_exec(char **av, char ***ev, char ***var, char **his)
@@ -59,9 +60,8 @@ int	ft_macro_exec(char **av, char ***ev, char ***var, char **his)
 			return (exit_status);
 		if (ft_setio(RESET_IO) == -1)
 			return (ft_errmsg(errno));
-		if (!ft_strncmp(*(av + size), "||", 3) && !exit_status)
-			size = ft_skip_or_operators(av, i);
-		i = size + 1;
+		size = ft_skip_ors_if_or_and_success(av, i, size, exit_status);
+		i = size + (1 * !!*(av + size));
 		size = ft_to_next_logical_operator(av, i);
 	}
 	return (exit_status);

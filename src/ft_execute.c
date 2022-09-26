@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 19:48:07 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/24 00:34:42 by alfux            ###   ########.fr       */
+/*   Updated: 2022/09/26 17:09:48 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -103,7 +103,7 @@ int	ft_execute(char **av, char ***ev, char ***var, char **his)
 	if (!pid)
 		return (ft_one_cmd(cmd, ev, var, his));
 	if (cmd)
-		return (ft_frk_cmd(cmd, ev, var, his + ft_free(pid) + ft_sfree(av)));
+		return (ft_frk_cmd(cmd, ev, var, his + ft_free(pid)));
 	(void)ft_waitall(pid, &exit_stat, 0);
 	return (exit_stat + ft_free(pid));
 }
