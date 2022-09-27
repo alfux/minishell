@@ -1,18 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_errno.c                                         :+:      :+:    :+:   */
+/*   ft_remout.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/30 19:25:10 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/26 18:26:09 by alfux            ###   ########.fr       */
+/*   Created: 2022/09/23 16:28:00 by alfux             #+#    #+#             */
+/*   Updated: 2022/09/23 17:32:18 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
 
-int	ft_errno(int value)
+char	**ft_remout(char **av)
 {
-	errno = value;
-	return (errno);
+	int	i;
+
+	(void)ft_free(*av);
+	i = 0;
+	while (*(av + i) && *(av + i + 1))
+	{
+		if (!*(av + i + 2))
+			*(av + i + 1) = (char *)(size_t)ft_free(*(av + i + 1));
+		*(av + i) = *(av + i + 1);
+		i++;
+	}
+	return (av);
 }

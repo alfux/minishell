@@ -1,18 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_errno.c                                         :+:      :+:    :+:   */
+/*   ft_skpspc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/30 19:25:10 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/26 18:26:09 by alfux            ###   ########.fr       */
+/*   Created: 2022/09/22 15:04:39 by alfux             #+#    #+#             */
+/*   Updated: 2022/09/22 15:20:32 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
 
-int	ft_errno(int value)
+size_t	ft_skpspc(char *str, size_t start)
 {
-	errno = value;
-	return (errno);
+	if (!str || start < 0 || start > ft_strlen(str))
+		return (0 * ft_errno(EINVAL));
+	while (*(str + start) == ' ')
+		start++;
+	return (start);
 }

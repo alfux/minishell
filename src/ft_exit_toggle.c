@@ -1,18 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_errno.c                                         :+:      :+:    :+:   */
+/*   ft_exit_toggle.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/30 19:25:10 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/26 18:26:09 by alfux            ###   ########.fr       */
+/*   Created: 2022/09/22 21:42:55 by alfux             #+#    #+#             */
+/*   Updated: 2022/09/22 21:44:28 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
 
-int	ft_errno(int value)
+int	ft_exit_toggle(int toggle)
 {
-	errno = value;
-	return (errno);
+	static int	status;
+
+	if (toggle)
+		status = toggle;
+	return (status);
 }

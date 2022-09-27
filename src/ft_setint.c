@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_errno.c                                         :+:      :+:    :+:   */
+/*   ft_setint.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/30 19:25:10 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/26 18:26:09 by alfux            ###   ########.fr       */
+/*   Created: 2022/09/27 02:57:55 by alfux             #+#    #+#             */
+/*   Updated: 2022/09/27 02:58:55 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
 
-int	ft_errno(int value)
+int	ft_setint(int *integer, int value)
 {
-	errno = value;
-	return (errno);
+	*integer = value;
+	return (value);
 }

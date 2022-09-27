@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/12 20:38:27 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/13 20:17:15 by alfux            ###   ########.fr       */
+/*   Updated: 2022/09/24 00:55:10 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -53,11 +53,10 @@ static int	ft_redout(char **av, char **ev, char **var)
 				fd = open(*fname, O_CREAT | O_WRONLY | O_TRUNC, 0000664);
 			if (fd == -1 || dup2(fd, 1) == -1 || close(fd) == -1)
 				return (errno + ft_sfree(fname));
-			(void)ft_sfree(fname);
-			(void)ft_shift(av + i, 2);
+			(void)ft_shift(av + i, 2 + ft_sfree(fname));
 		}
 		else
-			i++;
+			i = ft_skppar(av, i) + (!!ft_strncmp(*(av + i), "(", 2) * (i + 1));
 	}
 	return (0);
 }
@@ -68,9 +67,9 @@ static int	ft_heredoc(char *eof)
 	int		cmpsiz;
 	int		fd[2];
 
-	if (pipe(fd) == -1 || ft_setio(RESET_IN))
+	if (pipe(fd) == -1 || ft_stdio(RESET_IO))
 		return (-1);
-	cmpsiz = ft_strlen(eof);
+	cmpsiz = ft_strlen(eof) + ft_errno(0);
 	line = readline("> ");
 	if (!line && errno)
 		return (-1);
@@ -79,13 +78,14 @@ static int	ft_heredoc(char *eof)
 	{
 		ft_putstr_fd(line, fd[1]);
 		ft_putchar_fd('\n', fd[1]);
-		(void)ft_free(line);
+		(void)ft_free(line + ft_errno(0));
 		line = readline("> ");
 		if (!line && errno)
 			return (-1);
 	}
 	(void)ft_free(line);
-	if (dup2(fd[0], 0) == -1 || close(fd[0]) || close(fd[1]))
+	if (ft_setio(RESET_OUT) == -1 || dup2(fd[0], 0) == -1
+		|| close(fd[0]) || close(fd[1]))
 		return (-1);
 	return (0);
 }
@@ -110,11 +110,10 @@ static int	ft_redin(char **av, char **ev, char **var)
 				fd = open(*fname, O_RDONLY);
 			if (fd == -1 || dup2(fd, 0) == -1 || (fd && close(fd) == -1))
 				return (errno + ft_sfree(fname));
-			(void)ft_sfree(fname);
-			(void)ft_shift(av + i, 2);
+			(void)ft_shift(av + i, 2 + ft_sfree(fname));
 		}
 		else
-			i++;
+			i = ft_skppar(av, i) + (!!ft_strncmp(*(av + i), "(", 2) * (i + 1));
 	}
 	return (0);
 }

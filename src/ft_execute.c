@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 19:48:07 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/16 18:03:31 by alfux            ###   ########.fr       */
+/*   Updated: 2022/09/26 18:38:18 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -22,11 +22,10 @@ static int	ft_inorex(char **av, char ***ev, char ***var, char **his)
 		pid = ft_isextern(av, *ev, &ft_newpro);
 		if (pid < 0)
 		{
-			ft_errmsg(errno);
 			if (pid == -1)
-				ft_exit(av, *ev, *var, (char **)(size_t)ft_sfree(his));
+				(void)ft_exit_toggle(NO_SAVE_HISTORY + (0 * ft_errmsg(errno)));
 			else
-				exit_status = errno;
+				exit_status = ft_errmsg(errno);
 		}
 		else
 			(void)ft_waitall(0, &exit_status, 0);
@@ -48,25 +47,38 @@ static int	ft_inorex_pipe(char **av, char ***ev, char ***var, char **his)
 			exit_status = ft_errmsg(errno);
 	}
 	(void)ft_errno(exit_status);
-	ft_exit(av, *ev, *var, (char **)(size_t)ft_sfree(his));
-	return (0);
+	(void)ft_exit_toggle(NO_SAVE_HISTORY);
+	return (exit_status);
 }
 
 static int	ft_one_cmd(char	**av, char ***ev, char ***var, char **his)
 {
-	if (ft_redio(av, *ev, *var) && 1 + ft_errmsg(errno))
-		return (errno);
-	if (ft_root_parse(av, *ev, *var) && 1 + ft_errmsg(errno))
-		return (errno);
+	if (ft_setio(SAVE_IO) == -1)
+		return (ft_errmsg(errno));
+	if (ft_redio(av, *ev, *var))
+		return (ft_errmsg(errno));
+	if (*av && !ft_strncmp(*av, "(", 2))
+		return (ft_macro_exec(ft_remout(av), ev, var, his));
+	if (ft_root_parse(av, *ev, *var))
+		return (ft_errmsg(errno));
 	return (ft_inorex(av, ev, var, his));
 }
 
 static int	ft_frk_cmd(char	**av, char ***ev, char ***var, char **his)
 {
+	int	exit_status;
+
+	if (ft_setio(SAVE_IO) == -1)
+		return (ft_errmsg(errno) + (0 * ft_exit_toggle(NO_SAVE_HISTORY)));
 	if (ft_redio(av, *ev, *var) && 1 + ft_errmsg(errno))
-		ft_exit(av, *ev, *var, (char **)(size_t)ft_sfree(his));
-	if (ft_root_parse(av, *ev, *var) && 1 + ft_errmsg(errno))
-		ft_exit(av, *ev, *var, (char **)(size_t)ft_sfree(his));
+		return (ft_errmsg(errno) + (0 * ft_exit_toggle(NO_SAVE_HISTORY)));
+	if (*av && !ft_strncmp(*av, "(", 2))
+	{
+		exit_status = ft_macro_exec(ft_remout(av), ev, var, his);
+		return (exit_status + (0 * ft_exit_toggle(NO_SAVE_HISTORY)));
+	}
+	if (ft_root_parse(av, *ev, *var))
+		return (ft_errmsg(errno) + (0 * ft_exit_toggle(NO_SAVE_HISTORY)));
 	return (ft_inorex_pipe(av, ev, var, his));
 }
 
@@ -83,7 +95,7 @@ int	ft_execute(char **av, char ***ev, char ***var, char **his)
 		if (!pid)
 			return (ft_errmsg(errno));
 		if (!*pid && !ft_free(pid) + ft_errmsg(errno))
-			ft_exit(av, *ev, *var, (char **)(size_t)ft_sfree(his));
+			return (ft_exit_toggle(NO_SAVE_HISTORY));
 		exit_stat = ft_errmsg(errno);
 		(void)ft_waitall(pid, (int *)0, 0);
 		return (exit_stat + ft_free(pid));
@@ -91,7 +103,7 @@ int	ft_execute(char **av, char ***ev, char ***var, char **his)
 	if (!pid)
 		return (ft_one_cmd(cmd, ev, var, his));
 	if (cmd)
-		return (ft_frk_cmd(cmd, ev, var, his + ft_free(pid) + ft_sfree(av)));
+		return (ft_frk_cmd(cmd, ev, var, his + ft_free(pid)));
 	(void)ft_waitall(pid, &exit_stat, 0);
 	return (exit_stat + ft_free(pid));
 }

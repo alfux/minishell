@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/19 01:32:25 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/19 02:26:47 by alfux            ###   ########.fr       */
+/*   Updated: 2022/09/25 23:50:51 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -19,6 +19,6 @@ int	ft_pwd(void)
 	if (!pwd)
 		return (1);
 	ft_printf("%s\n", pwd);
-	free(pwd);
+	(void)ft_free(pwd);
 	return (0);
 }

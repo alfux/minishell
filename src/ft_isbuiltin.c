@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 19:48:07 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/16 14:54:29 by alfux            ###   ########.fr       */
+/*   Updated: 2022/09/26 17:56:30 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -37,7 +37,7 @@ int	ft_isbuiltin(char **cmd, char ***ev, char ***var, char **his)
 	else if (cmd && *cmd && !ft_strncmp(*cmd, "pwd", 4))
 		exit_status = ft_pwd();
 	else if (cmd && *cmd && !ft_strncmp(*cmd, "exit", 5))
-		ft_exit(cmd, *ev, *var, his);
+		exit_status = 0 * ft_exit_toggle(SAVE_HISTORY | ft_errno(0));
 	else if (cmd && *cmd && !ft_strncmp(*cmd, "export", 7))
 		exit_status = ft_export(cmd, ev, var);
 	else if (cmd && *cmd && !ft_strncmp(*cmd, "unset", 6))

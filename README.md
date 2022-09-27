@@ -21,3 +21,4 @@
 <br />✓ Added Ctrl-C, and Ctrl-\ signal handling and Ctrl-D EOF termination ✅
 <br /><br /> At this point, mandatory part is basically finished, except for tests and tweaks
 ### Bonus:
+✓ Synthaxically correct complex commands with &&, || and parenthesis are now supported ✅

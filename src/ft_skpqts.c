@@ -1,18 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_errno.c                                         :+:      :+:    :+:   */
+/*   ft_skpqts.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/30 19:25:10 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/26 18:26:09 by alfux            ###   ########.fr       */
+/*   Created: 2022/09/22 14:12:29 by alfux             #+#    #+#             */
+/*   Updated: 2022/09/22 16:31:18 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
 
-int	ft_errno(int value)
+size_t	ft_skpqts(char *str, size_t start)
 {
-	errno = value;
-	return (errno);
+	char	c;
+
+	if (!str || start < 0 || start > ft_strlen(str)
+		|| (*(str + start) != 34 && *(str + start) != 39)
+		|| !*(str + start + 1))
+		return (0 * ft_errno(EINVAL));
+	c = *(str + start++);
+	while (*(str + start++) != c)
+		if (!*(str + start))
+			return (0 * ft_errno(EINVAL));
+	return (start);
 }

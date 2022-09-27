@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/30 19:28:46 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/01 04:30:08 by alfux            ###   ########.fr       */
+/*   Updated: 2022/09/25 23:50:11 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -48,7 +48,7 @@ int	ft_gethis(char *path, char *fname)
 	if (!fname)
 		return (errno);
 	fd = open(fname, O_RDONLY | O_CREAT, 0000600);
-	ft_free(fname);
+	(void)ft_free(fname);
 	if (fd == -1)
 		return (errno);
 	line = get_next_line(fd + ft_errno(0));
@@ -58,7 +58,7 @@ int	ft_gethis(char *path, char *fname)
 	{
 		ft_remove_line_feed(line);
 		add_history(line);
-		free(line);
+		(void)ft_free(line);
 		line = get_next_line(fd + ft_errno(0));
 		if (!line && errno)
 			return (errno + (0 * close(fd)));

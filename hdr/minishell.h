@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 20:05:20 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/19 17:32:35 by alfux            ###   ########.fr       */
+/*   Updated: 2022/09/27 02:59:36 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef MINISHELL_H
@@ -49,7 +49,20 @@ int		ft_killall(pid_t *pid, int sig);
 //Waits all processes, only one if pid=NULL, and stores the first exit_status
 pid_t	ft_waitall(pid_t *pid, int *exit_status, int opt);
 //------------------------------------------------------------------------------
+//-------------------------------BONUS------------------------------------------
+//Returns 2 if parenthesis, 1 if token, 0 otherwise
+int		ft_istokn(char *c);
+//Returns the first index after a ')' token in a string tab
+int		ft_skppar(char **strt, int start);
+//Returns the first index after a group of characters between quotes
+size_t	ft_skpqts(char *str, size_t start);
+//Returns the first index after a group of spaces
+size_t	ft_skpspc(char *str, size_t start);
+//Sets integer to value and returns value
+int		ft_setint(int *integer, int value);
+//------------------------------------------------------------------------------
 
+//-------------------------------MINISHELL--------------------------------------
 //Get new pwd (allocate memory)
 char	*ft_newpwd(void);
 //Returns standard input (allocate memory)
@@ -84,14 +97,28 @@ char	**ft_pipmkr(char **av, pid_t **pid);//RETHINK ARCHITECTURE OF THIS
 char	*ft_extsta(int exit_status, char *prev_status);
 //Redirects output or input according to > >> and < <<
 int		ft_redio(char **av, char **ev, char **var);
-//First call saves stdin and stdout, next call initialise according to flag
-int		ft_setio(int flag);
+//SAVE_IO saves tty's stdin stdout, RESET_IO, RESET_IN to reset, CLOSE_IO closes
+int		ft_stdio(int flag);
 //Change behavior of SIGINT/SIGQUIT according to flag for the calling process
 int		ft_sighdl(int flag);
 //SIGINT handler for minishell in interactive mode, show new prompt
 void	ft_newpmt(int sig);
 //Show signal termination message. If signal is SIGINT, only shows \n
 void	ft_sigmsg(int first_status, int exit_status);
+//---------------------------------BONUS----------------------------------------
+//Tokenize the prompted command line
+char	**ft_tknize(char *pmt);
+//Macro execution for &&, || and parenthesis
+int		ft_macro_exec(char **av, char ***ev, char ***var, char **his);
+//Exit toggle
+int		ft_exit_toggle(int toggle);
+//Frees and removes outer border elements from av, shifts all and returns it
+char	**ft_remout(char **av);
+//SAVE_IO saves current stdin and stdout, RESET_IO resets, CLOSE_IO closes
+int		ft_setio(int flag);
+//Returns 1 if syntax is incorrect, 0 otherwise
+int		ft_syntax_err(char **tkn);
+//------------------------------------------------------------------------------
 
 //---------------------------------BUILTINS-------------------------------------
 //Builtin echo with -n option
@@ -103,12 +130,16 @@ int		ft_pwd(void);
 //Builtin env without option or argument
 int		ft_env(char **ev);
 //Builtin exit without option
-void	ft_exit(char **av, char **ev, char **var, char **his);
+void	ft_exit(char **ev, char **var, char **his);
 //Builtin variable affectation
 int		ft_setvar(char **av, char **ev, char ***var);
 //Builtin export without option
 int		ft_export(char **av, char ***ev, char ***var);//Rework for lists
 //Builtin unset without option
 int		ft_unset(char **av, char ***ev, char ***var);
+//------------------------------------------------------------------------------
+
+//----------------------------------DEBUG---------------------------------------
+void	ft_trace(char *file, char **av);
 //------------------------------------------------------------------------------
 #endif

@@ -6,7 +6,7 @@
 #    By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/31 19:02:34 by alfux             #+#    #+#              #
-#    Updated: 2022/09/16 19:07:05 by alfux            ###   ########.fr        #
+#    Updated: 2022/09/27 03:01:30 by alfux            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,8 +20,10 @@ SRC		=	main.c ft_prompt.c ft_cd.c ft_strtdup.c ft_sfree.c ft_env.c	\
 			ft_addhis.c ft_savhis.c ft_errno.c ft_gethis.c ft_isntvar.c	\
 			ft_isextern.c ft_newpro.c ft_pipmkr.c ft_substrt.c			\
 			ft_strtlcpy.c ft_init_var.c ft_extsta.c ft_setenv.c			\
-			ft_killall.c ft_waitall.c ft_redio.c ft_setio.c ft_sighdl.c	\
-			ft_newpmt.c ft_sigmsg.c										\
+			ft_killall.c ft_waitall.c ft_redio.c ft_stdio.c ft_sighdl.c	\
+			ft_newpmt.c ft_sigmsg.c ft_istokn.c	ft_skppar.c ft_skpqts.c	\
+			ft_skpspc.c ft_syntax_err.c ft_macro_exec.c ft_exit_toggle.c\
+			ft_tknize.c ft_remout.c	ft_trace.c ft_setio.c ft_setint.c	\
 
 OPATH	=	obj/
 
