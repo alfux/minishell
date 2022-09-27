@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/21 20:44:28 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/23 18:46:36 by alfux            ###   ########.fr       */
+/*   Updated: 2022/09/27 02:33:56 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -79,7 +79,7 @@ static int	ft_wrdtkn(t_list **tmp, char *pmt, size_t *i, char ***null)
 	char	err;
 
 	j = *i;
-	while (*(pmt + *i) && !ft_istokn(*(pmt + *i)) && *(pmt + *i) != ' ')
+	while (*(pmt + *i) && !ft_istokn(pmt + *i) && *(pmt + *i) != ' ')
 	{
 		if (*(pmt + *i) == 39 || *(pmt + *i) == 34)
 		{
@@ -113,12 +113,12 @@ char	**ft_tknize(char *pmt)
 	while (*(pmt + i))
 	{
 		i = ft_skpspc(pmt, i);
-		if (ft_istokn(*(pmt + i)) == 2)
+		if (ft_istokn(pmt + i) == 2)
 		{
 			if (ft_addblk(&tmp, ft_substr(pmt, i++, 1)))
 				return (null);
 		}
-		else if (ft_istokn(*(pmt + i)) == 1)
+		else if (ft_istokn(pmt + i) == 1)
 		{
 			if (ft_septkn(&tmp, pmt, &i))
 				return (null);

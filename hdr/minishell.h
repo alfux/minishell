@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 20:05:20 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/24 00:17:18 by alfux            ###   ########.fr       */
+/*   Updated: 2022/09/27 02:59:36 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef MINISHELL_H
@@ -51,13 +51,15 @@ pid_t	ft_waitall(pid_t *pid, int *exit_status, int opt);
 //------------------------------------------------------------------------------
 //-------------------------------BONUS------------------------------------------
 //Returns 2 if parenthesis, 1 if token, 0 otherwise
-int		ft_istokn(char c);
+int		ft_istokn(char *c);
 //Returns the first index after a ')' token in a string tab
 int		ft_skppar(char **strt, int start);
 //Returns the first index after a group of characters between quotes
 size_t	ft_skpqts(char *str, size_t start);
 //Returns the first index after a group of spaces
 size_t	ft_skpspc(char *str, size_t start);
+//Sets integer to value and returns value
+int		ft_setint(int *integer, int value);
 //------------------------------------------------------------------------------
 
 //-------------------------------MINISHELL--------------------------------------
@@ -114,6 +116,8 @@ int		ft_exit_toggle(int toggle);
 char	**ft_remout(char **av);
 //SAVE_IO saves current stdin and stdout, RESET_IO resets, CLOSE_IO closes
 int		ft_setio(int flag);
+//Returns 1 if syntax is incorrect, 0 otherwise
+int		ft_syntax_err(char **tkn);
 //------------------------------------------------------------------------------
 
 //---------------------------------BUILTINS-------------------------------------

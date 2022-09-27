@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 19:48:07 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/16 15:54:30 by alfux            ###   ########.fr       */
+/*   Updated: 2022/09/27 03:16:22 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -27,7 +27,10 @@ char	*ft_extsta(int exit_status, char *prev_status)
 	char	*new;
 	char	*buf;
 
-	buf = ft_itoa(ft_decode_status(exit_status));
+	if (exit_status < 0)
+		buf = ft_itoa(exit_status * (-1));
+	else
+		buf = ft_itoa(ft_decode_status(exit_status));
 	if (!buf)
 		return (prev_status + (0 * ft_errmsg(errno)));
 	size = ft_strlen(buf);
