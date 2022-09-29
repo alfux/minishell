@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_wldcrd.c                                        :+:      :+:    :+:   */
+/*   ft_matchl.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 17:05:37 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/29 18:22:09 by alfux            ###   ########.fr       */
+/*   Updated: 2022/09/29 19:52:23 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -31,7 +31,7 @@ static int	ft_ismatch(char *candidate, t_list *tkn)
 			return (0);
 		candidate = match + ft_strlen(tkn->content);
 		tkn = tkn->next;
-		if (!tkn && candidate)
+		if (!tkn && *candidate)
 			return (0);
 		while (tkn && !ft_strncmp(tkn->content, "*", 2))
 			tkn = tkn->next;
@@ -89,7 +89,7 @@ static t_list	*ft_no_wildcard(char *str)
 	return (new);
 }
 
-t_list	*ft_wldcrd(t_list *tkn)
+t_list	*ft_matchl(t_list *tkn)
 {
 	t_list	*match;
 	char	*str;
@@ -109,10 +109,10 @@ t_list	*ft_wldcrd(t_list *tkn)
 	{
 		str = match->content;
 		match->content = ft_strjoin(str, tkn->next->content);
-		if (match->content)
-			tkn = tkn->next + (size_t)ft_free(str);
+		(void)ft_free(str);
+		tkn = tkn->next;
 	}
-	if (!ft_free(str) && match && !match->content)
+	if (match && !match->content)
 		ft_lstclear(&match, (void (*)(void *))0);
 	return (match);
 }

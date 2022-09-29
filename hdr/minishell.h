@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 20:05:20 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/29 14:29:00 by alfux            ###   ########.fr       */
+/*   Updated: 2022/09/29 19:52:54 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef MINISHELL_H
@@ -121,6 +121,8 @@ int		ft_setio(int flag);
 int		ft_syntax_err(char **tkn);
 //Returns a list of parsed wildcard tokens
 t_list	*ft_wldprep(char *pattern, char **ev, char **var);
+//Returns a list of match according to list tkn
+t_list	*ft_matchl(t_list *tkn);
 //------------------------------------------------------------------------------
 
 //---------------------------------BUILTINS-------------------------------------
