@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 20:05:20 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/29 19:52:54 by alfux            ###   ########.fr       */
+/*   Updated: 2022/09/30 03:14:07 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef MINISHELL_H
@@ -20,6 +20,7 @@
 # include <fcntl.h>
 # include <signal.h>
 # include <sys/ioctl.h>
+# include <sys/stat.h>
 # include <dirent.h>
 
 //-----------------------------------TOOLS--------------------------------------
@@ -121,8 +122,12 @@ int		ft_setio(int flag);
 int		ft_syntax_err(char **tkn);
 //Returns a list of parsed wildcard tokens
 t_list	*ft_wldprep(char *pattern, char **ev, char **var);
+//Skips tkn in lst, returns the first one who isn't tkn
+t_list	*ft_skptkn(t_list *lst, char const *tkn);
+//Searches for match, lets match to NULL if no match, return 1 on error, or 0
+int		ft_search(char *schdir, t_list *tkn, t_list **match);
 //Returns a list of match according to list tkn
-t_list	*ft_matchl(t_list *tkn);
+t_list	*ft_match(t_list *tkn);
 //------------------------------------------------------------------------------
 
 //---------------------------------BUILTINS-------------------------------------

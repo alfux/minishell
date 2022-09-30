@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 01:14:36 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/28 18:38:42 by alfux            ###   ########.fr       */
+/*   Updated: 2022/09/29 21:34:26 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -40,7 +40,7 @@ static t_list	*ft_wldtkn(char *ptrn)
 	while (*ptrn)
 	{
 		i = 0;
-		while (*(ptrn + i) && *(ptrn + i) != '*')
+		while (*(ptrn + i) && *(ptrn + i) != '*' && *(ptrn + i) != '/')
 		{
 			if (*(ptrn + i) == '\'' || *(ptrn + i) == '\"')
 				i = ft_skpqts(ptrn, i);
@@ -49,7 +49,8 @@ static t_list	*ft_wldtkn(char *ptrn)
 		}
 		if (i && ft_addblk(&tkn, ft_substr(ptrn, 0, i)))
 			return ((t_list *)0);
-		if (*(ptrn + i) == '*' && ft_addblk(&tkn, ft_strdup("*")))
+		if ((*(ptrn + i) == '*' && ft_addblk(&tkn, ft_strdup("*")))
+			|| (*(ptrn + i) == '/' && ft_addblk(&tkn, ft_strdup("/"))))
 			return ((t_list *)0);
 		ptrn += i + !!*(ptrn + i);
 	}
