@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 20:05:20 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/30 03:14:07 by alfux            ###   ########.fr       */
+/*   Updated: 2022/09/30 14:08:27 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef MINISHELL_H
@@ -62,6 +62,8 @@ size_t	ft_skpqts(char *str, size_t start);
 size_t	ft_skpspc(char *str, size_t start);
 //Sets integer to value and returns value
 int		ft_setint(int *integer, int value);
+//Returns 1 is file is a directory, 0 if it is not, -1 on error and sets errno
+int		ft_isdir(char const *file);
 //------------------------------------------------------------------------------
 
 //-------------------------------MINISHELL--------------------------------------

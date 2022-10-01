@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 01:14:36 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/29 21:34:26 by alfux            ###   ########.fr       */
+/*   Updated: 2022/10/01 13:41:14 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -78,16 +78,57 @@ static int	ft_lstparse(t_list **tkn, char **ev, char **var)
 	return (0);
 }
 
+static t_list	*ft_rem_mty_tkn(t_list *tkn)
+{
+	t_list	*nav;
+	t_list	*buf;
+
+	nav = tkn;
+	while (nav && !*(char *)nav->content)
+	{
+		tkn = nav->next;
+		ft_lstdelone(nav, (void (*)(void *))(&ft_free));
+		nav = tkn;
+	}
+	while (nav->next)
+	{
+		if (!*(char *)nav->next->content)
+		{
+			buf = nav->next;
+			nav->next = nav->next->next;
+			ft_lstdelone(buf, (void (*)(void *))(&ft_free));
+		}
+		else
+			nav = nav->next;
+	}
+	return (tkn);
+}
+
 t_list	*ft_wldprep(char *pattern, char **ev, char **var)
 {
 	t_list	*wldtkn;
+	size_t	i;
+	int		go;
 
 	if (!pattern)
 		return ((t_list *)(size_t)(0 * ft_errno(EINVAL)));
-	wldtkn = ft_wldtkn(pattern);
-	if (!wldtkn)
+	i = 0;
+	go = 0;
+	wldtkn = (t_list *)0;
+	while (*(pattern + i) && !go)
+	{
+		if (*(pattern + i) == '\"' || *(pattern + i) == '\'')
+			i = ft_skpqts(pattern, i);
+		else if (*(pattern + i) == '*')
+			go = 1 + (0 * i++);
+		else
+			i++;
+	}
+	if (go)
+		wldtkn = ft_wldtkn(pattern);
+	else if (ft_addblk(&wldtkn, ft_strdup(pattern)))
 		return ((t_list *)0);
-	if (ft_lstparse(&wldtkn, ev, var))
+	if (!wldtkn || ft_lstparse(&wldtkn, ev, var))
 		return ((t_list *)0);
-	return (wldtkn);
+	return (ft_rem_mty_tkn(wldtkn));
 }

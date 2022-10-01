@@ -6,16 +6,20 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 17:05:37 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/30 03:13:57 by alfux            ###   ########.fr       */
+/*   Updated: 2022/10/01 12:42:39 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
 
-static int	ft_addblk(t_list **match, char *blk)
+static int	ft_addblk(t_list **match, char *blk, char *dir)
 {
 	t_list	*new;
 
-	blk = ft_strdup(blk);
+	dir = ft_strjoin(dir, "/");
+	if (!dir)
+		return (1);
+	blk = ft_strjoin(dir, blk);
+	(void)ft_free(dir);
 	if (!blk)
 		return (1);
 	new = ft_lstnew(blk);
@@ -27,19 +31,22 @@ static int	ft_addblk(t_list **match, char *blk)
 
 static int	ft_subsch(char *subdir, char *schdir, t_list *tkn, t_list **match)
 {
-	struct stat	file;
+	int	tmp;
 
 	subdir = ft_strjoin("/", subdir);
 	if (!subdir)
 		return (-1);
 	schdir = ft_strjoin(schdir, subdir);
 	(void)ft_free(subdir);
-	if (!schdir || (stat(schdir, &file) && !ft_free(schdir)))
+	if (!schdir)
 		return (-1);
-	if ((file.st_mode & S_IFDIR) != S_IFDIR)
-		return (0);
+	tmp = ft_isdir(schdir);
+	if (tmp == -1)
+		return (-1 + ft_free(schdir));
+	if (!tmp)
+		return (0 + ft_free(schdir));
 	if (!tkn)
-		return (1);
+		return (1 + ft_free(schdir));
 	if (ft_search(schdir, tkn, match))
 		return (-1 + ft_free(schdir));
 	return (0 + ft_free(schdir));
@@ -74,6 +81,20 @@ static int	ft_ismatch(char *candidate, char *schdir, t_list *tkn, t_list **mth)
 	return (1);
 }
 
+static struct dirent	*ft_readdir(DIR *dir, t_list *tkn)
+{
+	struct dirent	*rd;
+
+	(void)ft_errno(0);
+	rd = readdir(dir);
+	if (!rd)
+		return ((struct dirent *)0);
+	if (tkn && !ft_strncmp((char *)tkn->content, "*", 2))
+		if (!ft_strncmp(rd->d_name, ".", 1))
+			return (ft_readdir(dir, tkn));
+	return (rd);
+}
+
 int	ft_search(char *schdir, t_list *tkn, t_list **match)
 {
 	struct dirent	*rd;
@@ -85,13 +106,13 @@ int	ft_search(char *schdir, t_list *tkn, t_list **match)
 	dir = opendir(schdir);
 	if (dir)
 	{
-		rd = readdir(dir + ft_errno(0));
+		rd = ft_readdir(dir, tkn);
 		while (rd)
 		{
 			re = ft_ismatch(rd->d_name, schdir, tkn, match);
-			if (re == -1 || (re && ft_addblk(match, rd->d_name + ft_errno(0))))
+			if (re == -1 || (re && ft_addblk(match, rd->d_name, schdir)))
 				break ;
-			rd = readdir(dir + ft_errno(0));
+			rd = ft_readdir(dir, tkn);
 		}
 		if (!errno && !closedir(dir))
 			return (0);
