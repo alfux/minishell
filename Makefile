@@ -6,7 +6,7 @@
 #    By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/31 19:02:34 by alfux             #+#    #+#              #
-#    Updated: 2022/09/30 14:07:28 by alfux            ###   ########.fr        #
+#    Updated: 2022/10/01 15:17:15 by alfux            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ SPATH	=	src/
 
 SRC		=	main.c ft_prompt.c ft_cd.c ft_strtdup.c ft_sfree.c ft_env.c	\
 			ft_newpwd.c ft_errmsg.c ft_free.c ft_echo.c ft_cmdspl.c		\
-			ft_root_parse.c ft_pwd.c ft_exit.c ft_isbuiltin.c			\
+			ft_root_parse.c ft_pwd.c ft_exit.c ft_isbuiltin.c ft_parse.c\
 			ft_execute.c ft_setvar.c ft_strtcat.c ft_strtlen.c			\
 			ft_isvarin.c ft_export.c ft_unset.c	ft_strtdelone.c			\
 			ft_addhis.c ft_savhis.c ft_errno.c ft_gethis.c ft_isntvar.c	\
