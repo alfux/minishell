@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 19:48:07 by alfux             #+#    #+#             */
-/*   Updated: 2022/10/01 18:39:20 by alfux            ###   ########.fr       */
+/*   Updated: 2022/10/02 14:29:13 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -23,7 +23,8 @@ static int	ft_inorex(char **av, char ***ev, char ***var, char **his)
 		if (pid < 0)
 		{
 			if (pid == -1)
-				(void)ft_exit_toggle(NO_SAVE_HISTORY + (0 * ft_errmsg(errno)));
+				(void)ft_exit_toggle(NO_SAVE_HISTORY + (0 * ft_errmsg(errno)),
+					(char *)0, (int *)0);
 			else
 				exit_status = ft_errmsg(errno);
 		}
@@ -48,7 +49,7 @@ static int	ft_inorex_pipe(char **av, char ***ev, char ***var, char **his)
 			exit_status = ft_errmsg(errno);
 	}
 	(void)ft_errno(exit_status);
-	(void)ft_exit_toggle(NO_SAVE_HISTORY);
+	(void)ft_exit_toggle(NO_SAVE_HISTORY, (char *)0, (int *)0);
 	(void)ft_sfree(av);
 	return (exit_status);
 }
@@ -74,19 +75,19 @@ static int	ft_frk_cmd(char	**av, char ***ev, char ***var, char **his)
 	to_free = av;
 	if (ft_setio(SAVE_IO) == -1)
 		return (ft_errmsg(errno) + ft_sfree(av)
-			+ (0 * ft_exit_toggle(NO_SAVE_HISTORY)));
+			+ (0 * ft_exit_toggle(NO_SAVE_HISTORY, (char *)0, (int *)0)));
 	if (ft_redio(av, *ev, *var) && 1 + ft_errmsg(errno))
 		return (ft_errmsg(errno) + ft_sfree(av)
-			+ (0 * ft_exit_toggle(NO_SAVE_HISTORY)));
+			+ (0 * ft_exit_toggle(NO_SAVE_HISTORY, (char *)0, (int *)0)));
 	if (*av && !ft_strncmp(*av, "(", 2))
 	{
 		exit_status = ft_macro_exec(ft_remout(av), ev, var, his);
 		return (exit_status + ft_sfree(av)
-			+ (0 * ft_exit_toggle(NO_SAVE_HISTORY)));
+			+ (0 * ft_exit_toggle(NO_SAVE_HISTORY, (char *)0, (int *)0)));
 	}
 	if (ft_parse(&av, *ev, *var))
 		return (ft_errmsg(errno) + ft_sfree(av)
-			+ (0 * ft_exit_toggle(NO_SAVE_HISTORY)));
+			+ (0 * ft_exit_toggle(NO_SAVE_HISTORY, (char *)0, (int *)0)));
 	(void)ft_sfree(to_free);
 	return (ft_inorex_pipe(av, ev, var, his));
 }
@@ -104,7 +105,7 @@ int	ft_execute(char **av, char ***ev, char ***var, char **his)
 		if (!pid)
 			return (ft_errmsg(errno));
 		if (!*pid && !ft_free(pid) + ft_errmsg(errno))
-			return (ft_exit_toggle(NO_SAVE_HISTORY));
+			return (ft_exit_toggle(NO_SAVE_HISTORY, (char *)0, (int *)0));
 		exit_stat = ft_errmsg(errno);
 		(void)ft_waitall(pid, (int *)0, 0);
 		return (exit_stat + ft_free(pid));

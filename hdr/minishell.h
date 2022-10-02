@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 20:05:20 by alfux             #+#    #+#             */
-/*   Updated: 2022/10/01 18:33:22 by alfux            ###   ########.fr       */
+/*   Updated: 2022/10/02 14:09:28 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef MINISHELL_H
@@ -115,7 +115,7 @@ char	**ft_tknize(char *pmt);
 //Macro execution for &&, || and parenthesis
 int		ft_macro_exec(char **av, char ***ev, char ***var, char **his);
 //Exit toggle
-int		ft_exit_toggle(int toggle);
+int		ft_exit_toggle(int toggle, char *ex_sav, int *ex_get);
 //Frees and removes outer border elements from av, shifts all and returns it
 char	**ft_remout(char **av);
 //SAVE_IO saves current stdin and stdout, RESET_IO resets, CLOSE_IO closes
