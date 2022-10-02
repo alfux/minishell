@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 01:14:36 by alfux             #+#    #+#             */
-/*   Updated: 2022/10/01 13:41:14 by alfux            ###   ########.fr       */
+/*   Updated: 2022/10/02 13:27:51 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -78,11 +78,13 @@ static int	ft_lstparse(t_list **tkn, char **ev, char **var)
 	return (0);
 }
 
-static t_list	*ft_rem_mty_tkn(t_list *tkn)
+static t_list	*ft_rem_mty_tkn(t_list *tkn, int go)
 {
 	t_list	*nav;
 	t_list	*buf;
 
+	if (!go)
+		return (tkn);
 	nav = tkn;
 	while (nav && !*(char *)nav->content)
 	{
@@ -90,7 +92,7 @@ static t_list	*ft_rem_mty_tkn(t_list *tkn)
 		ft_lstdelone(nav, (void (*)(void *))(&ft_free));
 		nav = tkn;
 	}
-	while (nav->next)
+	while (nav && nav->next)
 	{
 		if (!*(char *)nav->next->content)
 		{
@@ -130,5 +132,5 @@ t_list	*ft_wldprep(char *pattern, char **ev, char **var)
 		return ((t_list *)0);
 	if (!wldtkn || ft_lstparse(&wldtkn, ev, var))
 		return ((t_list *)0);
-	return (ft_rem_mty_tkn(wldtkn));
+	return (ft_rem_mty_tkn(wldtkn, go));
 }
