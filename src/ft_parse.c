@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 15:16:44 by alfux             #+#    #+#             */
-/*   Updated: 2022/10/01 18:46:47 by alfux            ###   ########.fr       */
+/*   Updated: 2022/10/03 18:03:00 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -28,6 +28,18 @@ static char	**ft_ltot(t_list *lst)
 	return (new);
 }
 
+static int	ft_root_parse_first(char **str, char **ev, char **var)
+{
+	char	*to_parse[2];
+
+	to_parse[0] = *str;
+	to_parse[1] = (char *)0;
+	if (ft_root_parse(to_parse, ev, var))
+		return (1);
+	*str = to_parse[0];
+	return (0);
+}
+
 static int	ft_parse_first(char *first, char **ev, char **var, t_list **lst)
 {
 	t_list	*match;
@@ -47,7 +59,7 @@ static int	ft_parse_first(char *first, char **ev, char **var, t_list **lst)
 	else
 	{
 		sdup = ft_strdup(first);
-		if (!sdup)
+		if (!sdup || (ft_root_parse_first(&sdup, ev, var) && !ft_free(sdup)))
 			return (1);
 		match = ft_lstnew(sdup);
 	}

@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 20:05:20 by alfux             #+#    #+#             */
-/*   Updated: 2022/10/03 15:38:08 by alfux            ###   ########.fr       */
+/*   Updated: 2022/10/03 17:14:53 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef MINISHELL_H
@@ -140,9 +140,11 @@ int		ft_parse(char ***av, char **ev, char **var);
 //Builtin echo with -n option
 int		ft_echo(char **av);
 //Buildin cd
-int		ft_cd(char **av, char ***ev);
+int		ft_cd(char **av, char ***ev, char **var);
+//Look into CDPATH if cd fails
+int		ft_cdpath(char *path, char **ev, char **var);
 //Builtin pwd without option
-int		ft_pwd(void);
+int		ft_pwd(int err);
 //Builtin env without option or argument
 int		ft_env(char **ev);
 //Builtin exit without option

@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 18:40:11 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/11 15:04:18 by alfux            ###   ########.fr       */
+/*   Updated: 2022/10/03 17:04:25 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -16,7 +16,5 @@ char	*ft_newpwd(void)
 	char	*pwd;
 
 	pwd = getcwd((void *)0, 0);
-	if (!pwd)
-		ft_errmsg(errno);
 	return (pwd);
 }
