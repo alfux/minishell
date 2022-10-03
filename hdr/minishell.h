@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 20:05:20 by alfux             #+#    #+#             */
-/*   Updated: 2022/10/02 14:09:28 by alfux            ###   ########.fr       */
+/*   Updated: 2022/10/03 15:38:08 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef MINISHELL_H
@@ -76,9 +76,9 @@ char	**ft_cmdspl(char *pmt);
 //Parse	the split command line to remove (d)quotes and replaces variables ($)
 int		ft_root_parse(char **cmd, char **ev, char **var);
 //Execute the parsed command line
-int		ft_execute(char **av, char ***ev, char ***var, char **his);
+int		ft_execute(char **av, char ***ev, char ***var);
 //Search the builtins to match command line (récup ft_isntvar)
-int		ft_isbuiltin(char **cmd, char ***ev, char ***var, char **his);
+int		ft_isbuiltin(char **cmd, char ***ev, char ***var);
 //Initialize var to contain at least "$?" for last process exit status
 char	**ft_init_var(void);
 //Returns the environnement variables and sets var and his
@@ -109,11 +109,13 @@ int		ft_sighdl(int flag);
 void	ft_newpmt(int sig);
 //Show signal termination message. If signal is SIGINT, only shows \n
 void	ft_sigmsg(int first_status, int exit_status);
+//Terminate minishell, saving or not history and freeing memory
+void	ft_exit(char **ev, char **var, char **his);
 //---------------------------------BONUS----------------------------------------
 //Tokenize the prompted command line
 char	**ft_tknize(char *pmt);
 //Macro execution for &&, || and parenthesis
-int		ft_macro_exec(char **av, char ***ev, char ***var, char **his);
+int		ft_macro_exec(char **av, char ***ev, char ***var);
 //Exit toggle
 int		ft_exit_toggle(int toggle, char *ex_sav, int *ex_get);
 //Frees and removes outer border elements from av, shifts all and returns it
@@ -144,7 +146,7 @@ int		ft_pwd(void);
 //Builtin env without option or argument
 int		ft_env(char **ev);
 //Builtin exit without option
-void	ft_exit(char **ev, char **var, char **his);
+int		ft_exicmd(char **av, char *last_status);
 //Builtin variable affectation
 int		ft_setvar(char **av, char **ev, char ***var);
 //Builtin export without option

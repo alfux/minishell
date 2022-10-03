@@ -6,24 +6,24 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 19:48:07 by alfux             #+#    #+#             */
-/*   Updated: 2022/10/02 14:09:00 by alfux            ###   ########.fr       */
+/*   Updated: 2022/10/03 15:42:03 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
 
-static int	ft_check_for_var(char **cmd, char ***ev, char ***var, char **his)
+static int	ft_check_for_var(char **cmd, char ***ev, char ***var)
 {
 	int	check;
 
 	check = ft_isntvar(cmd);
 	if (check > 1)
-		return (ft_isbuiltin(cmd + check - 1, ev, var, his));
+		return (ft_isbuiltin(cmd + check - 1, ev, var));
 	else if (check)
 		return (-1);
 	return (ft_setvar(cmd, *ev, var));
 }
 
-int	ft_isbuiltin(char **cmd, char ***ev, char ***var, char **his)
+int	ft_isbuiltin(char **cmd, char ***ev, char ***var)
 {
 	int	exit_status;
 
@@ -37,12 +37,12 @@ int	ft_isbuiltin(char **cmd, char ***ev, char ***var, char **his)
 	else if (cmd && *cmd && !ft_strncmp(*cmd, "pwd", 4))
 		exit_status = ft_pwd();
 	else if (cmd && *cmd && !ft_strncmp(*cmd, "exit", 5))
-		exit_status = ft_errno(0) * ft_exit_toggle(SAVE_HISTORY, *(cmd + 1), 0);
+		exit_status = ft_exicmd(cmd, **var + 2);
 	else if (cmd && *cmd && !ft_strncmp(*cmd, "export", 7))
 		exit_status = ft_export(cmd, ev, var);
 	else if (cmd && *cmd && !ft_strncmp(*cmd, "unset", 6))
 		exit_status = ft_unset(cmd, ev, var);
 	else
-		return (ft_check_for_var(cmd, ev, var, his));
+		return (ft_check_for_var(cmd, ev, var));
 	return (exit_status);
 }

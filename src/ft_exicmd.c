@@ -1,26 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_exit.c                                          :+:      :+:    :+:   */
+/*   ft_exicmd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/19 14:57:01 by alfux             #+#    #+#             */
-/*   Updated: 2022/10/03 15:46:31 by alfux            ###   ########.fr       */
+/*   Created: 2022/10/03 15:22:31 by alfux             #+#    #+#             */
+/*   Updated: 2022/10/03 15:40:54 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
 
-void	ft_exit(char **ev, char **var, char **his)
+int	ft_exicmd(char **av, char *last_status)
 {
-	int	exit_status;
+	int	len;
 
-	if (ft_exit_toggle(STATE, (char *)0, &exit_status) != NO_SAVE_HISTORY)
-		(void)ft_savhis(getenv("HOME"), HISTORY, his);
-	ft_sfree(ev);
-	ft_sfree(var);
-	ft_sfree(his);
-	ft_stdio(CLOSE_IO);
-	ft_setio(CLOSE_IO);
-	exit(exit_status);
+	len = ft_strtlen(av);
+	if (len > 2)
+		return ((1 << 8) + (0 * ft_putstr_l("Error: too many arguments\n", 2)));
+	if (len > 1)
+		return (0 * ft_exit_toggle(SAVE_HISTORY, *(av + 1), 0));
+	return (0 * ft_exit_toggle(SAVE_HISTORY, last_status, 0));
 }
