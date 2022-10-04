@@ -6,29 +6,19 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 19:48:07 by alfux             #+#    #+#             */
-/*   Updated: 2022/10/03 17:16:33 by alfux            ###   ########.fr       */
+/*   Updated: 2022/10/04 02:09:36 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
-
-static int	ft_check_for_var(char **cmd, char ***ev, char ***var)
-{
-	int	check;
-
-	check = ft_isntvar(cmd);
-	if (check > 1)
-		return (ft_isbuiltin(cmd + check - 1, ev, var));
-	else if (check)
-		return (-1);
-	return (ft_setvar(cmd, *ev, var));
-}
 
 int	ft_isbuiltin(char **cmd, char ***ev, char ***var)
 {
 	int	exit_status;
 
 	exit_status = 0;
-	if (cmd && *cmd && !ft_strncmp(*cmd, "cd", 3))
+	if (cmd && !*cmd)
+		exit_status = 0;
+	else if (cmd && *cmd && !ft_strncmp(*cmd, "cd", 3))
 		exit_status = ft_cd(cmd, ev, *var);
 	else if (cmd && *cmd && !ft_strncmp(*cmd, "env", 4))
 		exit_status = ft_env(*ev);
@@ -43,6 +33,6 @@ int	ft_isbuiltin(char **cmd, char ***ev, char ***var)
 	else if (cmd && *cmd && !ft_strncmp(*cmd, "unset", 6))
 		exit_status = ft_unset(cmd, ev, var);
 	else
-		return (ft_check_for_var(cmd, ev, var));
+		exit_status = -1;
 	return (exit_status);
 }

@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 20:05:20 by alfux             #+#    #+#             */
-/*   Updated: 2022/10/03 17:14:53 by alfux            ###   ########.fr       */
+/*   Updated: 2022/10/03 21:59:39 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef MINISHELL_H
@@ -133,7 +133,9 @@ int		ft_search(char *schdir, t_list *tkn, t_list **match);
 //Returns a list of match according to list tkn
 t_list	*ft_match(t_list *tkn);
 //Swaps av with a new parsed av, returns 0 on success and 1 on failure
-int		ft_parse(char ***av, char **ev, char **var);
+int		ft_parse(char ***av, char **ev, char ***var);
+//Called before parsing to remove or do variable affectations
+int		ft_remaff(char **av, char **ev, char ***var);
 //------------------------------------------------------------------------------
 
 //---------------------------------BUILTINS-------------------------------------

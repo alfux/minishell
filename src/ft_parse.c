@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 15:16:44 by alfux             #+#    #+#             */
-/*   Updated: 2022/10/03 18:03:00 by alfux            ###   ########.fr       */
+/*   Updated: 2022/10/04 03:34:44 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -32,6 +32,8 @@ static int	ft_root_parse_first(char **str, char **ev, char **var)
 {
 	char	*to_parse[2];
 
+	if (!*str)
+		return (0);
 	to_parse[0] = *str;
 	to_parse[1] = (char *)0;
 	if (ft_root_parse(to_parse, ev, var))
@@ -91,12 +93,13 @@ static int	ft_parse_next(char *next, char **ev, char **var, t_list **lst)
 	return (0);
 }
 
-int	ft_parse(char ***av, char **ev, char **var)
+int	ft_parse(char ***av, char **ev, char ***var)
 {
 	t_list	*match;
 	char	**new;
 	int		i;
 
+	match = (t_list *)(size_t)(0 * ft_setint(&i, 1));
 	if (!**av)
 	{
 		new = ft_calloc(1, sizeof (char *));
@@ -105,11 +108,11 @@ int	ft_parse(char ***av, char **ev, char **var)
 		*av = new;
 		return (0);
 	}
-	if (ft_parse_first(**av, ev, var, &match))
+	if (ft_remaff(*av, ev, var) || (**av
+			&& ft_parse_first(**av, ev, *var, &match)))
 		return (1);
-	i = 1;
-	while (*(*av + i))
-		if (ft_parse_next(*(*av + i++), ev, var, &match))
+	while (**av && *(*av + i))
+		if (ft_parse_next(*(*av + i++), ev, *var, &match))
 			return (1);
 	new = ft_ltot(match);
 	ft_lstclear(&match, (void (*)(void *))0);

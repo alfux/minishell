@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 19:48:07 by alfux             #+#    #+#             */
-/*   Updated: 2022/10/03 15:10:16 by alfux            ###   ########.fr       */
+/*   Updated: 2022/10/04 03:42:06 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -26,7 +26,7 @@ static int	ft_inorex(char **av, char ***ev, char ***var)
 				(void)ft_exit_toggle(NO_SAVE_HISTORY + (0 * ft_errmsg(errno)),
 					(char *)0, (int *)0);
 			else
-				exit_status = ft_errmsg(errno);
+				exit_status = -127 + (0 * ft_errmsg(errno));
 		}
 		else
 			(void)ft_waitall(0, &exit_status, 0);
@@ -46,7 +46,7 @@ static int	ft_inorex_pipe(char **av, char ***ev, char ***var)
 		pid = ft_isextern(av, *ev,
 				(pid_t (*)(char *, char **, char **))(&execve));
 		if (pid < 0)
-			exit_status = ft_errmsg(errno);
+			exit_status = -127 + (0 * ft_errmsg(errno));
 	}
 	(void)ft_errno(exit_status);
 	(void)ft_exit_toggle(NO_SAVE_HISTORY, (char *)0, (int *)0);
@@ -62,7 +62,7 @@ static int	ft_one_cmd(char	**av, char ***ev, char ***var)
 		return (ft_errmsg(errno));
 	if (*av && !ft_strncmp(*av, "(", 2))
 		return (ft_macro_exec(ft_remout(av), ev, var));
-	if (ft_parse(&av, *ev, *var))
+	if (ft_parse(&av, *ev, var))
 		return (ft_errmsg(errno));
 	return (ft_inorex(av, ev, var));
 }
@@ -85,7 +85,7 @@ static int	ft_frk_cmd(char	**av, char ***ev, char ***var)
 		return (exit_status + ft_sfree(av)
 			+ (0 * ft_exit_toggle(NO_SAVE_HISTORY, (char *)0, (int *)0)));
 	}
-	if (ft_parse(&av, *ev, *var))
+	if (ft_parse(&av, *ev, var))
 		return (ft_errmsg(errno) + ft_sfree(av)
 			+ (0 * ft_exit_toggle(NO_SAVE_HISTORY, (char *)0, (int *)0)));
 	(void)ft_sfree(to_free);

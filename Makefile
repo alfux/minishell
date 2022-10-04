@@ -6,7 +6,7 @@
 #    By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/31 19:02:34 by alfux             #+#    #+#              #
-#    Updated: 2022/10/03 16:12:20 by alfux            ###   ########.fr        #
+#    Updated: 2022/10/03 21:58:25 by alfux            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ SRC		=	main.c ft_prompt.c ft_cd.c ft_strtdup.c ft_sfree.c ft_env.c	\
 			ft_skpspc.c ft_syntax_err.c ft_macro_exec.c ft_exit_toggle.c\
 			ft_tknize.c ft_remout.c	ft_trace.c ft_setio.c ft_setint.c	\
 			ft_wldprep.c ft_skptkn.c ft_search.c ft_match.c ft_isdir.c	\
-			ft_exicmd.c ft_cdpath.c
+			ft_exicmd.c ft_cdpath.c ft_remaff.c
 
 OPATH	=	obj/
 
