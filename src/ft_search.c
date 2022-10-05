@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 17:05:37 by alfux             #+#    #+#             */
-/*   Updated: 2022/10/01 12:42:39 by alfux            ###   ########.fr       */
+/*   Updated: 2022/10/05 16:18:59 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -15,11 +15,19 @@ static int	ft_addblk(t_list **match, char *blk, char *dir)
 {
 	t_list	*new;
 
-	dir = ft_strjoin(dir, "/");
-	if (!dir)
-		return (1);
-	blk = ft_strjoin(dir, blk);
-	(void)ft_free(dir);
+	if (dir)
+	{
+		if (*(dir + ft_strlen(dir) - 1) != '/')
+			dir = ft_strjoin(dir, "/");
+		else 
+			dir = ft_strdup(dir);
+		if (!dir)
+			return (1);
+		blk = ft_strjoin(dir, blk);
+		(void)ft_free(dir);
+	}
+	else
+		blk = ft_strdup(blk);
 	if (!blk)
 		return (1);
 	new = ft_lstnew(blk);
@@ -33,13 +41,19 @@ static int	ft_subsch(char *subdir, char *schdir, t_list *tkn, t_list **match)
 {
 	int	tmp;
 
-	subdir = ft_strjoin("/", subdir);
-	if (!subdir)
-		return (-1);
-	schdir = ft_strjoin(schdir, subdir);
-	(void)ft_free(subdir);
-	if (!schdir)
-		return (-1);
+	if (schdir)
+	{
+		if (*(schdir + ft_strlen(schdir) - 1) != '/')
+			subdir = ft_strjoin("/", subdir);
+		else
+			subdir = ft_strdup(subdir);
+		if (!subdir)
+			return (-1);
+		schdir = ft_strjoin(schdir, subdir);
+		(void)ft_free(subdir);
+	}
+	else
+		schdir = ft_strdup(subdir);
 	tmp = ft_isdir(schdir);
 	if (tmp == -1)
 		return (-1 + ft_free(schdir));
@@ -59,7 +73,7 @@ static int	ft_ismatch(char *candidate, char *schdir, t_list *tkn, t_list **mth)
 
 	start = candidate;
 	if (ft_strncmp(tkn->content, "*", 2))
-		if (ft_strncmp(candidate, tkn->content, ft_strlen(tkn->content)))
+		if (ft_strncmp(candidate, tkn->content, ft_strlen(tkn->content) + 1))
 			return (0);
 	if (ft_strncmp(tkn->content, "*", 2))
 		candidate += ft_strlen(tkn->content);
@@ -103,7 +117,10 @@ int	ft_search(char *schdir, t_list *tkn, t_list **match)
 
 	if (!ft_strncmp(tkn->content, "/", 2))
 		return (0);
-	dir = opendir(schdir);
+	if (!schdir)
+		dir = opendir(".");
+	else
+		dir = opendir(schdir);
 	if (dir)
 	{
 		rd = ft_readdir(dir, tkn);
@@ -114,9 +131,8 @@ int	ft_search(char *schdir, t_list *tkn, t_list **match)
 				break ;
 			rd = ft_readdir(dir, tkn);
 		}
-		if (!errno && !closedir(dir))
+		if ((!errno || (0 * closedir(dir))) && !closedir(dir))
 			return (0);
-		(void)closedir(dir);
 	}
 	ft_lstclear(match, (void (*)(void *))(&ft_free));
 	return (1);

@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 17:05:37 by alfux             #+#    #+#             */
-/*   Updated: 2022/10/01 05:31:48 by alfux            ###   ########.fr       */
+/*   Updated: 2022/10/05 15:36:29 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -49,7 +49,7 @@ static int	ft_dir_or_not(t_list *tkn, t_list **match)
 		if (nav)
 			return (ft_search(".", nav, match));
 	}
-	return (ft_search(".", tkn, match));
+	return (ft_search((char *)0, tkn, match));
 }
 
 t_list	*ft_match(t_list *tkn)
