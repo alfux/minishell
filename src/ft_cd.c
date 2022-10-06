@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 18:40:11 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/07 03:04:57 by alfux            ###   ########.fr       */
+/*   Updated: 2022/10/03 17:14:43 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -92,7 +92,7 @@ static char	*ft_find_home(char **ev)
 	return ((char *)0);
 }
 
-int	ft_cd(char **av, char ***ev)
+int	ft_cd(char **av, char ***ev, char **var)
 {
 	char	**new_ev;
 	int		i;
@@ -108,7 +108,7 @@ int	ft_cd(char **av, char ***ev)
 		if (chdir(ft_find_home(new_ev)))
 			return (ft_errmsg(errno));
 	}
-	else if (chdir(*(av + 1)))
+	else if (chdir(*(av + 1)) && (ft_cdpath(*(av + 1), *ev, var) || ft_pwd(0)))
 		return (ft_errmsg(errno));
 	i = 0;
 	while (*(new_ev + i))

@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/22 14:56:46 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/25 23:50:29 by alfux            ###   ########.fr       */
+/*   Updated: 2022/10/03 22:05:54 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -118,10 +118,10 @@ int	ft_export(char **av, char ***ev, char ***var)
 	(void)ft_free(buf);
 	add = ft_toadd(av, *ev, var);
 	if (!add)
-		return (ft_errmsg(-5 + (0 * ft_errmsg(errno))));
+		return ((-1) * ft_errmsg(-5 + (0 * ft_errmsg(errno))));
 	buf = ft_strtcat(*ev, add);
 	if (!buf)
-		return (ft_errmsg(-5 + (0 * ft_errmsg(errno))) + ft_sfree(add));
+		return ((-1) * ft_errmsg(-5 + (0 * ft_errmsg(errno))) + ft_sfree(add));
 	ft_free(*ev);
 	ft_free(add);
 	*ev = buf;

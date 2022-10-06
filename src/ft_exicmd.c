@@ -1,20 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_newpwd.c                                        :+:      :+:    :+:   */
+/*   ft_exicmd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/08 18:40:11 by alfux             #+#    #+#             */
-/*   Updated: 2022/10/03 17:04:25 by alfux            ###   ########.fr       */
+/*   Created: 2022/10/03 15:22:31 by alfux             #+#    #+#             */
+/*   Updated: 2022/10/03 15:40:54 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
 
-char	*ft_newpwd(void)
+int	ft_exicmd(char **av, char *last_status)
 {
-	char	*pwd;
+	int	len;
 
-	pwd = getcwd((void *)0, 0);
-	return (pwd);
+	len = ft_strtlen(av);
+	if (len > 2)
+		return ((1 << 8) + (0 * ft_putstr_l("Error: too many arguments\n", 2)));
+	if (len > 1)
+		return (0 * ft_exit_toggle(SAVE_HISTORY, *(av + 1), 0));
+	return (0 * ft_exit_toggle(SAVE_HISTORY, last_status, 0));
 }

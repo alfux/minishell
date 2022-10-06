@@ -1,29 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_trace.c                                         :+:      :+:    :+:   */
+/*   ft_cndcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/23 18:18:37 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/23 18:35:05 by alfux            ###   ########.fr       */
+/*   Created: 2022/10/05 19:43:37 by alfux             #+#    #+#             */
+/*   Updated: 2022/10/06 02:26:23 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
 
-void	ft_trace(char *file, char **av)
+int	ft_cndcmp(char **candidate, t_list *tkn)
 {
-	int	fd;
-	int	i;
+	char	*content;
+	size_t	len;
 
-	i = 0;
-	fd = open(file, O_CREAT | O_APPEND | O_WRONLY, 0000644);
-	while (*(av + i))
-	{
-		ft_putstr_fd("\"", fd);
-		ft_putstr_fd(*(av + i++), fd);
-		ft_putstr_fd("\"", fd);
-		ft_putstr_fd("\n", fd);
-	}
-	close(fd);
+	content = ft_strdup(tkn->content);
+	if (!content || ft_remqts(&content))
+		return (-1);
+	len = ft_strlen(content);
+	if (ft_strncmp(*candidate, content, len))
+		return (ft_free(content));
+	(void)ft_free(content);
+	*candidate += len;
+	if (!**candidate)
+		return (1);
+	if (!tkn->next || ft_strncmp(tkn->next->content, "*", 2))
+		return (0);
+	return (1);
 }

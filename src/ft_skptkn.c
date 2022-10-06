@@ -1,20 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_newpwd.c                                        :+:      :+:    :+:   */
+/*   ft_skptkn.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/08 18:40:11 by alfux             #+#    #+#             */
-/*   Updated: 2022/10/03 17:04:25 by alfux            ###   ########.fr       */
+/*   Created: 2022/09/29 22:01:52 by alfux             #+#    #+#             */
+/*   Updated: 2022/09/29 22:05:06 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
 
-char	*ft_newpwd(void)
+t_list	*ft_skptkn(t_list *lst, char const *tkn)
 {
-	char	*pwd;
+	size_t	len;
 
-	pwd = getcwd((void *)0, 0);
-	return (pwd);
+	len = ft_strlen(tkn);
+	while (lst && !ft_strncmp((char const *)lst->content, tkn, len + 1))
+		lst = lst->next;
+	return (lst);
 }

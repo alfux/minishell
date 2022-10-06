@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/20 17:04:55 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/07 03:55:00 by alfux            ###   ########.fr       */
+/*   Updated: 2022/10/03 21:48:27 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -72,19 +72,19 @@ int	ft_setvar(char **av, char **ev, char ***var)
 	if (!*var)
 		*var = ft_calloc(1, sizeof (char *));
 	if (!*var)
-		return (ft_errmsg(errno));
+		return (1);
 	av = ft_rm_dup(av);
 	if (!av)
-		return (ft_errmsg(errno));
+		return (1);
 	add = ft_calloc(ft_strtlen(av) + 1, sizeof (char *));
 	if (!add)
-		return (ft_errmsg(errno) + ft_free(av));
+		return (1 + ft_free(av));
 	if (ft_replace(av, ev, *var, add))
-		return (ft_errmsg(errno) + ft_free(av) + ft_sfree(add));
+		return (1 + ft_free(av) + ft_sfree(add));
 	ft_free(av);
 	new = ft_strtcat(*var, add);
 	if (!new)
-		return (ft_errmsg(errno) + ft_sfree(add));
+		return (1 + ft_sfree(add));
 	ft_free(*var);
 	ft_free(add);
 	*var = new;

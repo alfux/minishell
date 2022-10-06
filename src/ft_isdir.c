@@ -1,20 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_newpwd.c                                        :+:      :+:    :+:   */
+/*   ft_isdir.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/08 18:40:11 by alfux             #+#    #+#             */
-/*   Updated: 2022/10/03 17:04:25 by alfux            ###   ########.fr       */
+/*   Created: 2022/09/30 14:01:01 by alfux             #+#    #+#             */
+/*   Updated: 2022/10/05 16:00:03 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
 
-char	*ft_newpwd(void)
+int	ft_isdir(char const *file)
 {
-	char	*pwd;
+	struct stat	buf;
 
-	pwd = getcwd((void *)0, 0);
-	return (pwd);
+	if (!file || stat(file, &buf))
+		return (-1);
+	if ((buf.st_mode & S_IFDIR) == S_IFDIR)
+		return (1);
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 20:05:20 by alfux             #+#    #+#             */
-/*   Updated: 2022/09/27 02:59:36 by alfux            ###   ########.fr       */
+/*   Updated: 2022/10/06 03:27:35 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef MINISHELL_H
@@ -20,6 +20,8 @@
 # include <fcntl.h>
 # include <signal.h>
 # include <sys/ioctl.h>
+# include <sys/stat.h>
+# include <dirent.h>
 
 //-----------------------------------TOOLS--------------------------------------
 //Free string tabs and return 0
@@ -60,6 +62,8 @@ size_t	ft_skpqts(char *str, size_t start);
 size_t	ft_skpspc(char *str, size_t start);
 //Sets integer to value and returns value
 int		ft_setint(int *integer, int value);
+//Returns 1 is file is a directory, 0 if it is not, -1 on error and sets errno
+int		ft_isdir(char const *file);
 //------------------------------------------------------------------------------
 
 //-------------------------------MINISHELL--------------------------------------
@@ -72,9 +76,9 @@ char	**ft_cmdspl(char *pmt);
 //Parse	the split command line to remove (d)quotes and replaces variables ($)
 int		ft_root_parse(char **cmd, char **ev, char **var);
 //Execute the parsed command line
-int		ft_execute(char **av, char ***ev, char ***var, char **his);
+int		ft_execute(char **av, char ***ev, char ***var);
 //Search the builtins to match command line (récup ft_isntvar)
-int		ft_isbuiltin(char **cmd, char ***ev, char ***var, char **his);
+int		ft_isbuiltin(char **cmd, char ***ev, char ***var);
 //Initialize var to contain at least "$?" for last process exit status
 char	**ft_init_var(void);
 //Returns the environnement variables and sets var and his
@@ -105,32 +109,58 @@ int		ft_sighdl(int flag);
 void	ft_newpmt(int sig);
 //Show signal termination message. If signal is SIGINT, only shows \n
 void	ft_sigmsg(int first_status, int exit_status);
+//Terminate minishell, saving or not history and freeing memory
+void	ft_exit(char **ev, char **var, char **his);
 //---------------------------------BONUS----------------------------------------
 //Tokenize the prompted command line
 char	**ft_tknize(char *pmt);
 //Macro execution for &&, || and parenthesis
-int		ft_macro_exec(char **av, char ***ev, char ***var, char **his);
+int		ft_macro_exec(char **av, char ***ev, char ***var);
 //Exit toggle
-int		ft_exit_toggle(int toggle);
+int		ft_exit_toggle(int toggle, char *ex_sav, int *ex_get);
 //Frees and removes outer border elements from av, shifts all and returns it
 char	**ft_remout(char **av);
 //SAVE_IO saves current stdin and stdout, RESET_IO resets, CLOSE_IO closes
 int		ft_setio(int flag);
 //Returns 1 if syntax is incorrect, 0 otherwise
 int		ft_syntax_err(char **tkn);
+//Returns a list of parsed wildcard tokens
+t_list	*ft_wldprep(char *pattern, char **ev, char **var);
+//Skips tkn in lst, returns the first one who isn't tkn
+t_list	*ft_skptkn(t_list *lst, char const *tkn);
+//Searches for match, lets match to NULL if no match, return 1 on error, or 0
+int		ft_search(char *schdir, t_list *tkn, t_list **match);
+//Returns a list of match according to list tkn
+t_list	*ft_match(t_list *tkn);
+//Swaps av with a new parsed av, returns 0 on success and 1 on failure
+int		ft_parse(char ***av, char **ev, char ***var);
+//Called before parsing to remove or do variable affectations
+int		ft_remaff(char **av, char **ev, char ***var);
+//Expands every "$pattern" if it exists in env or var, str must be allocated
+int		ft_expvar(char **str, char **ev, char **var);
+//Removes every quotes in str, str must be allocated
+int		ft_remqts(char **str);
+//Compare beginning of candidate with cleared of quotes token
+int		ft_cndcmp(char **cnd, t_list *tkn);
+//Searches for cleared of quotes token in candidate
+int		ft_cndstr(char **cnd, t_list *tkn);
+//Reorder lst in lexicographical order
+t_list	*ft_lexord(t_list *lst);
 //------------------------------------------------------------------------------
 
 //---------------------------------BUILTINS-------------------------------------
 //Builtin echo with -n option
 int		ft_echo(char **av);
 //Buildin cd
-int		ft_cd(char **av, char ***ev);
+int		ft_cd(char **av, char ***ev, char **var);
+//Look into CDPATH if cd fails
+int		ft_cdpath(char *path, char **ev, char **var);
 //Builtin pwd without option
-int		ft_pwd(void);
+int		ft_pwd(int err);
 //Builtin env without option or argument
 int		ft_env(char **ev);
 //Builtin exit without option
-void	ft_exit(char **ev, char **var, char **his);
+int		ft_exicmd(char **av, char *last_status);
 //Builtin variable affectation
 int		ft_setvar(char **av, char **ev, char ***var);
 //Builtin export without option
