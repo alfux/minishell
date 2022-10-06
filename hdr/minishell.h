@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 20:05:20 by alfux             #+#    #+#             */
-/*   Updated: 2022/10/03 21:59:39 by alfux            ###   ########.fr       */
+/*   Updated: 2022/10/06 03:27:35 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef MINISHELL_H
@@ -136,6 +136,16 @@ t_list	*ft_match(t_list *tkn);
 int		ft_parse(char ***av, char **ev, char ***var);
 //Called before parsing to remove or do variable affectations
 int		ft_remaff(char **av, char **ev, char ***var);
+//Expands every "$pattern" if it exists in env or var, str must be allocated
+int		ft_expvar(char **str, char **ev, char **var);
+//Removes every quotes in str, str must be allocated
+int		ft_remqts(char **str);
+//Compare beginning of candidate with cleared of quotes token
+int		ft_cndcmp(char **cnd, t_list *tkn);
+//Searches for cleared of quotes token in candidate
+int		ft_cndstr(char **cnd, t_list *tkn);
+//Reorder lst in lexicographical order
+t_list	*ft_lexord(t_list *lst);
 //------------------------------------------------------------------------------
 
 //---------------------------------BUILTINS-------------------------------------

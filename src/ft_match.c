@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 17:05:37 by alfux             #+#    #+#             */
-/*   Updated: 2022/10/05 15:36:29 by alfux            ###   ########.fr       */
+/*   Updated: 2022/10/06 05:41:33 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -17,6 +17,8 @@ static t_list	*ft_no_wildcard(char *str)
 
 	if (!str)
 		return ((t_list *)0);
+	if (ft_remqts(&str))
+		return ((t_list *)(size_t)ft_free(str));
 	new = ft_lstnew(str);
 	if (!new)
 		return ((t_list *)(size_t)ft_free(str));
@@ -52,6 +54,21 @@ static int	ft_dir_or_not(t_list *tkn, t_list **match)
 	return (ft_search((char *)0, tkn, match));
 }
 
+static int	ft_lstremqts(t_list *tkn)
+{
+	char	*tmp;
+
+	while (tkn)
+	{
+		tmp = tkn->content;
+		if (ft_remqts(&tmp))
+			return (-1);
+		tkn->content = tmp;
+		tkn = tkn->next;
+	}
+	return (0);
+}
+
 t_list	*ft_match(t_list *tkn)
 {
 	t_list	*match;
@@ -64,8 +81,8 @@ t_list	*ft_match(t_list *tkn)
 	match = (t_list *)0;
 	if (ft_dir_or_not(tkn, &match))
 		return ((t_list *)0);
-	if (match)
-		return (match);
+	if (match || ft_lstremqts(tkn))
+		return (ft_lexord(match));
 	str = ft_strdup(tkn->content);
 	match = ft_lstnew(str);
 	while (match && match->content && tkn->next)

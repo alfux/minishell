@@ -6,28 +6,31 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 17:05:37 by alfux             #+#    #+#             */
-/*   Updated: 2022/10/05 16:18:59 by alfux            ###   ########.fr       */
+/*   Updated: 2022/10/06 04:29:52 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
 
-static int	ft_addblk(t_list **match, char *blk, char *dir)
+static int	ft_add(t_list **match, char *blk, char *dir, t_list *last)
 {
 	t_list	*new;
+	char	*tmp;
 
-	if (dir)
+	if (!ft_strncmp((char const *)last->content, "/", 2))
+		blk = ft_strjoin(blk, "/");
+	else
+		blk = ft_strdup(blk);
+	if (blk && dir)
 	{
 		if (*(dir + ft_strlen(dir) - 1) != '/')
 			dir = ft_strjoin(dir, "/");
-		else 
+		else
 			dir = ft_strdup(dir);
 		if (!dir)
-			return (1);
-		blk = ft_strjoin(dir, blk);
-		(void)ft_free(dir);
+			return (1 + ft_free(blk));
+		tmp = ft_strjoin(dir, blk);
+		blk = tmp + ft_free(blk) + ft_free(dir);
 	}
-	else
-		blk = ft_strdup(blk);
 	if (!blk)
 		return (1);
 	new = ft_lstnew(blk);
@@ -68,25 +71,24 @@ static int	ft_subsch(char *subdir, char *schdir, t_list *tkn, t_list **match)
 
 static int	ft_ismatch(char *candidate, char *schdir, t_list *tkn, t_list **mth)
 {
-	char	*match;
 	char	*start;
+	int		re;
 
 	start = candidate;
+	re = 1;
 	if (ft_strncmp(tkn->content, "*", 2))
-		if (ft_strncmp(candidate, tkn->content, ft_strlen(tkn->content) + 1))
-			return (0);
-	if (ft_strncmp(tkn->content, "*", 2))
-		candidate += ft_strlen(tkn->content);
+		re = ft_cndcmp(&candidate, tkn);
+	if (re == -1 || !re)
+		return (re);
 	tkn = tkn->next;
 	tkn = ft_skptkn(tkn, "*");
 	while (tkn)
 	{
 		if (!ft_strncmp(tkn->content, "/", 2))
 			return (ft_subsch(start, schdir, ft_skptkn(tkn, "/"), mth));
-		match = ft_strnstr(candidate, tkn->content, ft_strlen(candidate));
-		if (!match)
-			return (0);
-		candidate = match + ft_strlen(tkn->content);
+		re = ft_cndstr(&candidate, tkn);
+		if (re == -1 || !re)
+			return (re);
 		tkn = tkn->next;
 		if ((!tkn || !ft_strncmp(tkn->content, "/", 2)) && *candidate)
 			return (0);
@@ -109,7 +111,7 @@ static struct dirent	*ft_readdir(DIR *dir, t_list *tkn)
 	return (rd);
 }
 
-int	ft_search(char *schdir, t_list *tkn, t_list **match)
+int	ft_search(char *sd, t_list *tkn, t_list **mh)
 {
 	struct dirent	*rd;
 	DIR				*dir;
@@ -117,23 +119,23 @@ int	ft_search(char *schdir, t_list *tkn, t_list **match)
 
 	if (!ft_strncmp(tkn->content, "/", 2))
 		return (0);
-	if (!schdir)
+	if (!sd)
 		dir = opendir(".");
 	else
-		dir = opendir(schdir);
+		dir = opendir(sd);
 	if (dir)
 	{
 		rd = ft_readdir(dir, tkn);
 		while (rd)
 		{
-			re = ft_ismatch(rd->d_name, schdir, tkn, match);
-			if (re == -1 || (re && ft_addblk(match, rd->d_name, schdir)))
+			re = ft_ismatch(rd->d_name, sd, tkn, mh);
+			if (re == -1 || (re && ft_add(mh, rd->d_name, sd, ft_lstlast(tkn))))
 				break ;
 			rd = ft_readdir(dir, tkn);
 		}
 		if ((!errno || (0 * closedir(dir))) && !closedir(dir))
 			return (0);
 	}
-	ft_lstclear(match, (void (*)(void *))(&ft_free));
+	ft_lstclear(mh, (void (*)(void *))(&ft_free));
 	return (1);
 }
