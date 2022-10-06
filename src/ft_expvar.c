@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:21:32 by alfux             #+#    #+#             */
-/*   Updated: 2022/10/06 05:09:59 by alfux            ###   ########.fr       */
+/*   Updated: 2022/10/07 00:34:31 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -61,7 +61,7 @@ static size_t	ft_insert(char **str, size_t *i, char **ev, char **var)
 
 	j = 1;
 	if (*(*str + *i + j) == '?')
-		v = var;
+		v = var + (0 * j++);
 	else
 	{
 		while (*(*str + *i + j) && (ft_isalnum(*(*str + *i + j))
