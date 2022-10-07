@@ -24,3 +24,7 @@
 ✓ Syntax is checked and complex commands with &&, || and parentheses are now supported ✅
 <br />✓ Wildcard works with current directory (and others too 🤙) ✅
 ### Starting tests and tweaks:
+- Fixed an issue on echo with multiple option -n not disappearing
+- Fixed an issue on '$?' displaying undesired '?' after status
+- Added processing of negative values as an argument for exit
+- Fixed an issue concerning variables starting with a digit, those are not supposed to exist
