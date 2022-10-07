@@ -6,12 +6,12 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 16:21:32 by alfux             #+#    #+#             */
-/*   Updated: 2022/10/07 00:34:31 by alfux            ###   ########.fr       */
+/*   Updated: 2022/10/07 17:29:31 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
 
-static int	ft_cut_and_link(char **str, char *begin, char **v, char *end)
+static int	ft_cut_link(char **str, char *begin, char **v, char *end)
 {
 	size_t	i;
 	char	*new;
@@ -64,7 +64,8 @@ static size_t	ft_insert(char **str, size_t *i, char **ev, char **var)
 		v = var + (0 * j++);
 	else
 	{
-		while (*(*str + *i + j) && (ft_isalnum(*(*str + *i + j))
+		while (*(*str + *i + j) && (j != 1 || !ft_isdigit(*(*str + *i + j))
+				|| 0 * j++) && (ft_isalnum(*(*str + *i + j))
 				|| *(*str + *i + j) == '_'))
 			j++;
 		sub = ft_substr(*str, *i + 1, j - 1);
@@ -75,8 +76,7 @@ static size_t	ft_insert(char **str, size_t *i, char **ev, char **var)
 			v = ft_isvarin(sub, var);
 		(void)ft_free(sub);
 	}
-	if (ft_cut_and_link(str, ft_substr(*str, 0, *i), v,
-			ft_strdup(*str + *i + j)))
+	if (ft_cut_link(str, ft_substr(*str, 0, *i), v, ft_strdup(*str + *i + j)))
 		return (-1);
 	*i += ft_varlen(v);
 	return (0);

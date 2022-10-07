@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/31 19:48:07 by alfux             #+#    #+#             */
-/*   Updated: 2022/08/31 01:29:19 by marvin           ###   ########.fr       */
+/*   Updated: 2022/10/07 16:41:40 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -24,8 +24,9 @@ int	ft_isntvar(char **cmd)
 		j = 0;
 		while (*(*(cmd + i) + j))
 		{
-			if ((!ft_isalnum(*(*(cmd + i) + j)) && *(*(cmd + i) + j) != '_')
-				|| !*(*(cmd + i) + j + 1))
+			if ((j == 0 && ft_isdigit(*(*(cmd + i + j))))
+				|| (!ft_isalnum(*(*(cmd + i) + j))
+					&& *(*(cmd + i) + j) != '_') || !*(*(cmd + i) + j + 1))
 			{
 				if (j > 0 && *(*(cmd + i) + j) == '=')
 					break ;

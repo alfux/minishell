@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/22 14:56:46 by alfux             #+#    #+#             */
-/*   Updated: 2022/10/03 22:05:54 by alfux            ###   ########.fr       */
+/*   Updated: 2022/10/07 17:37:08 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -40,7 +40,7 @@ static int	ft_alphaprint(char **ev, char const *prv)
 
 static int	ft_iseq(char *str)
 {
-	if (!ft_isalnum(*str))
+	if (!ft_isalpha(*str) && *str != '_')
 		return (0 * ft_errmsg(EINVAL));
 	str++;
 	while (*str && (ft_isalnum(*str) || *str == '_'))
@@ -108,6 +108,7 @@ int	ft_export(char **av, char ***ev, char ***var)
 	char	**buf;
 	char	**add;
 
+	(void)ft_errno(0);
 	if (!*(av + 1))
 		return (ft_alphaprint(*ev, "\0"));
 	buf = ft_equalities(av);
@@ -125,5 +126,5 @@ int	ft_export(char **av, char ***ev, char ***var)
 	ft_free(*ev);
 	ft_free(add);
 	*ev = buf;
-	return (errno);
+	return (!!errno << 8);
 }
