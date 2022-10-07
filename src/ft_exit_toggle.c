@@ -6,7 +6,7 @@
 /*   By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 21:42:55 by alfux             #+#    #+#             */
-/*   Updated: 2022/10/03 15:22:04 by alfux            ###   ########.fr       */
+/*   Updated: 2022/10/07 16:29:01 by alfux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -27,6 +27,8 @@ static int	ft_check_int(char *num)
 		return (0);
 	i = 0;
 	while (ft_isspace(*(num + i)))
+		i++;
+	if (*(num + i) == '-' || *(num + i) == '+')
 		i++;
 	while (ft_isdigit(*(num + i)))
 		i++;
