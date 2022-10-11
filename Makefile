@@ -6,7 +6,7 @@
 #    By: alfux <alexis.t.fuchs@gmail.com>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/31 19:02:34 by alfux             #+#    #+#              #
-#    Updated: 2022/10/06 03:24:44 by alfux            ###   ########.fr        #
+#    Updated: 2022/10/11 16:19:24 by alfux            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -75,7 +75,7 @@ $(LPATH)$(LIBFT)	:
 all					:	$(NAME)
 
 clean				:
-						@(cd $(LPATH) && $(MAKE) $(SIL) clean)
+						@(cd $(LPATH) && $(MAKE) $(SIL) fclean)
 						@(rm -rf $(OPATH))
 						@(echo "\033[31mobject files removed\033[0m")
 
